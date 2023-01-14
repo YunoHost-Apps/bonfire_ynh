@@ -1,0 +1,279 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
+
+domain=$YNH_APP_ARG_DOMAIN
+path_url=$YNH_APP_ARG_PATH
+is_public=$YNH_APP_ARG_IS_PUBLIC
+language=$YNH_APP_ARG_LANGUAGE
+admin=$YNH_APP_ARG_ADMIN
+password=$YNH_APP_ARG_PASSWORD
+
+### If it's a multi-instance app, meaning it can be installed several times independently
+### The id of the app as stated in the manifest is available as $YNH_APP_ID
+### The instance number is available as $YNH_APP_INSTANCE_NUMBER (equals "1", "2"...)
+### The app instance name is available as $YNH_APP_INSTANCE_NAME
+###    - the first time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample
+###    - the second time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample__2
+###    - ynhexample__{N} for the subsequent installations, with N=3,4...
+### The app instance name is probably what interests you most, since this is
+### guaranteed to be unique. This is a good unique identifier to define installation path,
+### db names...
+app=$YNH_APP_INSTANCE_NAME
+
+#=================================================
+# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
+#=================================================
+### About --weight and --time
+### ynh_script_progression will show to your final users the progression of each scripts.
+### In order to do that, --weight will represent the relative time of execution compared to the other steps in the script.
+### --time is a packager option, it will show you the execution time since the previous call.
+### This option is implied when running in CI_package_check, you can manually add it if you are manually testing the app.
+### Use the execution time displayed in the CI report or by adding --time to the command, to estimate the weight of a step.
+### A common way to do it is to set a weight equal to the execution time in second +1.
+### The execution time is given for the duration since the previous call. So the weight should be applied to this previous call.
+ynh_script_progression --message="Validating installation parameters..." --weight=1
+
+### If the app uses NGINX as web server (written in HTML/PHP in most cases), the final path should be "/var/www/$app".
+### If the app provides an internal web server (or uses another application server such as uWSGI), the final path should be "/opt/yunohost/$app"
+final_path=/var/www/$app
+test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
+
+# Register (book) web path
+ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
+
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+ynh_script_progression --message="Storing installation settings..." --weight=1
+
+ynh_app_setting_set --app=$app --key=domain --value=$domain
+ynh_app_setting_set --app=$app --key=path --value=$path_url
+ynh_app_setting_set --app=$app --key=language --value=$language
+ynh_app_setting_set --app=$app --key=admin --value=$admin
+
+#=================================================
+# STANDARD MODIFICATIONS
+#=================================================
+# FIND AND OPEN A PORT
+#=================================================
+ynh_script_progression --message="Finding an available port..." --weight=1
+
+### Use these lines if you have to open a port for the application
+### `ynh_find_port` will find the first available port starting from the given port.
+### If you're not using these lines:
+###		- Remove the section "CLOSE A PORT" in the remove script
+
+# Find an available port
+port=$(ynh_find_port --port=8095)
+ynh_app_setting_set --app=$app --key=port --value=$port
+
+# Optional: Expose this port publicly
+# (N.B.: you only need to do this if the app actually needs to expose the port publicly.
+# If you do this and the app doesn't actually need you are CREATING SECURITY HOLES IN THE SERVER !)
+
+# Open the port
+# ynh_script_progression --message="Configuring firewall..." --weight=1
+# ynh_exec_warn_less yunohost firewall allow --no-upnp TCP $port
+
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Installing dependencies..." --weight=1
+
+### `ynh_install_app_dependencies` allows you to add any "apt" dependencies to the package.
+### Those deb packages will be installed as dependencies of this package.
+### If you're not using this helper:
+###		- Remove the section "REMOVE DEPENDENCIES" in the remove script
+###		- Remove the variable "pkg_dependencies" in _common.sh
+###		- As well as the section "REINSTALL DEPENDENCIES" in the restore script
+###		- And the section "UPGRADE DEPENDENCIES" in the upgrade script
+
+ynh_install_app_dependencies $pkg_dependencies
+
+# FIXME: We need a better way to do this
+ynh_script_progression --message="Installing extra dependencies…" --weight=1
+
+ynh_exec_warn_less curl -q 'https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub' | gpg --dearmor | sudo tee /usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg 1> /dev/null
+ynh_exec_warn_less echo "deb [signed-by=/usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg] https://proget.makedeb.org prebuilt-mpr $(lsb_release -cs)" | sudo tee /etc/apt/sources.list.d/prebuilt-mpr.list
+ynh_exec_warn_less apt update
+ynh_exec_warn_less apt install just
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+ynh_system_user_create --username=$app --home_dir="$final_path"
+
+#=================================================
+# CREATE A POSTGRESQL DATABASE
+#=================================================
+ynh_script_progression --message="Creating a PostgreSQL database..." --weight=1
+
+db_name=$(ynh_sanitize_dbid --db_name=$app)
+db_user=$db_name
+ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+ynh_psql_test_if_first_run
+ynh_psql_setup_db --db_user=$db_user --db_name=$db_name
+ynh_psql_execute_as_root --sql="CREATE EXTENSION IF NOT EXISTS citext;" --database=$db_name
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression --message="Setting up source files..." --weight=1
+
+### `ynh_setup_source` is used to install an app from a zip or tar.gz file,
+### downloaded from an upstream source, like a git repository.
+### `ynh_setup_source` use the file conf/app.src
+
+ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$final_path"
+
+# FIXME: this should be managed by the core in the future
+# Here, as a packager, you may have to tweak the ownerhsip/permissions
+# such that the appropriate users (e.g. maybe www-data) can access
+# files in some cases.
+# But FOR THE LOVE OF GOD, do not allow r/x for "others" on the entire folder -
+# this will be treated as a security issue.
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
+
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+ynh_script_progression --message="Configuring NGINX web server..." --weight=1
+
+### `ynh_add_nginx_config` will use the file conf/nginx.conf
+
+# Create a dedicated NGINX config
+ynh_add_nginx_config
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
+# Configuration files
+#=================================================
+
+config="$final_path/.config"
+env_file="$final_path/.env"
+
+export MIX_ENV=prod FLAVOUR=classic
+
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc just config
+# generate secrets
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  just secrets
+
+ynh_replace_string --match_string="HOSTNAME=localhost" --replace_string="HOSTNAME=$domain" --target_file="$env_file"
+# TODO : mail service ?
+ynh_replace_string --match_string="SERVER_PORT=4000" --replace_string="SERVER_PORT^=$port" --target_file="$env_file"
+ynh_replace_string --match_string="PUBLIC_PORT=4000" --replace_string="PUBLIC_PORT=443" --target_file="$env_file"
+ynh_replace_string --match_string="" --replace_string="" --target_file="$env_file"
+# TODO : Configure S3 - with proper Yunohost question during installation
+
+#=================================================
+# Configure the release
+#=================================================
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc mix deps.get --only prod
+
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc just js-deps-get
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc just assets-prepare
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc mix phx.digest
+
+# create an elexir release
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc mix release
+
+#=================================================
+# Run the release
+#=================================================
+release_folder="$final_path/_build/prod/rel/bonfire/"
+
+# Database created before, let's run the migrations
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "$release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
+
+# start bonfire as a daemon
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "$release_folder/bin/bonfire start daemon"
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SETUP LOGROTATE
+#=================================================
+ynh_script_progression --message="Configuring log rotation..." --weight=1
+
+### `ynh_use_logrotate` is used to configure a logrotate configuration for the logs of this app.
+### Use this helper only if there is effectively a log file for this app.
+### If you're not using this helper:
+###		- Remove the section "BACKUP LOGROTATE" in the backup script
+###		- Remove also the section "REMOVE LOGROTATE CONFIGURATION" in the remove script
+###		- As well as the section "RESTORE THE LOGROTATE CONFIGURATION" in the restore script
+###		- And the section "SETUP LOGROTATE" in the upgrade script
+
+# Use logrotate to manage application logfile(s)
+ynh_use_logrotate
+
+#=================================================
+# SETUP FAIL2BAN
+#=================================================
+ynh_script_progression --message="Configuring Fail2Ban..." --weight=1
+
+# Create a dedicated Fail2Ban config
+ynh_add_fail2ban_config --logpath="/var/log/nginx/${domain}-error.log" --failregex="Regex to match into the log for a failed login"
+
+#=================================================
+# SETUP SSOWAT
+#=================================================
+ynh_script_progression --message="Configuring permissions..." --weight=1
+
+# Make app public if necessary
+if [ $is_public -eq 1 ]
+then
+	# Everyone can access the app.
+	# The "main" permission is automatically created before the install script.
+	ynh_permission_update --permission="main" --add="visitors"
+fi
+
+### N.B. : the following extra permissions only make sense if your app
+### does have for example an admin interface or an API.
+
+# Only the admin can access the admin panel of the app (if the app has an admin panel)
+ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
+
+# Everyone can access the API part
+# We don't want to display the tile in the SSO so we put --show_tile="false"
+# And we don't want the YunoHost admin to be able to remove visitors group to this permission, so we put --protected="true"
+ynh_permission_create --permission="api" --url="/api" --allowed="visitors" --show_tile="false" --protected="true"
+
+#=================================================
+# RELOAD NGINX
+#=================================================
+ynh_script_progression --message="Reloading NGINX web server..." --weight=1
+
+ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Installation of $app completed" --last

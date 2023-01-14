@@ -1,0 +1,7 @@
+SOURCE_URL=https://github.com/lapineige/bonfire-app/archive/refs/tags/test.tar.gz
+SOURCE_SUM=18284881e09633f79a08ac4c66b35baf45354270084b3952ef440a0ffd1e906b
+SOURCE_SUM_PRG=sha256sum
+SOURCE_FORMAT=tar.gz
+SOURCE_IN_SUBDIR=true
+SOURCE_FILENAME=
+SOURCE_EXTRACT=true
