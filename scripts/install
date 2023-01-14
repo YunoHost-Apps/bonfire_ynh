@@ -112,7 +112,7 @@ ynh_install_app_dependencies $pkg_dependencies
 # FIXME: We need a better way to do this
 ynh_script_progression --message="Installing extra dependencies…" --weight=1
 
-ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org prebuilt-mpr" --package="just" --key="https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
+ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org" --package="just" --key="https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
 
 #=================================================
 # CREATE DEDICATED USER
