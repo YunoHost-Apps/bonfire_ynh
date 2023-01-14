@@ -18,7 +18,7 @@
     },
     "license": "free",
     "maintainer": {
-        "name": "Lapineige",
+        "name": "Lapineige"
     },
     "requirements": {
         "yunohost": ">= 11.0.0"
