@@ -112,9 +112,7 @@ ynh_install_app_dependencies $pkg_dependencies
 # FIXME: We need a better way to do this
 ynh_script_progression --message="Installing extra dependencies…" --weight=1
 
-ynh_exec_warn_less curl -q 'https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub' | gpg --dearmor | sudo tee /usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg 1> /dev/null
-ynh_exec_warn_less echo "deb [signed-by=/usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg] https://proget.makedeb.org prebuilt-mpr $(lsb_release -cs)" | sudo tee /etc/apt/sources.list.d/prebuilt-mpr.list
-ynh_exec_warn_less apt update
+ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org/feeds/prebuilt-mpr" --package="just" --key="https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
 ynh_exec_warn_less apt install just
 
 #=================================================
