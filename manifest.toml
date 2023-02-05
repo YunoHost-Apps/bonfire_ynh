@@ -1,0 +1,87 @@
+packaging_format = 2
+
+name = "Bonfire"
+id = "bonfire"
+packaging_format = 1
+version = "0.1~ynh1"
+url = "https://example.com"
+license = "free"
+multi_instance = true
+services = [ "nginx" ]
+
+[description]
+en = "Federated social networking server built on ActivityPub open protocol"
+fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
+
+[upstream]
+license = "GNU Affero General Public License v3.0"
+website = "https://bonfirenetworks.org/"
+demo = "https://playground.bonfire.cafe/"
+admindoc = "https://bonfirenetworks.org/docs/"
+userdoc = "https://bonfirenetworks.org/docs/"
+code = "https://github.com/bonfire-networks/bonfire-app"
+
+[maintainer]
+name = "Lapineige"
+
+[requirements]
+yunohost = ">= 11.0.0"
+
+[[arguments.install]]
+name = "domain"
+type = "domain"
+
+[[arguments.install]]
+name = "path"
+type = "path"
+example = "/example"
+default = "/"
+
+[[arguments.install]]
+name = "is_public"
+type = "boolean"
+default = true
+
+[[arguments.install]]
+name = "language"
+type = "string"
+choices = [ "fr", "en" ]
+default = "fr"
+
+  [arguments.install.ask]
+  en = "Choose the application language"
+  fr = "Choisissez la langue de l'application"
+
+[[arguments.install]]
+name = "admin"
+type = "user"
+
+  [arguments.install.help]
+  en = "Name of the account that will have admin rights on this instance."
+  fr = "Le nom du compte qui aura les droits d'administration sur l'instance."
+
+[[arguments.install]]
+name = "password"
+type = "password"
+
+[[arguments.install]]
+name = "media_upload_size"
+type = "string"
+choices = [
+  "1MB",
+  "2MB",
+  "5MB",
+  "10MB",
+  "15MB",
+  "20MB",
+  "35MB",
+  "50MB",
+  "100MB",
+  "150MB"
+]
+default = "20MB"
+
+  [arguments.install.help]
+  en = "Maximum size of the media uploaded. Can be changed later."
+  fr = "Taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
+
