@@ -68,6 +68,27 @@
       {
         "name": "password",
         "type": "password"
+      },
+      {
+        "name": "media_upload_size",
+        "type": "string",
+        "help": {
+          "en": "Maximum size of the media uploaded. Can be changed later.",
+          "fr": "Taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
+          },
+        "choices": [
+        "1MB",
+        "2MB",
+        "5MB",
+        "10MB",
+        "15MB",
+        "20MB",
+        "35MB",
+        "50MB",
+        "100MB",
+        "150MB"
+        ],
+        "default": "20MB"
       }
     ]
   }
