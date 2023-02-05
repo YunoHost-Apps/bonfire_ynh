@@ -2,7 +2,6 @@ packaging_format = 2
 
 name = "Bonfire"
 id = "bonfire"
-packaging_format = 1
 version = "0.1~ynh1"
 url = "https://example.com"
 license = "free"
