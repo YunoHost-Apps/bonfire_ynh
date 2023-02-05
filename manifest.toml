@@ -10,10 +10,6 @@ services = [ "nginx" ]
 
 maintainers = ["Lapineige"]
 
-# FIXME: replace with an **estimate** minimum disk and RAM requirements. e.g. 20M, 400M, 1G, ...
-disk = "500M"
-ram.build = "500M"
-ram.runtime = "500M"
 
 [description]
 en = "Federated social networking server built on ActivityPub open protocol"
@@ -39,6 +35,10 @@ ldap = "false"
 # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "ldap" key : the "sso" key corresponds to wether or not a user is *automatically logged-in* on the app when logged-in on the YunoHost portal.
 sso = "false"
 
+# FIXME: replace with an **estimate** minimum disk and RAM requirements. e.g. 20M, 400M, 1G, ...
+disk = "500M"
+ram.build = "500M"
+ram.runtime = "500M"
 
 [install]
   [install.domain]
