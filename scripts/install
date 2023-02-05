@@ -27,6 +27,8 @@ language=$YNH_APP_ARG_LANGUAGE
 admin=$YNH_APP_ARG_ADMIN
 password=$YNH_APP_ARG_PASSWORD
 
+media_upload_size=$YNH_APP_ARG_MEDIA_UPLOAD_SIZE
+
 ### If it's a multi-instance app, meaning it can be installed several times independently
 ### The id of the app as stated in the manifest is available as $YNH_APP_ID
 ### The instance number is available as $YNH_APP_INSTANCE_NUMBER (equals "1", "2"...)
@@ -49,7 +51,7 @@ app=$YNH_APP_INSTANCE_NAME
 ### This option is implied when running in CI_package_check, you can manually add it if you are manually testing the app.
 ### Use the execution time displayed in the CI report or by adding --time to the command, to estimate the weight of a step.
 ### A common way to do it is to set a weight equal to the execution time in second +1.
-### The execution time is given for the duration since the previous call. So the weight should be applied to this previous call.
+### The execution time is given for the durationt since the previous call. So the weight should be applied to this previous call.
 ynh_script_progression --message="Validating installation parameters..." --weight=1
 
 ### If the app uses NGINX as web server (written in HTML/PHP in most cases), the final path should be "/var/www/$app".
@@ -69,6 +71,7 @@ ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=admin --value=$admin
+ynh_app_setting_set --app=$app --key=media_upload_size --value=$media_upload_size
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -184,6 +187,8 @@ ynh_replace_string --match_string="PUBLIC_PORT=4000" --replace_string="PUBLIC_PO
 # UPLOADS_S3_ACCESS_KEY_ID=
 # UPLOADS_S3_SECRET_ACCESS_KEY=
 
+# max file upload size
+UPLOAD_LIMIT="${media_upload_size:0:2}000000" # convert the MB argument in bytes
 
 #=================================================
 # Configure the release
