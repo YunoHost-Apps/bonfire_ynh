@@ -103,3 +103,7 @@ ram.runtime = "500M"
     
     [resources.ports]
     # This will pick a random port for reverse-proxying and store it as the $port setting 
+    
+    [resources.database]
+    # This will automatically provision/deprovison a mysql DB and store the corresponding credentials in settings $db_user, $db_name, $db_pwd
+    type = "psql"
