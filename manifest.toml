@@ -11,9 +11,9 @@ services = [ "nginx" ]
 maintainers = ["Lapineige"]
 
 # FIXME: replace with an **estimate** minimum disk and RAM requirements. e.g. 20M, 400M, 1G, ...
-#disk = "500M"
-#ram.build = "500M"
-#ram.runtime = "500M"
+disk = "500M"
+ram.build = "500M"
+ram.runtime = "500M"
 
 [description]
 en = "Federated social networking server built on ActivityPub open protocol"
@@ -32,6 +32,13 @@ code = "https://github.com/bonfire-networks/bonfire-app"
 yunohost = ">= 11.0.0"
 multi_instance = false
 architectures = "all"
+
+### LDAP & SSO will be dealt with later, if Bonfire support it. Help wanted :)
+# FIXME: replace with true, false, or "not_relevant". Not to confuse with the "sso" key : the "ldap" key corresponds to wether or not a user *can* login on the app using its YunoHost credentials.
+ldap = "false" 
+# FIXME: replace with true, false, or "not_relevant". Not to confuse with the "ldap" key : the "sso" key corresponds to wether or not a user is *automatically logged-in* on the app when logged-in on the YunoHost portal.
+sso = "false"
+
 
 [install]
   [install.domain]
@@ -89,7 +96,7 @@ architectures = "all"
     ask.fr = "Taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
 
 [resources]
-    [resources.data_dir]
+    #[resources.data_dir]
     # This will create/remove the data dir as /home/yunohost.app/$app
     # and store the corresponding setting $data_dir
     #TODO
