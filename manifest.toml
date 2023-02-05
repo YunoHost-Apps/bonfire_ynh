@@ -48,17 +48,17 @@ type = "string"
 choices = [ "fr", "en" ]
 default = "fr"
 
-  [arguments.install.ask]
-  en = "Choose the application language"
-  fr = "Choisissez la langue de l'application"
+[arguments.install.ask]
+en = "Choose the application language"
+fr = "Choisissez la langue de l'application"
 
 [[arguments.install]]
 name = "admin"
 type = "user"
 
-  [arguments.install.help]
-  en = "Name of the account that will have admin rights on this instance."
-  fr = "Le nom du compte qui aura les droits d'administration sur l'instance."
+[arguments.install.help]
+en = "Name of the account that will have admin rights on this instance."
+fr = "Le nom du compte qui aura les droits d'administration sur l'instance."
 
 [[arguments.install]]
 name = "password"
@@ -81,7 +81,7 @@ choices = [
 ]
 default = "20MB"
 
-  [arguments.install.help]
-  en = "Maximum size of the media uploaded. Can be changed later."
-  fr = "Taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
+[arguments.install.help]
+en = "Maximum size of the media uploaded. Can be changed later."
+fr = "Taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
 
