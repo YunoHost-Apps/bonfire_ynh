@@ -54,8 +54,8 @@ multi_instance = false
 
 
   [install.language]
-    .en = "Choose the application language"
-    .fr = "Choisissez la langue de l'application"
+    ask.en = "Choose the application language"
+    ask.fr = "Choisissez la langue de l'application"
     type = "string"
     choices = ["fr", "en"]
     default = "fr"
