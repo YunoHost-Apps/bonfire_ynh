@@ -5,11 +5,17 @@ id = "bonfire"
 version = "0.1~ynh1"
 url = "https://example.com"
 license = "free"
-multi_instance = true
+multi_instance = false
+architectures = "all"
+
 services = [ "nginx" ]
 
-
 maintainers = ["Lapineige"]
+
+# FIXME: replace with an **estimate** minimum disk and RAM requirements. e.g. 20M, 400M, 1G, ...
+#disk = "500M"
+#ram.build = "500M"
+#ram.runtime = "500M"
 
 [description]
 en = "Federated social networking server built on ActivityPub open protocol"
