@@ -5,15 +5,15 @@ It shall NOT be edited by hand.
 
 # Bonfire pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/bonfire.svg)](https://dash.yunohost.org/appci/app/bonfire) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/bonfire.svg)](https://dash.yunohost.org/appci/app/bonfire) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
 [![Installer Bonfire avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Bonfire rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Bonfire rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub
 
@@ -22,10 +22,10 @@ Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPu
 **Démo :** https://playground.bonfire.cafe/
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://bonfirenetworks.org/>
+* Site officiel de l’app : <https://bonfirenetworks.org/>
 * Documentation officielle utilisateur : <https://bonfirenetworks.org/docs/>
-* Documentation officielle de l'admin : <https://bonfirenetworks.org/docs/>
-* Dépôt de code officiel de l'app : <https://github.com/bonfire-networks/bonfire-app>
+* Documentation officielle de l’admin : <https://bonfirenetworks.org/docs/>
+* Dépôt de code officiel de l’app : <https://github.com/bonfire-networks/bonfire-app>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_bonfire>
 * Signaler un bug : <https://github.com/YunoHost-Apps/bonfire_ynh/issues>
 
@@ -41,4 +41,4 @@ ou
 sudo yunohost app upgrade bonfire -u https://github.com/YunoHost-Apps/bonfire_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
