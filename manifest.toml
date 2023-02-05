@@ -31,14 +31,14 @@ multi_instance = false
 [install]
   [install.domain]
   type = "domain"
-  help.en = "The domain name to use. Bonfire will be installed at its root path (/). This can't be changed."
-  help.fr = "Nom de domaine à utiliser. Bonfire sera installé à sa racine (/). Cela ne pourra pas être changé."
+  ask.en = "The domain name to use. Bonfire will be installed at its root path (/). This can't be changed."
+  ask.fr = "Nom de domaine à utiliser. Bonfire sera installé à sa racine (/). Cela ne pourra pas être changé."
 
   [install.is_public]
-  type = "boolean"
-  default = true
-  help.en = "Should that instance be visible to the fediverse ? It is required for federation."
-  help.fr = "Cette instance doit elle être visible sur le fédiverse? C'est nécessaire pour la fédération."
+    type = "boolean"
+    default = true
+    help.en = "Should that instance be visible to the fediverse ? It is required for federation."
+    help.fr = "Cette instance doit elle être visible sur le fédiverse? C'est nécessaire pour la fédération."
 
   [install.init_main_permission]
     # this is a generic question - ask strings are automatically handled by YunoHost's core
@@ -46,26 +46,26 @@ multi_instance = false
     type = "group"
     default = "visitors"
 
-  [install.domain]
-    ask.en = "Choose the application language"
-    ask.fr = "Choisissez la langue de l'application"
+
+  [install.language]
+    .en = "Choose the application language"
+    .fr = "Choisissez la langue de l'application"
     type = "string"
     choices = ["fr", "en"]
     default = "fr"
-
-
-    [install.admin]
+    
+  [install.admin]
     # this is a generic question - ask strings are automatically handled by YunoHost's core
     type = "user"
 
-    [install.password]
+  [install.password]
     # this is a generic question - ask strings are automatically handled by YunoHost's core
     # Note that user-provided passwords questions are not automatically saved as setting
     help.en = "Use the help field to add an information for the admin about this question."
     help.fr = "Utilisez le champ aide pour ajouter une information à l'intention de l'administrateur à propos de cette question."
     type = "password"
     
-    [install.media_upload_size]
+  [install.media_upload_size]
     type = "string"
     choices = [
     "1MB",
