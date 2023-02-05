@@ -6,8 +6,6 @@ version = "0.1~ynh1"
 url = "https://example.com"
 license = "free"
 
-services = [ "nginx" ]
-
 maintainers = ["Lapineige"]
 
 
@@ -106,4 +104,4 @@ ram.runtime = "500M"
     
     [resources.database]
     # This will automatically provision/deprovison a mysql DB and store the corresponding credentials in settings $db_user, $db_name, $db_pwd
-    type = "psql"
+    type = "postgresql"
