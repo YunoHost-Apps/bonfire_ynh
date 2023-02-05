@@ -5,8 +5,6 @@ id = "bonfire"
 version = "0.1~ynh1"
 url = "https://example.com"
 license = "free"
-multi_instance = false
-architectures = "all"
 
 services = [ "nginx" ]
 
@@ -33,6 +31,7 @@ code = "https://github.com/bonfire-networks/bonfire-app"
 [integration]
 yunohost = ">= 11.0.0"
 multi_instance = false
+architectures = "all"
 
 [install]
   [install.domain]
