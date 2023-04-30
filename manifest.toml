@@ -30,8 +30,6 @@ ram.runtime = "500M"
 [install]
   [install.domain]
   type = "domain"
-  ask.en = "The domain name to use. Bonfire will be installed at its root path (/). This can't be changed."
-  ask.fr = "Nom de domaine à utiliser. Bonfire sera installé à sa racine (/). Cela ne pourra pas être changé."
 
   [install.is_public]
     type = "boolean"
