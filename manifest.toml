@@ -83,6 +83,11 @@ ram.runtime = "500M"
 
 [resources]
 
+    #[resources.data_dir]
+    # This will create/remove the data dir as /home/yunohost.app/$app
+    # and store the corresponding setting $data_dir
+    #TODO
+
     [resources.sources]
 
         [resources.sources.main]
