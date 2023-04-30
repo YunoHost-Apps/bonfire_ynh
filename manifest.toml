@@ -85,7 +85,9 @@ ram.runtime = "500M"
         sha256 = "0c1b78f153c67e3b56f91a72a013e854bd87a03fbacdf3846ed1ab10a5d21a0f"
 
     [resources.ports]
-  
+    
+    [resources.system_user]
+
     [resources.install_dir]
     
     [resources.permissions]
