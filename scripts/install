@@ -9,6 +9,10 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+secret_key_base=$(ynh_string_random --length=24)
+signing_salt=$(ynh_string_random --length=24)
+encryption_salt=$(ynh_string_random --length=24)
+
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -29,37 +33,6 @@ ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 ynh_add_nginx_config
 
 #=================================================
-# SPECIFIC SETUP
-#=================================================
-# Configuration files
-#=================================================
-
-config="$install_dir/.config"
-env_file="$install_dir/.env"
-
-export MIX_ENV=prod FLAVOUR=classic
-
-ynh_exec_warn_less just config
-# generate secrets
-ynh_replace_string --match_string="SECRET_KEY_BASE=you-should-put-a-secure-string-here" --replace_string="SECRET_KEY_BASE=$(openssl rand -base64 128)" --target_file="$env_file"
-ynh_replace_string --match_string="SIGNING_SALT=you-should-put-a-different-secure-string-here" --replace_string="SIGNING_SALT=$(openssl rand -base64 128)" --target_file="$env_file"
-ynh_replace_string --match_string="ENCRYPTION_SALT=you-should-put-yet-another-secure-string-here" --replace_string="ENCRYPTION_SALT=$(openssl rand -base64 128)" --target_file="$env_file"
-
-# Configure server ports
-ynh_replace_string --match_string="HOSTNAME=localhost" --replace_string="HOSTNAME=$domain" --target_file="$env_file"
-# TODO : mail service ?
-ynh_replace_string --match_string="SERVER_PORT=4000" --replace_string="SERVER_PORT^=$port" --target_file="$env_file"
-ynh_replace_string --match_string="PUBLIC_PORT=4000" --replace_string="PUBLIC_PORT=443" --target_file="$env_file"
-
-# TODO : Configure S3 - with proper Yunohost question during installation
-# UPLOADS_S3_BUCKET=
-# UPLOADS_S3_ACCESS_KEY_ID=
-# UPLOADS_S3_SECRET_ACCESS_KEY=
-
-# max file upload size
-UPLOAD_LIMIT="${media_upload_size:0:2}000000" # convert the MB argument in bytes
-
-#=================================================
 # ADD A CONFIGURATION
 #=================================================
 ynh_script_progression --message="Adding a configuration file..." --weight=1
@@ -68,6 +41,14 @@ ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
 
 chmod 400 "$install_dir/.env"
 chown $app:$app "$install_dir/.env"
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
+# Configuration files
+#=================================================
+
+ynh_exec_warn_less just config
 
 #=================================================
 # Configure the release
