@@ -78,8 +78,19 @@ ram.runtime = "500M"
 
 [resources]
 
+    [resources.sources]
+
+        [resources.sources.main]
+        url = "https://github.com/bonfire-networks/bonfire-app/archive/refs/tags/v0.4.0-beta.43.tar.gz"
+        sha256 = "0c1b78f153c67e3b56f91a72a013e854bd87a03fbacdf3846ed1ab10a5d21a0f"
+
     [resources.ports]
+  
+    [resources.install_dir]
     
+    [resources.permissions]
+    main.url = "/"
+
     [resources.apt]
     packages = "postgresql"
 

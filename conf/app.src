@@ -1,7 +1,0 @@
-SOURCE_URL=https://github.com/bonfire-networks/bonfire-app/archive/refs/tags/v0.4.0-beta.43.tar.gz
-SOURCE_SUM=0c1b78f153c67e3b56f91a72a013e854bd87a03fbacdf3846ed1ab10a5d21a0f
-SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=tar.gz
-SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=
-SOURCE_EXTRACT=true
