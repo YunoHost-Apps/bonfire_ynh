@@ -60,6 +60,16 @@ ynh_replace_string --match_string="PUBLIC_PORT=4000" --replace_string="PUBLIC_PO
 UPLOAD_LIMIT="${media_upload_size:0:2}000000" # convert the MB argument in bytes
 
 #=================================================
+# ADD A CONFIGURATION
+#=================================================
+ynh_script_progression --message="Adding a configuration file..." --weight=1
+
+ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
+
+chmod 400 "$install_dir/.env"
+chown $app:$app "$install_dir/.env"
+
+#=================================================
 # Configure the release
 #=================================================
 
