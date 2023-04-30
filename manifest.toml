@@ -9,6 +9,10 @@ version = "0.1~ynh1"
 
 maintainers = ["Lapineige"]
 
+[description]
+en = "Federated social networking server built on ActivityPub open protocol"
+fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
+
 [upstream]
 license = "AGPL-3.0-only"
 website = "https://bonfirenetworks.org/"
@@ -23,7 +27,8 @@ multi_instance = false
 architectures = "all"
 ldap = false
 sso = false
-disk = "500M"
+disk = "1000M"
+# FIXME: replace with an **estimate** minimum disk and RAM requirements. e.g. 20M, 400M, 1G, ...
 ram.build = "500M"
 ram.runtime = "500M"
 
