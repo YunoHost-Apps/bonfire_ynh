@@ -52,6 +52,7 @@ ynh_script_progression --message="Managing special dependencies..." --weight=1
 # TODO : this is unsafe and should be dealt with in a better way.
 # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
 
+export TERM=xterm
 export MAKEDEB_RELEASE='makedeb' # for non interactive https://docs.makedeb.org/installing/shell-script/#noninteractive-usage
 bash -c "$(wget -qO - 'https://shlink.makedeb.org/install')" # -c because -ci is for interractive environnement
 git clone 'https://mpr.makedeb.org/just'
