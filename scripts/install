@@ -52,14 +52,15 @@ ynh_script_progression --message="Managing special dependencies..." --weight=1
 # TODO : this is unsafe and should be dealt with in a better way.
 # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
 
-export TERM=xterm
-export MAKEDEB_RELEASE='makedeb' # for non interactive https://docs.makedeb.org/installing/shell-script/#noninteractive-usage
-ynh_exec_as $app -s $SHELL -c "$(wget -qO - 'https://shlink.makedeb.org/install')" # -c because -ci is for interractive environnement
+
+wget -qO - 'https://proget.makedeb.org/debian-feeds/makedeb.pub' | gpg --dearmor | sudo tee /usr/share/keyrings/makedeb-archive-keyring.gpg 1> /dev/null
+echo 'deb [signed-by=/usr/share/keyrings/makedeb-archive-keyring.gpg arch=all] https://proget.makedeb.org/ makedeb main' | sudo tee /etc/apt/sources.list.d/makedeb.list
+apt update
+apt install makedeb
+
 git clone 'https://mpr.makedeb.org/just'
 cd just
-echo $(ynh_exec_as $app -s $SHELL -c "which makedeb")
-echo $(ynh_exec_as $app -s $SHELL -c "whereis makedeb")
-ynh_exec_as $app -s $SHELL makedeb -si 
+makedeb -si 
 cd ..
 
 ynh_script_progression --message="Configuring..." --weight=1
