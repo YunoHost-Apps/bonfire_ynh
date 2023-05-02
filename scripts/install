@@ -57,8 +57,8 @@ export MAKEDEB_RELEASE='makedeb' # for non interactive https://docs.makedeb.org/
 ynh_exec_as $app -s $SHELL -c "$(wget -qO - 'https://shlink.makedeb.org/install')" # -c because -ci is for interractive environnement
 git clone 'https://mpr.makedeb.org/just'
 cd just
-echo $(which makedeb)
-echo $(whereis makedeb)
+echo $(ynh_exec_as $app -s $SHELL -c which makedeb)
+echo $(ynh_exec_as $app -s $SHELL -c whereis makedeb)
 ynh_exec_as $app -s $SHELL makedeb -si 
 cd ..
 
