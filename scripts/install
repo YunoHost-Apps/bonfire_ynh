@@ -53,8 +53,7 @@ ynh_script_progression --message="Managing special dependencies..." --weight=1
 # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
 
 
-wget -qO - 'https://proget.makedeb.org/debian-feeds/makedeb.pub' | gpg --dearmor | sudo tee /usr/share/keyrings/makedeb-archive-keyring.gpg 1> /dev/null
-echo 'deb [signed-by=/usr/share/keyrings/makedeb-archive-keyring.gpg arch=all] https://proget.makedeb.org/ makedeb main' | sudo tee /etc/apt/sources.list.d/makedeb.list
+ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org makedeb main" --package="just" --key='https://proget.makedeb.org/debian-feeds/makedeb.pub'
 apt update
 apt install makedeb
 
