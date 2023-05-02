@@ -38,7 +38,7 @@ ynh_add_nginx_config
 ynh_script_progression --message="Adding a configuration file..." --weight=1
 
 # max file upload size
-MEDIA_UPLOAD_SIZE="${MEDIA_UPLOAD_SIZE:0:2}000000" # convert the MB argument in bytes
+# TODO : unbound variable ? #MEDIA_UPLOAD_SIZE="${MEDIA_UPLOAD_SIZE:0:2}000000" # convert the MB argument in bytes
 
 ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
 
