@@ -55,8 +55,8 @@ ynh_script_progression --message="Managing special dependencies..." --weight=1
 export TERM=xterm
 export MAKEDEB_RELEASE='makedeb' # for non interactive https://docs.makedeb.org/installing/shell-script/#noninteractive-usage
 ynh_exec_as $app -s $SHELL -c "$(wget -qO - 'https://shlink.makedeb.org/install')" # -c because -ci is for interractive environnement
-ynh_exec_as $app -s $SHELL git clone 'https://mpr.makedeb.org/just'
-ynh_exec_as $app -s $SHELL cd just
+git clone 'https://mpr.makedeb.org/just'
+cd just
 ynh_exec_as $app -s $SHELL makedeb -si 
 cd ..
 
