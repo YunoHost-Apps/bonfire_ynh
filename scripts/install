@@ -90,11 +90,15 @@ ynh_script_progression --message="Running database migrations..." --weight=1
 ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
 
 ynh_script_progression --message="Starting Bonfire..." --weight=1
+ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "just cmd $release_folder/bin/bonfire start"
+
 # start bonfire as a daemon
+ynh_script_progression --message="Starting Bonfire daemon..." --weight=1
 ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "just cmd $release_folder/bin/bonfire start daemon"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --last
+ynh_script_progression --message="Installation of $app completed" --weight=1
+ynh_script_progression --message="Now you need to sign-up, the first account will automatically be admin." --last
