@@ -68,7 +68,7 @@ ynh_script_progression --message="Configuring Bonfire release..." --weight=1
 
 export WITH_DOCKER=no # or source .env ?
 source "$install_dir/.env"
-
+cd $install_dir
 ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc just rel-build
 
 #=================================================
