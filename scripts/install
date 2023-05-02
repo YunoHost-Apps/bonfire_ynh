@@ -75,7 +75,10 @@ ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc just rel-build
 # Run the release
 #=================================================
 
-release_folder="$install_dir/_build/prod/rel/bonfire/"
+release_folder="$install_dir/_build/prod/rel/bonfire"
+
+echo $(ls -a $install_dir)
+echo $(ls -a $release_folder)
 
 # Database created before, let's run the migrations
 ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
