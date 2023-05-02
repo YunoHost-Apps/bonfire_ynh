@@ -45,7 +45,7 @@ chown $app:$app "$install_dir/.env"
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# Configuration files
+# Just dependency
 #=================================================
 ynh_script_progression --message="Managing special dependencies..." --weight=1
 ### Add just dependency
@@ -61,22 +61,15 @@ ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org prebuilt-m
 #makedeb -si 
 #cd ..
 
-ynh_script_progression --message="Configuring..." --weight=1
+#=================================================
+# Building  the release
+#=================================================
+ynh_script_progression --message="Configuring Bonfire release..." --weight=1
+
 export WITH_DOCKER=no # or source .env ?
-ynh_exec_warn_less just config
+source "$install_dir/.env"
 
-#=================================================
-# Configure the release
-#=================================================
-
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc mix deps.get --only prod
-
-ynh_exec_warn_less just js-deps-get
-ynh_exec_warn_less just assets-prepare
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc mix phx.digest
-
-# create an elexir release
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc mix release
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc just rel-build
 
 #=================================================
 # Run the release
@@ -85,10 +78,10 @@ ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc mix release
 release_folder="$install_dir/_build/prod/rel/bonfire/"
 
 # Database created before, let's run the migrations
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "$release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
 
 # start bonfire as a daemon
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "$release_folder/bin/bonfire start daemon"
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "just cmd $release_folder/bin/bonfire start daemon"
 
 #=================================================
 # END OF SCRIPT
