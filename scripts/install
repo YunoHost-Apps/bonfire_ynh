@@ -52,7 +52,8 @@ ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_str
 # Elixir 13 dependency
 #=================================================
 # Bulleyes comes with v1.10 instead of v1.13 that is required
-ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
+ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir erlang-dev" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
+# exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files
 
 #=================================================
 # Just dependency
