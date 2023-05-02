@@ -52,13 +52,13 @@ ynh_script_progression --message="Managing special dependencies..." --weight=1
 # TODO : this is unsafe and should be dealt with in a better way.
 # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
 
+ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org prebuilt-mpr bullseye" --package="just" --key='https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub'
 
-ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org makedeb main" --package="makedeb" --key='https://proget.makedeb.org/debian-feeds/makedeb.pub'
-
-git clone 'https://mpr.makedeb.org/just'
-cd just
-makedeb -si 
-cd ..
+#ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org makedeb main" --package="makedeb" --key='https://proget.makedeb.org/debian-feeds/makedeb.pub'
+#git clone 'https://mpr.makedeb.org/just'
+#cd just
+#makedeb -si 
+#cd ..
 
 ynh_script_progression --message="Configuring..." --weight=1
 ynh_exec_warn_less just config
