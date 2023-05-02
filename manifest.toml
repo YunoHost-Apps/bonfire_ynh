@@ -94,7 +94,7 @@ ram.runtime = "500M"
     main.url = "/"
 
     [resources.apt]
-    packages = "postgresql"
+    packages = "postgresql elixir"
 
     [resources.database]
     type = "postgresql"
