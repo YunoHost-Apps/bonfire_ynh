@@ -55,7 +55,7 @@ ynh_script_progression --message="Managing special dependencies..." --weight=1
 # only works for x86, we need to switch to the other option with makedeb package ?
 ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org prebuilt-mpr bullseye" --package="just" --key='https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub'
 
-#ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org makedeb main" --package="makedeb" --key='https://proget.makedeb.org/debian-feeds/makedeb.pub'
+#ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org makedeb main" --package="makedeb" --key='https://proget.makedeb.org/debian-feeds/makedeb.pub'
 #git clone 'https://mpr.makedeb.org/just'
 #cd just
 #makedeb -si 
@@ -77,8 +77,9 @@ ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc just rel-build
 
 release_folder="$install_dir/_build/prod/rel/bonfire"
 
-echo $(ls -a $install_dir)
-echo $(ls -a $release_folder)
+ynh_exec_warn_less ls -a $install_dir
+ynh_exec_warn_less ls -a $install_dir/_build/
+ynh_exec_warn_less ls -a $release_folder
 
 # Database created before, let's run the migrations
 ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
