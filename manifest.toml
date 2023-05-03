@@ -102,7 +102,7 @@ ram.runtime = "500M"
     main.url = "/"
 
     [resources.apt]
-    packages = "postgresql elixir erlang-dev erlang-parsetools"
+    packages = "postgresql elixir erlang-dev erlang-parsetools npm"
 
     [resources.database]
     type = "postgresql"
