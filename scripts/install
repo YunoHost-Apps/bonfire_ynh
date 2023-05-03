@@ -95,7 +95,7 @@ release_folder="_build/prod/rel/bonfire"
 
 ynh_script_progression --message="Running database migrations..." --weight=1
 # Database created before, let's run the migrations
-ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  ""just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
+ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
 
 ynh_script_progression --message="Starting Bonfire..." --weight=1
 ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "just cmd $release_folder/bin/bonfire start"
