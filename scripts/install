@@ -84,6 +84,10 @@ ynh_exec_warn cat .env
 # Building  the release
 #=================================================
 ynh_script_progression --message="Building Bonfire release..." --weight=1
+ynh_exec_warn $(env | grep TERM)
+ynh_exec_warn wheris terminfo
+export TERM=linux
+export TERMINFO=/etc/terminfo
 ynh_exec_warn just rel-build # node needs (root) access to /usr/local/lib/node_modules
 
 ynh_exec_warn ls _build
