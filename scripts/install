@@ -51,14 +51,21 @@ ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_str
 #=================================================
 # Elixir 13 dependency
 #=================================================
+ynh_script_progression --message="Managing special dependencies..." --weight=1
 # Bulleyes comes with v1.10 instead of v1.13 that is required
 ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
 # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
 
 #=================================================
+# Yarn dependency (correct version)
+#=================================================
+
+ynh_install_extra_app_dependencies --repo="https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key='https://dl.yarnpkg.com/debian/pubkey.gpg'
+
+#=================================================
 # Just dependency
 #=================================================
-ynh_script_progression --message="Managing special dependencies..." --weight=1
+
 ### Add just dependency
 # TODO : this is unsafe and should be dealt with in a better way.
 # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
