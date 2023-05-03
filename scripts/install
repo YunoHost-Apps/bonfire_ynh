@@ -9,7 +9,7 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-ynh_install_nodejs -nodejs_version=16.13.0
+ynh_install_nodejs --nodejs_version=16.13.0 # TODO : need to decide of a better version
 ynh_use_nodejs
 
 secret_key_base=$(ynh_string_random --length=24)
