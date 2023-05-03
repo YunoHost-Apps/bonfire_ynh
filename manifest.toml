@@ -9,6 +9,10 @@ version = "0.9.0-beta10~ynh2"
 
 maintainers = ["Lapineige"]
 
+[description]
+en = "Federated social networking server built on ActivityPub open protocol"
+fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
+
 [upstream]
 license = "AGPL-3.0-only"
 website = "https://bonfirenetworks.org/"
@@ -78,6 +82,11 @@ ram.runtime = "500M"
     help.fr = "Taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
 
 [resources]
+
+    #[resources.data_dir]
+    # This will create/remove the data dir as /home/yunohost.app/$app
+    # and store the corresponding setting $data_dir
+    #TODO
 
     [resources.sources]
 
