@@ -23,8 +23,8 @@ multi_instance = false
 architectures = "all"
 ldap = false
 sso = false
-disk = "500M"
-ram.build = "500M"
+disk = "1000M"
+ram.build = "300M"
 ram.runtime = "500M"
 
 [install]
@@ -69,10 +69,11 @@ ram.runtime = "500M"
       "20MB",
       "35MB",
       "50MB",
+      "70MB",
       "100MB",
       "150MB"
       ]
-    default = "20MB"
+    default = "35MB"
     help.en = "Maximum size of the media uploaded. Can be changed later."
     help.fr = "Taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
 
