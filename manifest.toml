@@ -2,8 +2,6 @@ packaging_format = 2
 
 id = "bonfire"
 name = "Bonfire"
-description.en = "Federated social networking server built on ActivityPub open protocol"
-description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
 version = "0.9.0-beta10~ynh2"
 
