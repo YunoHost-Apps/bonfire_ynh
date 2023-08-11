@@ -3,7 +3,7 @@ packaging_format = 2
 id = "bonfire"
 name = "Bonfire"
 
-version = "0.9.6-beta~ynh1"
+version = "0.9.6-classic-beta.2~ynh1"
 
 maintainers = ["Lapineige"]
 
