@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Federated social networking server built on ActivityPub open protocol
 
-**Shipped version:** 0.9.6-beta~ynh1
+**Shipped version:** 0.9.6-classic-beta.2~ynh1
 
 **Demo:** https://playground.bonfire.cafe/
 ## Documentation and resources
