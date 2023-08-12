@@ -87,13 +87,24 @@ ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org prebuilt-m
 #makedeb -si 
 #cd ..
 
-export WITH_DOCKER=no # or source .env ?
+# export WITH_DOCKER=no # or source .env ? # Using this for now
 source $install_dir/.env
+
+# TODO Debug
+ynh_exec_warn_less echo 'Debug install dir ENV file'
+ynh_exec_warn_less cat $install_dir/.env
+ynh_exec_warn_less echo 'Debug local ENV file'
+ynh_exec_warn_less cat .env
 
 ynh_script_progression --message="Configuring Bonfire release..." --weight=1
 cd $install_dir
 ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "mix local.hex --force"
 ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "just config" # install Hex in non-interractive way
+
+# TODO Debug
+ynh_exec_warn_less echo 'Debug install dir ENV file'
+ynh_exec_warn_less cat $install_dir/.env
+ynh_exec_warn_less echo 'Debug local ENV file'
 ynh_exec_warn_less cat .env
 
 #=================================================
