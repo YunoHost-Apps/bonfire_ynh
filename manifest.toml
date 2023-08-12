@@ -118,7 +118,7 @@ ram.runtime = "500M"
     # erlang 26, for elixir v1.15
     extras.elixir.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
     extras.elixir.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
-    extras.elixir.packages = ["elixir-lang"]
+    extras.elixir.packages = ["elixir"]
     # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
     
     ### just dependency
