@@ -61,7 +61,7 @@ ram.runtime = "500M"
     type = "password"
     
   [install.media_upload_size]
-    type = "string"
+    type = "select"
     choices = [
       "1MB",
       "2MB",
