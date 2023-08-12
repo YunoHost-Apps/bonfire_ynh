@@ -104,5 +104,31 @@ ram.runtime = "500M"
     [resources.apt]
     packages = "postgresql elixir erlang-dev erlang-parsetools npm"
 
+    ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
+    
+    ### Yarn dependency (correct version)
+    extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
+    extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    extras.yarn.packages = ["yarn"]
+    
+    ### Elixir 15 dependency
+    ynh_script_progression --message="Managing special dependencies..." --weight=1
+    # Bulleyes comes with v1.10 instead of v1.15 that is required
+    # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
+    # v15 is not available in default repo. RabbitMQ repo should be used (https://elixir-lang.org/install.html). No debian simple syntax. TODO later, using the simple syntax for now
+    # erlang 26, for elixir v1.15
+    extras.elixir.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
+    extras.elixir.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
+    extras.elixir.packages = ["elixir-lang"]
+    # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
+    
+    ### just dependency
+    # TODO : this is unsafe and should be dealt with in a better way.
+    # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
+    # only works for x86, we need to switch to the other option with makedeb package ?
+    extras.just.repo = "deb https://proget.makedeb.org prebuilt-mpr bullseye"
+    extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
+    extras.just.packages = ["just"]
+
     [resources.database]
     type = "postgresql"
