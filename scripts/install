@@ -61,9 +61,9 @@ ynh_script_progression --message="Managing special dependencies..." --weight=1
 # Bulleyes comes with v1.10 instead of v1.15 that is required
 # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
 # v15 is not available in default repo. RabbitMQ repo should be used (https://elixir-lang.org/install.html). No debian simple syntax. TODO later, using the simple syntax for now
-add-apt-repository ppa:rabbitmq/rabbitmq-erlang -y # erlang 26
-apt update
-apt install elixir # v1.15
+
+ynh_install_extra_app_dependencies --repo="https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu/ jammy main" --package="elixir-lang" --key='https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc'
+# erlang 26, for elixir v1.15
 
 # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
 
