@@ -52,40 +52,7 @@ ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_str
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# Elixir 15 dependency
-#=================================================
-ynh_script_progression --message="Managing special dependencies..." --weight=1
-# Bulleyes comes with v1.10 instead of v1.15 that is required
-# ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
-# v15 is not available in default repo. RabbitMQ repo should be used (https://elixir-lang.org/install.html). No debian simple syntax. TODO later, using the simple syntax for now
 
-ynh_install_extra_app_dependencies --repo="https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu/ jammy main" --package="elixir-lang" --key='https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc'
-# erlang 26, for elixir v1.15
-
-# exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
-
-#=================================================
-# Yarn dependency (correct version)
-#=================================================
-
-ynh_install_extra_app_dependencies --repo="https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key='https://dl.yarnpkg.com/debian/pubkey.gpg'
-
-#=================================================
-# Just dependency
-#=================================================
-
-### Add just dependency
-# TODO : this is unsafe and should be dealt with in a better way.
-# There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
-
-# only works for x86, we need to switch to the other option with makedeb package ?
-ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org prebuilt-mpr bullseye" --package="just" --key='https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub'
-
-#ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="https://proget.makedeb.org makedeb main" --package="makedeb" --key='https://proget.makedeb.org/debian-feeds/makedeb.pub'
-#git clone 'https://mpr.makedeb.org/just'
-#cd just
-#makedeb -si 
-#cd ..
 
 # export WITH_DOCKER=no # or source .env ? # Using this for now
 source $install_dir/.env
