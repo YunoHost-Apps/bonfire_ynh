@@ -115,7 +115,7 @@ ram.runtime = "500M"
     ### Elixir 13 dependency - instead of v15 for now
     extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
     extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
-    extras.elixir13.packages = ["elixir-lang"]
+    extras.elixir13.packages = ["elixir"]
     ### Elixir 15 dependency
     # Bulleyes comes with v1.10 instead of v1.15 that is required
     # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
