@@ -12,10 +12,6 @@ source /usr/share/yunohost/helpers
 ynh_install_nodejs --nodejs_version=16.13.0 # TODO : need to decide of a better version
 ynh_use_nodejs
 
-secret_key_base=$(ynh_string_random --length=24)
-signing_salt=$(ynh_string_random --length=24)
-encryption_salt=$(ynh_string_random --length=24)
-
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -50,12 +46,13 @@ MEDIA_UPLOAD_SIZE="${media_upload_size//[!0-9]/}000000"
 ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_string="UPLOAD_LIMIT=$MEDIA_UPLOAD_SIZE" --target_file="$install_dir/.env"
 
 # Secret keys
-SECRET_KEY_BASE=$(ynh_string_random)
-SIGNING_SALT=$(ynh_string_random)
-ENCRYPTION_SALT=$(ynh_string_random)
-ynh_replace_string --match_string="__SECRET_KEY_BASE__" --replace_string="$SECRET_KEY_BASE" --target_file="$install_dir/.env"
-ynh_replace_string --match_string="__SIGNING_SALT__" --replace_string="$SIGNING_SALT" --target_file="$install_dir/.env"
-ynh_replace_string --match_string="__ENCRYPTION_SALT__" --replace_string="$ENCRYPTION_SALT" --target_file="$install_dir/.env"
+secret_key_base=$(ynh_string_random --length=24)
+signing_salt=$(ynh_string_random --length=24)
+encryption_salt=$(ynh_string_random --length=24)
+ynh_replace_string --match_string="__SECRET_KEY_BASE__" --replace_string="$secret_key_base" --target_file="$install_dir/.env"
+ynh_replace_string --match_string="__SIGNING_SALT__" --replace_string="$signing_salt" --target_file="$install_dir/.env"
+ynh_replace_string --match_string="__ENCRYPTION_SALT__" --replace_string="$encryption_salt" --target_file="$install_dir/.env"
+ynh_store_file_checksum --file="$install_dir/.env"
 
 #=================================================
 # SPECIFIC SETUP
