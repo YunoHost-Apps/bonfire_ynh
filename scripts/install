@@ -46,10 +46,10 @@ MEDIA_UPLOAD_SIZE="${media_upload_size//[!0-9]/}000000"
 ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_string="UPLOAD_LIMIT=$MEDIA_UPLOAD_SIZE" --target_file="$install_dir/.env"
 
 # Secret keys
+encryption_salt=$(ynh_string_random --length=24)
 secret_key_base=$(ynh_string_random --length=24)
 signing_salt=$(ynh_string_random --length=24)
-encryption_salt=$(ynh_string_random --length=24)
-ynh_print_warn "hello world $encryption_salt"
+ynh_print_warn --message="hello world $encryption_salt"
 ynh_replace_string --match_string="__SECRET_KEY_BASE__" --replace_string="$secret_key_base" --target_file="$install_dir/.env"
 ynh_replace_string --match_string="__SIGNING_SALT__" --replace_string="$signing_salt" --target_file="$install_dir/.env"
 ynh_replace_string --match_string="__ENCRYPTION_SALT__" --replace_string="$encryption_salt" --target_file="$install_dir/.env"
