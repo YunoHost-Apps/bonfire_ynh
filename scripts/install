@@ -49,6 +49,14 @@ chown $app:$app "$install_dir/.env"
 MEDIA_UPLOAD_SIZE="${media_upload_size//[!0-9]/}000000"
 ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_string="UPLOAD_LIMIT=$MEDIA_UPLOAD_SIZE" --target_file="$install_dir/.env"
 
+# Secret keys
+SECRET_KEY_BASE=$(ynh_string_random)
+SIGNING_SALT=$(ynh_string_random)
+ENCRYPTION_SALT=$(ynh_string_random)
+ynh_replace_string --match_string="__SECRET_KEY_BASE__" --replace_string="$SECRET_KEY_BASE" --target_file="$install_dir/.env"
+ynh_replace_string --match_string="__SIGNING_SALT__" --replace_string="$SIGNING_SALT" --target_file="$install_dir/.env"
+ynh_replace_string --match_string="__ENCRYPTION_SALT__" --replace_string="$ENCRYPTION_SALT" --target_file="$install_dir/.env"
+
 #=================================================
 # SPECIFIC SETUP
 #=================================================
@@ -56,15 +64,10 @@ ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_str
 source $install_dir/.env
 export WITH_DOCKER=no # or source .env ? # Using this for now
 
-# TODO Debug
-ynh_exec_warn echo 'Debug install dir ENV file'
-ynh_exec_warn ls ./config/prod/
-ynh_exec_warn cat $install_dir/.env
-
 ynh_script_progression --message="Configuring Bonfire release..." --weight=1
 cd $install_dir
 ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no mix local.hex --force" # install Hex in non-interractive way
-ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just config"
+ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just config-basic"
 #ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just mix bonfire.deps .update"
 
 # TODO Debug
