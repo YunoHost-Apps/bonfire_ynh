@@ -110,15 +110,20 @@ ram.runtime = "500M"
     extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
     extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
     extras.yarn.packages = ["yarn"]
-    
+
+
+    ### Elixir 13 dependency - instead of v15 for now
+    extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
+    extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
+    extras.elixir13.packages = ["elixir-lang"]
     ### Elixir 15 dependency
     # Bulleyes comes with v1.10 instead of v1.15 that is required
     # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
     # v15 is not available in default repo. RabbitMQ repo should be used (https://elixir-lang.org/install.html). No debian simple syntax. TODO later, using the simple syntax for now
     # erlang 26, for elixir v1.15
-    extras.elixir.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
-    extras.elixir.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
-    extras.elixir.packages = ["elixir-lang"]
+    #extras.elixir15.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
+    #extras.elixir15.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
+    #extras.elixir15.packages = ["elixir-lang"]
     # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
     
     ### just dependency
