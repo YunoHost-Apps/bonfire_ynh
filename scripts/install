@@ -80,6 +80,8 @@ ynh_exec_warn cat $install_dir/.env
 ynh_script_progression --message="Building Bonfire release..." --weight=1
 export TERM=linux # why is that not defined ?
 export TERMINFO=/etc/terminfo
+### DONT USE GLOBAL NPM INSTALL
+ynh_replace_string --match_string="npm install --global" --replace_string="npm install" --target_file="$install_dir/justfile"
 ynh_exec_warn ynh_exec_as $app $ynh_node_load_PATH -s $SHELL -lc "WITH_DOCKER=no just rel-build"
 #ynh_exec_warn just rel-build # node needs (root) access to /usr/local/lib/node_modules
 
