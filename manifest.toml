@@ -102,9 +102,6 @@ ram.runtime = "500M"
     [resources.permissions]
     main.url = "/"
 
-    [resources.database]
-    # This will automatically provision/deprovison a MySQL DB and store the corresponding credentials in settings $db_user, $db_name, $db_pwd
-    type = "postgresql"
 
     [resources.apt]
     packages = "erlang-dev erlang-parsetools postgresql npm"
@@ -139,3 +136,6 @@ ram.runtime = "500M"
     extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
     extras.just.packages = ["just"]
 
+
+    [resources.database]
+    type = "postgresql"
