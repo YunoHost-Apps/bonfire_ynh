@@ -58,6 +58,8 @@ ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_str
 source $install_dir/.env
 
 # TODO Debug
+ynh_exec_warn_less pwd
+ynh_exec_warn_less ls -al
 ynh_exec_warn_less echo 'Debug install dir ENV file'
 ynh_exec_warn_less cat $install_dir/.env
 ynh_exec_warn_less echo 'Debug local ENV file'
