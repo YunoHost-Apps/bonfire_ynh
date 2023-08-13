@@ -58,12 +58,8 @@ ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_str
 source $install_dir/.env
 
 # TODO Debug
-ynh_exec_warn_less pwd
-ynh_exec_warn_less ls -al
 ynh_exec_warn_less echo 'Debug install dir ENV file'
 ynh_exec_warn_less cat $install_dir/.env
-ynh_exec_warn_less echo 'Debug local ENV file'
-ynh_exec_warn_less cat .env
 
 ynh_script_progression --message="Configuring Bonfire release..." --weight=1
 cd $install_dir
@@ -73,8 +69,6 @@ ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "just config" # install Hex in non-
 # TODO Debug
 ynh_exec_warn_less echo 'Debug install dir ENV file'
 ynh_exec_warn_less cat $install_dir/.env
-ynh_exec_warn_less echo 'Debug local ENV file'
-ynh_exec_warn_less cat .env
 
 #=================================================
 # Building  the release
@@ -85,6 +79,7 @@ export TERMINFO=/etc/terminfo
 ynh_exec_warn ynh_exec_as $app $ynh_node_load_PATH -s $SHELL -lc "just rel-build"
 #ynh_exec_warn just rel-build # node needs (root) access to /usr/local/lib/node_modules
 
+ynh_exec_warn ls -a
 ynh_exec_warn ls _build
 
 #=================================================
