@@ -3,7 +3,7 @@ packaging_format = 2
 id = "bonfire"
 name = "Bonfire"
 
-version = "0.9.6-classic-beta.2~ynh1"
+version = "0.9.6~ynh3"
 
 maintainers = ["Lapineige"]
 
@@ -89,8 +89,8 @@ ram.runtime = "500M"
     [resources.sources]
 
         [resources.sources.main]
-        url = "https://github.com/bonfire-networks/bonfire-app/archive/d5a159a576937e71d71db4d0ceda840b3d303f5d.tar.gz"
-        sha256 = "0f31287b7005f6f58ebeff8cae98cea8c442f08d0cd410da67c37b19513697f2"
+        url = "https://github.com/bonfire-networks/bonfire-app/archive/refs/tags/v0.9.6-beta.3.tar.gz"
+        sha256 = "9ba0701bf7c4f30b155b2b18119744c1e7efb49cbf67fe3084675a964196d4a9"
 
     [resources.ports]
     
