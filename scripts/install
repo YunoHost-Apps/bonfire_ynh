@@ -54,7 +54,7 @@ ynh_replace_string --match_string="UPLOAD_LIMIT=MEDIA_UPLOAD_SIZE" --replace_str
 #=================================================
 
 source $install_dir/.env
-export WITH_DOCKER=no # or source .env ? # Using this for now
+export WITH_DOCKER="no" # or source .env ? # Using this for now
 
 # TODO Debug
 ynh_exec_warn echo 'Debug install dir ENV file'
