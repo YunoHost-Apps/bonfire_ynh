@@ -107,7 +107,7 @@ ram.runtime = "500M"
     type = "postgresql"
 
     [resources.apt]
-    packages = "erlang-dev erlang-parsetools postgresql npm"
+    packages = "erlang-dev erlang-parsetools npm"
 
     ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
     
