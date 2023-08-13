@@ -36,7 +36,7 @@ ynh_add_nginx_config
 #=================================================
 secret_key_base=$(ynh_string_random --length=24)
 signing_salt=$(ynh_string_random --length=24)
-_encryption_salt=$(ynh_string_random --length=24)
+encryption_salt=$(ynh_string_random --length=24)
 
 # max file upload size
 MEDIA_UPLOAD_SIZE="${media_upload_size//[!0-9]/}000000"
