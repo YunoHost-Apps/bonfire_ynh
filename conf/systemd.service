@@ -7,7 +7,7 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
-ExecStart=WITH_DOCKER=no __INSTALL_DIR__/just cmd _build/prod/rel/bonfire/bin/bonfire start daemon
+ExecStart=WITH_DOCKER=no just cmd __INSTALL_DIR__/_build/prod/rel/bonfire/bin/bonfire start daemon
 StandardOutput=append:/var/log/__APP__/__APP__.log
 StandardError=inherit
 
