@@ -76,7 +76,7 @@ ynh_exec_warn ynh_exec_as $app $ynh_node_load_PATH -s $SHELL -lc "WITH_DOCKER=no
 #ynh_exec_warn just rel-build # node needs (root) access to /usr/local/lib/node_modules
 
 #=================================================
-# Run the release
+# START SYSTEMD SERVICE - Run the release
 #=================================================
 release_folder="_build/prod/rel/bonfire"
 
@@ -85,12 +85,19 @@ release_folder="_build/prod/rel/bonfire"
 ## Database created before, let's run the migrations
 #ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
 
-ynh_script_progression --message="Starting Bonfire..." --weight=1
-ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
+#ynh_script_progression --message="Starting Bonfire..." --weight=1
+#ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
 
-# start bonfire as a daemon
-ynh_script_progression --message="Starting Bonfire daemon..." --weight=1
-ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start daemon"
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+yunohost service add $app --description="Bonfire daemon" --log="/var/log/$app/$app.log"
+
+
+ynh_script_progression --message="Starting Bonfire daemon service..." --weight=1
+
+# Start a systemd service
+ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # END OF SCRIPT
