@@ -60,9 +60,9 @@ export WITH_DOCKER=no # or source .env ? # Using this for now
 
 ynh_script_progression --message="Configuring Bonfire release..." --weight=1
 cd $install_dir
-ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no mix local.hex --force" # install Hex in non-interractive way
-ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just config-basic"
-#ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just mix bonfire.deps .update"
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no mix local.hex --force" # install Hex in non-interractive way
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just config-basic"
+#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just mix bonfire.deps .update"
 
 #=================================================
 # Building  the release
@@ -72,8 +72,8 @@ export TERM=linux # why is that not defined ?
 export TERMINFO=/etc/terminfo
 ### DONT USE GLOBAL NPM INSTALL
 ynh_replace_string --match_string="npm install --global" --replace_string="npm install" --target_file="$install_dir/justfile"
-ynh_exec_warn ynh_exec_as $app $ynh_node_load_PATH -s $SHELL -lc "WITH_DOCKER=no just rel-build"
-#ynh_exec_warn just rel-build # node needs (root) access to /usr/local/lib/node_modules
+ynh_exec_warn_less ynh_exec_as $app $ynh_node_load_PATH -s $SHELL -lc "WITH_DOCKER=no just rel-build"
+#ynh_exec_warn_less just rel-build # node needs (root) access to /usr/local/lib/node_modules
 
 #=================================================
 # START SYSTEMD SERVICE - Run the release
@@ -83,10 +83,10 @@ release_folder="_build/prod/rel/bonfire"
 ### Not running the migration, they are done on startup anyway
 #ynh_script_progression --message="Running database migrations..." --weight=1
 ## Database created before, let's run the migrations
-#ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
+#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
 
 #ynh_script_progression --message="Starting Bonfire..." --weight=1
-#ynh_exec_warn ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
+#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
