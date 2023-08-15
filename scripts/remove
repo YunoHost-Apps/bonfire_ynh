@@ -12,9 +12,9 @@ source /usr/share/yunohost/helpers
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Stop Bonfire..." --weight=1
+ynh_script_progression --message="Stoping Bonfire..." --weight=1
 
-# start bonfire as a daemon
+# stop bonfire daemon
 "$release_folder/bin/bonfire stop"
 
 
