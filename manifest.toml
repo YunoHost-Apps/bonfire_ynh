@@ -123,10 +123,14 @@ ram.runtime = "500M"
     # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
     # v15 is not available in default repo. RabbitMQ repo should be used (https://elixir-lang.org/install.html). No debian simple syntax. TODO later, using the simple syntax for now
     # erlang 26, for elixir v1.15
-    extras.elixir15.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
-    extras.elixir15.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
-    extras.elixir15.packages = ["elixir"]
+    #extras.elixir15.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
+    #extras.elixir15.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
+    #extras.elixir15.packages = ["elixir"]
     # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
+    ### Elixir 15 with mise
+    extras.mise.repo = "deb arch=amd64 https://mise.jdx.dev/deb stable main"
+    extras.mise.key = "https://mise.jdx.dev/gpg-key.pub"
+    extras.mise.packages = ["mise"]
     
     ### just dependency
     # TODO : this is unsafe and should be dealt with in a better way.
