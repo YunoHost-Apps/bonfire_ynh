@@ -128,7 +128,7 @@ ram.runtime = "500M"
     #extras.elixir15.packages = ["elixir"]
     # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
     ### Elixir 15 with mise
-    extras.mise.repo = "deb arch=amd64 https://mise.jdx.dev/deb stable main"
+    extras.mise.repo = "deb https://mise.jdx.dev/deb stable main"
     extras.mise.key = "https://mise.jdx.dev/gpg-key.pub"
     extras.mise.packages = ["mise"]
     
