@@ -60,6 +60,7 @@ export WITH_DOCKER=no # or source .env ? # Using this for now
 
 ynh_script_progression --message="Configuring Bonfire release..." --weight=1
 cd $install_dir
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "mise install" # install Elixir
 ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no mix local.hex --force" # install Hex in non-interractive way
 ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just config-basic"
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no just mix bonfire.deps .update"
