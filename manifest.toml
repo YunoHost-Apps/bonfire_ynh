@@ -115,9 +115,9 @@ ram.runtime = "500M"
 
 
     ### Elixir 13 dependency - instead of v15 for now
-    #extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
-    #extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
-    #extras.elixir13.packages = ["elixir"]
+    extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
+    extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
+    extras.elixir13.packages = ["elixir"]
     ### Elixir 15 dependency
     # Bulleyes comes with v1.10 instead of v1.15 that is required
     # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
@@ -128,9 +128,9 @@ ram.runtime = "500M"
     #extras.elixir15.packages = ["elixir"]
     # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
     ### Elixir 15 with mise
-    extras.mise.repo = "deb https://mise.jdx.dev/deb stable main"
-    extras.mise.key = "https://mise.jdx.dev/gpg-key.pub"
-    extras.mise.packages = ["mise"]
+    #extras.mise.repo = "deb https://mise.jdx.dev/deb stable main"
+    #extras.mise.key = "https://mise.jdx.dev/gpg-key.pub"
+    #extras.mise.packages = ["mise"]
     
     ### just dependency
     # TODO : this is unsafe and should be dealt with in a better way.
