@@ -18,7 +18,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 
 Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub
 
-**Version incluse :** 0.9.6~ynh4
+**Version incluse :** 0.9.6~ynh5
 
 **Démo :** https://playground.bonfire.cafe/
 ## Documentations et ressources
