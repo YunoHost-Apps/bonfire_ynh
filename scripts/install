@@ -9,7 +9,12 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-ynh_install_nodejs --nodejs_version=16.13.0 # TODO : need to decide of a better version
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Installing nodejs..."
+
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_use_nodejs
 
 #=================================================
