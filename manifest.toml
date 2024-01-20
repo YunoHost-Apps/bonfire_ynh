@@ -89,8 +89,8 @@ ram.runtime = "500M"
     [resources.sources]
 
         [resources.sources.main]
-        url = "https://github.com/bonfire-networks/bonfire-app/archive/ccaef9764e6dd74bc260d5e308f9fad04954f18b.tar.gz"
-        sha256 = "c83756bc01d81d6a2db6f0b0c816e6147d79ebbfbf244da660bb40840bc28b06"
+        url = "https://github.com/bonfire-networks/bonfire-app/archive/7a43fd2202c6c442813cce944ba867419fee786e.tar.gz"
+        sha256 = "617a7469a3bafe632d104e99f21ae4026b8c9bb545c662ecb8d3413bc02b3ab9"
 
     [resources.ports]
     
