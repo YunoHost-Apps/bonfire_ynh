@@ -104,7 +104,7 @@ ram.runtime = "500M"
 
 
     [resources.apt]
-    packages = "erlang-dev erlang-parsetools erlang-os-mon erlang-tools erlang-xmerl postgresql npm node-postcss inotify-tools"
+    packages = "erlang-dev erlang-parsetools erlang-os-mon erlang-tools erlang-xmerl postgresql npm node-postcss"
 
     ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
     
