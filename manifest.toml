@@ -26,7 +26,7 @@ architectures = "all"
 ldap = false
 sso = false
 disk = "2000M"
-ram.build = "300M"
+ram.build = "1500M"
 ram.runtime = "500M"
 
 [install]
