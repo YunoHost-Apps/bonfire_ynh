@@ -94,11 +94,16 @@ release_folder="_build/prod/rel/bonfire"
 #ynh_script_progression --message="Starting Bonfire..." --weight=1
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
 
+mkdir -p "/var/log/$app"
+chown -R $app:$app "/var/log/$app"
+
+# Use logrotate to manage application logfile(s)
+ynh_use_logrotate
+
 # Create a dedicated systemd config
 ynh_add_systemd_config
 
 yunohost service add $app --description="Bonfire daemon" --log="/var/log/$app/$app.log"
-
 
 ynh_script_progression --message="Starting Bonfire daemon service..." --weight=1
 
