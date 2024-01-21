@@ -40,11 +40,11 @@ ynh_add_nginx_config
 # ADD A CONFIGURATION
 #=================================================
 ## Generate secrets and other config values
-secret_key_base=$(ynh_string_random --length=24)
-signing_salt=$(ynh_string_random --length=24)
-encryption_salt=$(ynh_string_random --length=24)
+secret_key_base=$(ynh_string_random --length=50)
+signing_salt=$(ynh_string_random --length=50)
+encryption_salt=$(ynh_string_random --length=50)
 # search
-meili_master_key=$(ynh_string_random --length=24)
+meili_master_key=$(ynh_string_random --length=50)
 # max file upload size
 MEDIA_UPLOAD_SIZE="${media_upload_size//[!0-9]/}000000"
 
