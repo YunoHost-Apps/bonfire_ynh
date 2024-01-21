@@ -66,6 +66,7 @@ export WITH_DOCKER=no # or source .env ? # Using this for now
 ynh_script_progression --message="Configuring Bonfire release..." --weight=1
 cd $install_dir
 ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "node -v"
+ynh_exec_warn ynh_exec_as $app -s $SHELL -lc "$ynh_node -v"
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "mise plugin add erlang https://github.com/asdf-vm/asdf-erlang.git" # add erlang as source
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "mise install" # install Elixir
 ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH mix local.hex --force" # install Hex in non-interractive way
