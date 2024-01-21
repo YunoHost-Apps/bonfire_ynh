@@ -7,7 +7,10 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
-ExecStart=WITH_DOCKER=no just cmd __INSTALL_DIR__/_build/prod/rel/bonfire/bin/bonfire start daemon
+Environment=NODE_ENV=production
+Environment=NODE_CONFIG_DIR=__INSTALL_DIR__/config
+Environment="__YNH_NODE_LOAD_PATH__"
+ExecStart=WITH_DOCKER=no __YNH_NODE__  just cmd __INSTALL_DIR__/_build/prod/rel/bonfire/bin/bonfire start daemon
 StandardOutput=append:/var/log/__APP__/__APP__.log
 StandardError=inherit
 
