@@ -81,7 +81,7 @@ yunohost service add $app --description="Bonfire daemon" --log="/var/log/$app/$a
 ynh_script_progression --message="Starting Bonfire daemon service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"  --line_match="[info] Running Bonfire.Web.Endpoint"
 
 #=================================================
 # END OF SCRIPT
