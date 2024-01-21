@@ -74,7 +74,7 @@ ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load
 #=================================================
 # Building  the release
 #=================================================
-ynh_script_progression --message="Building Bonfire release..." --weight=1
+ynh_script_progression --message="Building Bonfire release... (This will take a long time)" --weight=1
 export TERM=linux # why is that not defined ?
 export TERMINFO=/etc/terminfo
 ### DONT USE GLOBAL NPM INSTALL
