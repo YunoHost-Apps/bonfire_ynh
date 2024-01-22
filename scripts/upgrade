@@ -34,7 +34,7 @@ fi
 
 chown -R $app:www-data "$install_dir"
 
-=================================================
+#=================================================
 # Building  the release
 #=================================================
 ynh_script_progression --message="Building Bonfire release... (This will take a long time)" --weight=1
