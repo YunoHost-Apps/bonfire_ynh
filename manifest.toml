@@ -3,7 +3,7 @@ packaging_format = 2
 id = "bonfire"
 name = "Bonfire"
 
-version = "0.9.8-beta.26~ynh2"
+version = "0.9.8-beta.26~ynh3"
 
 maintainers = ["Lapineige"]
 
@@ -54,10 +54,12 @@ ram.runtime = "500M"
     
   [install.admin]
     type = "user"
+    help.fr = "Choisissez un compte Yunohost. Un compte Bonfire avec les mêmes identifiants (nom, email) sera créé."
+    help.en = "Choose a Yunohost account. A Bonfire account with the same credentials (name, email) will be created."
 
   [install.password]
-    help.en = "Use the help field to add an information for the admin about this question."
-    help.fr = "Utilisez le champ aide pour ajouter une information à l'intention de l'administrateur à propos de cette question."
+    help.en = "Choose the password for this account with admin rights."
+    help.fr = "Choisissez le mot de passe de ce compte possédant les droits d'administration."
     type = "password"
     
   [install.media_upload_size]
@@ -89,8 +91,8 @@ ram.runtime = "500M"
     [resources.sources]
 
         [resources.sources.main]
-        url = "https://github.com/bonfire-networks/bonfire-app/archive/289ad2d8b57a2ce9a7ce609f000b1ac5d887e7a0.tar.gz"
-        sha256 = "5b79032647f9fd95465692d1de48839359dfa532a72c727f76bf03a1b68e8cdd"
+        url = "https://github.com/bonfire-networks/bonfire-app/archive/184bbda72efbdddbdd94afb4b3790591414b5cbe.tar.gz"
+        sha256 = "60b49d30549b9eb0b7308e82fcd7697d4d12d2722dbd53fdb6fe563f1e399059"
 
     [resources.ports]
     
