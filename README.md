@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Federated social networking server built on ActivityPub open protocol
 
-**Shipped version:** 0.1~ynh1
+**Shipped version:** 0.9.8-beta.26~ynh2
 
 **Demo:** https://playground.bonfire.cafe/
 ## Documentation and resources
@@ -27,7 +27,7 @@ Federated social networking server built on ActivityPub open protocol
 * Official user documentation: <https://bonfirenetworks.org/docs/>
 * Official admin documentation: <https://bonfirenetworks.org/docs/>
 * Upstream app code repository: <https://github.com/bonfire-networks/bonfire-app>
-* YunoHost documentation for this app: <https://yunohost.org/app_bonfire>
+* YunoHost Store: <https://apps.yunohost.org/app/bonfire>
 * Report a bug: <https://github.com/YunoHost-Apps/bonfire_ynh/issues>
 
 ## Developer info

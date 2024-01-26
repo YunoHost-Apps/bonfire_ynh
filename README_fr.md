@@ -18,7 +18,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 
 Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub
 
-**Version incluse :** 0.1~ynh1
+**Version incluse :** 0.9.8-beta.26~ynh2
 
 **Démo :** https://playground.bonfire.cafe/
 ## Documentations et ressources
@@ -27,7 +27,7 @@ Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPu
 * Documentation officielle utilisateur : <https://bonfirenetworks.org/docs/>
 * Documentation officielle de l’admin : <https://bonfirenetworks.org/docs/>
 * Dépôt de code officiel de l’app : <https://github.com/bonfire-networks/bonfire-app>
-* Documentation YunoHost pour cette app : <https://yunohost.org/app_bonfire>
+* YunoHost Store: <https://apps.yunohost.org/app/bonfire>
 * Signaler un bug : <https://github.com/YunoHost-Apps/bonfire_ynh/issues>
 
 ## Informations pour les développeurs
