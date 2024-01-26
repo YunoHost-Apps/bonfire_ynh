@@ -1,0 +1,145 @@
+packaging_format = 2
+
+id = "bonfire"
+name = "Bonfire"
+
+version = "0.9.8-beta.26~ynh2"
+
+maintainers = ["Lapineige"]
+
+[description]
+en = "Federated social networking server built on ActivityPub open protocol"
+fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
+
+[upstream]
+license = "AGPL-3.0-only"
+website = "https://bonfirenetworks.org/"
+demo = "https://playground.bonfire.cafe/"
+admindoc = "https://bonfirenetworks.org/docs/"
+userdoc = "https://bonfirenetworks.org/docs/"
+code = "https://github.com/bonfire-networks/bonfire-app"
+
+[integration]
+yunohost = ">= 11.1.18"
+multi_instance = false
+architectures = "all"
+ldap = false
+sso = false
+disk = "2000M"
+ram.build = "1500M"
+ram.runtime = "500M"
+
+[install]
+  [install.domain]
+  type = "domain"
+  help.en = "The domain name to use. Bonfire will be installed at its root path (/). This can't be changed."
+  help.fr = "Nom de domaine à utiliser. Bonfire sera installé à sa racine (/). Cela ne pourra pas être changé."
+
+  [install.is_public]
+    type = "boolean"
+    default = true
+    help.en = "Should that instance be visible to the fediverse ? It is required for federation."
+    help.fr = "Cette instance doit elle être visible sur le fédiverse? C'est nécessaire pour la fédération."
+
+  [install.init_main_permission]
+    type = "group"
+    default = "visitors"
+
+  [install.language]
+    ask.en = "Choose the application language"
+    ask.fr = "Choisissez la langue de l'application"
+    type = "select"
+    choices = ["fr", "en"]
+    default = "fr"
+    
+  [install.admin]
+    type = "user"
+
+  [install.password]
+    help.en = "Use the help field to add an information for the admin about this question."
+    help.fr = "Utilisez le champ aide pour ajouter une information à l'intention de l'administrateur à propos de cette question."
+    type = "password"
+    
+  [install.media_upload_size]
+    ask.en = "Choose the maximum size of the media uploaded. Can be changed later."
+    ask.fr = "Choisissez la taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
+    type = "select"
+    choices = [
+      "1MB",
+      "2MB",
+      "5MB",
+      "10MB",
+      "15MB",
+      "20MB",
+      "35MB",
+      "50MB",
+      "70MB",
+      "100MB",
+      "150MB"
+      ]
+    default = "35MB"
+
+[resources]
+
+    #[resources.data_dir]
+    # This will create/remove the data dir as /home/yunohost.app/$app
+    # and store the corresponding setting $data_dir
+    #TODO
+
+    [resources.sources]
+
+        [resources.sources.main]
+        url = "https://github.com/bonfire-networks/bonfire-app/archive/289ad2d8b57a2ce9a7ce609f000b1ac5d887e7a0.tar.gz"
+        sha256 = "5b79032647f9fd95465692d1de48839359dfa532a72c727f76bf03a1b68e8cdd"
+
+    [resources.ports]
+    
+    [resources.system_user]
+    allow_email = true
+    
+    [resources.install_dir]
+    
+    [resources.permissions]
+    main.url = "/"
+
+
+    [resources.apt]
+    packages = "erlang-dev erlang-parsetools erlang-os-mon erlang-tools erlang-xmerl postgresql npm node-postcss"
+
+    ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
+    
+    ### Yarn dependency (correct version)
+    extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
+    extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    extras.yarn.packages = ["yarn"]
+
+
+    ### Elixir 13 dependency - instead of v15 for now
+    extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
+    extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
+    extras.elixir13.packages = ["elixir"]
+    ### Elixir 15 dependency
+    # Bulleyes comes with v1.10 instead of v1.15 that is required
+    # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
+    # v15 is not available in default repo. RabbitMQ repo should be used (https://elixir-lang.org/install.html). No debian simple syntax. TODO later, using the simple syntax for now
+    # erlang 26, for elixir v1.15
+    #extras.elixir15.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
+    #extras.elixir15.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
+    #extras.elixir15.packages = ["elixir"]
+    # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
+    ### Elixir 15 with mise
+    #extras.mise.repo = "deb https://mise.jdx.dev/deb stable main"
+    #extras.mise.key = "https://mise.jdx.dev/gpg-key.pub"
+    #extras.mise.packages = ["mise"]
+    
+    ### just dependency
+    # TODO : this is unsafe and should be dealt with in a better way.
+    # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
+    # only works for x86, we need to switch to the other option with makedeb package ?
+    extras.just.repo = "deb https://proget.makedeb.org prebuilt-mpr bullseye"
+    extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
+    extras.just.packages = ["just"]
+
+
+    [resources.database]
+    type = "postgresql"
