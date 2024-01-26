@@ -54,10 +54,12 @@ ram.runtime = "500M"
     
   [install.admin]
     type = "user"
+    help.fr = "Choisissez un compte Yunohost. Un compte Bonfire avec les mêmes identifiants (nom, email) sera créé."
+    help.en = "Choose a Yunohost account. A Bonfire account with the same credentials (name, email) will be created."
 
   [install.password]
-    help.en = "Use the help field to add an information for the admin about this question."
-    help.fr = "Utilisez le champ aide pour ajouter une information à l'intention de l'administrateur à propos de cette question."
+    help.en = "Choose the password for this account with admin rights."
+    help.fr = "Choisissez le mot de passe de ce compte possédant les droits d'administration."
     type = "password"
     
   [install.media_upload_size]
