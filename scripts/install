@@ -114,7 +114,7 @@ ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$ap
 # CREATE ADMIN USER
 #=================================================
 ynh_script_progression --message="Creating admin user account..." --weight=1
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd /var/www/bonfire/_build/prod/rel/bonfire/bin/bonfire rpc 'Bonfire.Me.make_account_and_user("$admin", "$(ynh_user_get_info --username="$admin" --key=mail)", "$password")'"
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd /var/www/bonfire/_build/prod/rel/bonfire/bin/bonfire rpc 'Bonfire.Me.make_account_and_user(\"$admin\", \"$(ynh_user_get_info --username=\"$admin\" --key=mail)\", \"$password\")'"
 
 #=================================================
 # END OF SCRIPT
