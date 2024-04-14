@@ -50,7 +50,7 @@ ram.runtime = "500M"
     ask.fr = "Choisissez la langue de l'application"
     type = "select"
     choices = ["fr", "en"]
-    default = "fr"
+    default = "en"
     
   [install.admin]
     type = "user"
@@ -91,8 +91,10 @@ ram.runtime = "500M"
     [resources.sources]
 
         [resources.sources.main]
-        url = "https://github.com/bonfire-networks/bonfire-app/archive/184bbda72efbdddbdd94afb4b3790591414b5cbe.tar.gz"
-        sha256 = "60b49d30549b9eb0b7308e82fcd7697d4d12d2722dbd53fdb6fe563f1e399059"
+        url = "https://github.com/bonfire-networks/bonfire-app/archive/refs/tags/v0.9.10-beta.35.tar.gz"
+        sha256 = "fe3b91be59e78b305cbbcf651be78701bc10204ebd198565f9526da745ba2cd4"
+
+        autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
     
