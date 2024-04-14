@@ -91,8 +91,8 @@ ram.runtime = "500M"
     [resources.sources]
 
     [resources.sources.main]
-    url = "https://github.com/bonfire-networks/bonfire-app/archive/refs/tags/v0.9.10-beta.35.tar.gz"
-    sha256 = "fe3b91be59e78b305cbbcf651be78701bc10204ebd198565f9526da745ba2cd4"
+    url = "https://github.com/bonfire-networks/bonfire-app/archive/refs/tags/v0.9.10-beta.36.tar.gz"
+    sha256 = "919e8072bcf80cc17f992d0b95d2bf03507896ba5a4b5104e80632e9024e6a16"
 
     autoupdate.strategy = "latest_github_tag"
 
