@@ -98,10 +98,11 @@ ram.runtime = "500M"
     autoupdate.strategy = "latest_github_release"
 
     [resources.sources.deps_install]
-    url = "https://github.com/bonfire-networks/bonfire-app/raw/v0.9.10-beta.61/deps-debian.sh"
-    sha256 = "82829587f40183df7c2a4525dda3c1ff349319a10eafd3ea5368b7d643deb468"
+    url = "https://github.com/bonfire-networks/bonfire-app/raw/main/deps-debian.sh"
+    sha256 = "dc6a7fd593d092aec22782da01ac370a4ae318d4e9135cb7b594d2379a35de8f"
     format = "script"
     rename = "deps-debian.sh"
+    extract = false
 
     [resources.ports]
     
