@@ -91,10 +91,17 @@ ram.runtime = "500M"
     [resources.sources]
 
         [resources.sources.main]
-        url = "https://github.com/bonfire-networks/bonfire-app/archive/refs/tags/v0.9.10-beta.36.tar.gz"
-        sha256 = "919e8072bcf80cc17f992d0b95d2bf03507896ba5a4b5104e80632e9024e6a16"
+        # TODO: multiple architectures
+        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.61/bonfire-classic-amd64-debian-bullseye.tar.gz"
+        sha256 = "8bc36f1c10e63659d0a286d82b5fd38233f545e7100fb03e63db4b0de7b6fe8d"
 
-        autoupdate.strategy = "latest_github_tag"
+        autoupdate.strategy = "latest_github_release"
+
+        [resources.sources.deps_install]
+        url = "https://github.com/bonfire-networks/bonfire-app/raw/v0.9.10-beta.61/deps-debian.sh"
+        sha256 = "82829587f40183df7c2a4525dda3c1ff349319a10eafd3ea5368b7d643deb468"
+        format = "script"
+        rename = "deps-debian.sh"
 
     [resources.ports]
     
@@ -108,20 +115,20 @@ ram.runtime = "500M"
 
 
     [resources.apt]
-    packages = "erlang-dev erlang-parsetools erlang-os-mon erlang-tools erlang-xmerl postgresql npm node-postcss"
+    # packages = "erlang-dev erlang-parsetools erlang-os-mon erlang-tools erlang-xmerl postgresql npm node-postcss"
 
     ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
     
     ### Yarn dependency (correct version)
-    extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
-    extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
-    extras.yarn.packages = ["yarn"]
+    # extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
+    # extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    # extras.yarn.packages = ["yarn"]
 
 
     ### Elixir 13 dependency - instead of v15 for now
-    extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
-    extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
-    extras.elixir13.packages = ["elixir"]
+    # extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
+    # extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
+    # extras.elixir13.packages = ["elixir"]
     ### Elixir 15 dependency
     # Bulleyes comes with v1.10 instead of v1.15 that is required
     # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
@@ -140,9 +147,9 @@ ram.runtime = "500M"
     # TODO : this is unsafe and should be dealt with in a better way.
     # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
     # only works for x86, we need to switch to the other option with makedeb package ?
-    extras.just.repo = "deb https://proget.makedeb.org prebuilt-mpr bullseye"
-    extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
-    extras.just.packages = ["just"]
+    # extras.just.repo = "deb https://proget.makedeb.org prebuilt-mpr bullseye"
+    # extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
+    # extras.just.packages = ["just"]
 
 
     [resources.database]
