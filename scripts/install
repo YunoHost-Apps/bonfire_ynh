@@ -66,7 +66,9 @@ chown $app:$app "$install_dir/.env"
 # SPECIFIC SETUP
 #=================================================
 
-source $install_dir/.env
+# load .env into env
+export $(grep -v '^#' $install_dir/.env | xargs -d '\n')
+# source $install_dir/.env
 export WITH_DOCKER=no # or source .env ? # Using this for now
 export TERM=linux # why is that not defined ?
 export TERMINFO=/etc/terminfo
