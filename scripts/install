@@ -93,8 +93,8 @@ cd $install_dir
 #=================================================
 # CREATE ADMIN USER
 #=================================================
-ynh_script_progression --message="Creating admin user account..." --weight=1
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "$install_dir/bin/bonfire eval 'Bonfire.Me.make_account_and_user(\"$admin\", \"$(ynh_user_get_info --username=\"$admin\" --key=mail)\", \"$password\")'"
+# ynh_script_progression --message="Creating admin user account..." --weight=1
+# ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "$install_dir/bin/bonfire eval 'Bonfire.Me.make_account_and_user(\"$admin\", \"$(ynh_user_get_info --username=\"$admin\" --key=mail)\", \"$password\")'"
 
 #=================================================
 # START SYSTEMD SERVICE - Run the release
