@@ -3,7 +3,7 @@ packaging_format = 2
 id = "bonfire"
 name = "Bonfire"
 
-version = "0.9.8-beta.26~ynh2"
+version = "0.9.8-beta.26~ynh3"
 
 maintainers = ["Lapineige"]
 
@@ -50,14 +50,16 @@ ram.runtime = "500M"
     ask.fr = "Choisissez la langue de l'application"
     type = "select"
     choices = ["fr", "en"]
-    default = "fr"
+    default = "en"
     
   [install.admin]
     type = "user"
+    help.fr = "Choisissez un compte Yunohost. Un compte Bonfire avec les mêmes identifiants (nom, email) sera créé."
+    help.en = "Choose a Yunohost account. A Bonfire account with the same credentials (name, email) will be created."
 
   [install.password]
-    help.en = "Use the help field to add an information for the admin about this question."
-    help.fr = "Utilisez le champ aide pour ajouter une information à l'intention de l'administrateur à propos de cette question."
+    help.en = "Choose the password for this account with admin rights."
+    help.fr = "Choisissez le mot de passe de ce compte possédant les droits d'administration."
     type = "password"
     
   [install.media_upload_size]
@@ -89,8 +91,18 @@ ram.runtime = "500M"
     [resources.sources]
 
         [resources.sources.main]
-        url = "https://github.com/bonfire-networks/bonfire-app/archive/289ad2d8b57a2ce9a7ce609f000b1ac5d887e7a0.tar.gz"
-        sha256 = "5b79032647f9fd95465692d1de48839359dfa532a72c727f76bf03a1b68e8cdd"
+        # TODO: multiple architectures
+        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.62/bonfire-classic-amd64-debian-bullseye.tar.gz"
+        sha256 = "8137473f6db89101a0d841f0aad5a243853c611c9ccf80433e682b0217f87f73"
+
+        autoupdate.strategy = "latest_github_release"
+
+        [resources.sources.deps_install]
+        url = "https://github.com/bonfire-networks/bonfire-app/raw/v0.9.10-beta.62/deps-debian.sh"
+        sha256 = "11c84b345ff6daacd08e156390315186f00d4bef3a4c8e15a8055fca0a4a3dee"
+        format = "script"
+        rename = "deps-debian.sh"
+        extract = false
 
     [resources.ports]
     
@@ -104,20 +116,20 @@ ram.runtime = "500M"
 
 
     [resources.apt]
-    packages = "erlang-dev erlang-parsetools erlang-os-mon erlang-tools erlang-xmerl postgresql npm node-postcss"
+    packages = "postgresql"
 
     ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
     
     ### Yarn dependency (correct version)
-    extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
-    extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
-    extras.yarn.packages = ["yarn"]
+    # extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
+    # extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    # extras.yarn.packages = ["yarn"]
 
 
     ### Elixir 13 dependency - instead of v15 for now
-    extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
-    extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
-    extras.elixir13.packages = ["elixir"]
+    # extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
+    # extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
+    # extras.elixir13.packages = ["elixir"]
     ### Elixir 15 dependency
     # Bulleyes comes with v1.10 instead of v1.15 that is required
     # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
@@ -136,9 +148,9 @@ ram.runtime = "500M"
     # TODO : this is unsafe and should be dealt with in a better way.
     # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
     # only works for x86, we need to switch to the other option with makedeb package ?
-    extras.just.repo = "deb https://proget.makedeb.org prebuilt-mpr bullseye"
-    extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
-    extras.just.packages = ["just"]
+    # extras.just.repo = "deb https://proget.makedeb.org prebuilt-mpr bullseye"
+    # extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
+    # extras.just.packages = ["just"]
 
 
     [resources.database]

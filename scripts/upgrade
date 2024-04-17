@@ -40,9 +40,10 @@ chown -R $app:www-data "$install_dir"
 ynh_script_progression --message="Building Bonfire release... (This will take a long time)" --weight=1
 export TERM=linux # why is that not defined ?
 export TERMINFO=/etc/terminfo
+
 ### DONT USE GLOBAL NPM INSTALL
-ynh_replace_string --match_string="npm install --global" --replace_string="npm install" --target_file="$install_dir/justfile"
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just rel-build"
+# ynh_replace_string --match_string="npm install --global" --replace_string="npm install" --target_file="$install_dir/justfile"
+# ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just rel-build"
 
 #=================================================
 # RECONFIGURE THE APP (UPDATE CONF, APPLY MIGRATIONS...)
