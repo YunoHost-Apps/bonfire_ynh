@@ -66,7 +66,9 @@ chown $app:$app "$install_dir/.env"
 # SPECIFIC SETUP
 #=================================================
 
-source $install_dir/.env
+# load .env into env
+export $(grep -v '^#' $install_dir/.env | xargs -d '\n')
+# source $install_dir/.env
 export WITH_DOCKER=no # or source .env ? # Using this for now
 export TERM=linux # why is that not defined ?
 export TERMINFO=/etc/terminfo
@@ -91,14 +93,14 @@ cd $install_dir
 #=================================================
 # START SYSTEMD SERVICE - Run the release
 #=================================================
-release_folder="./"
+release_folder=$install_dir
 
 ### Not running the migration, they are done on startup anyway
 #ynh_script_progression --message="Running database migrations..." --weight=1
 ## Database created before, let's run the migrations
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
 
-#ynh_script_progression --message="Starting Bonfire..." --weight=1
+# ynh_script_progression --message="Starting Bonfire..." --weight=1
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
 
 mkdir -p "/var/log/$app"
@@ -121,7 +123,7 @@ ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$ap
 # CREATE ADMIN USER
 #=================================================
 ynh_script_progression --message="Creating admin user account..." --weight=1
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "$install_dir/bin/bonfire rpc 'Bonfire.Me.make_account_and_user(\"$admin\", \"$(ynh_user_get_info --username=\"$admin\" --key=mail)\", \"$password\")'"
+ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "$install_dir/bin/bonfire eval 'Bonfire.Me.make_account_and_user(\"$admin\", \"$(ynh_user_get_info --username=\"$admin\" --key=mail)\", \"$password\")'"
 
 #=================================================
 # END OF SCRIPT
