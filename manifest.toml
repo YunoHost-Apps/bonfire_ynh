@@ -92,8 +92,9 @@ ram.runtime = "500M"
 
         [resources.sources.main]
         # TODO: multiple architectures
-        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.62/bonfire-classic-amd64-debian-bullseye.tar.gz"
-        sha256 = "8137473f6db89101a0d841f0aad5a243853c611c9ccf80433e682b0217f87f73"
+        # https://api.github.com/repos/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.75/bonfire-classic-amd64-debian-bullseye.tar.gz
+        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.75/bonfire-classic-amd64-debian-bullseye.tar.gz"
+        sha256 = "be366dab1162c73f5dfe9407de168a20414f2a35f02060721aad541fb40d00d3"
 
         autoupdate.strategy = "latest_github_release"
 
