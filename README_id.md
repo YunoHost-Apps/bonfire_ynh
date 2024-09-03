@@ -18,7 +18,7 @@ Ini TIDAK boleh diedit dengan tangan.
 
 
 
-**Versi terkirim:** 0.9.8-beta.26~ynh2
+**Versi terkirim:** 0.9.8-beta.26~ynh3
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Dokumentasi dan sumber daya
