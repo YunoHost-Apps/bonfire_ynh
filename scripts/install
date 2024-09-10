@@ -26,7 +26,7 @@ ls -la "$install_dir"
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
 
-ynh_exec_warn_less "HOME=$install_dir $install_dir/deps-debian.sh"
+ynh_exec_warn_less HOME=$install_dir $install_dir/deps-debian.sh
 
 # ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 # ynh_use_nodejs
