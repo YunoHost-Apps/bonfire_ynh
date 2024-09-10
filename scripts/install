@@ -1,8 +1,6 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
@@ -14,10 +12,8 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression --message="Setting up source files..." --weight=1
 
-# Download deps install script
-ynh_setup_source --source_id=deps_install --dest_dir="$install_dir"
+ynh_setup_source --dest_dir="$install_dir" --source_id=deps_install
 
-# Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir"
 
 chmod -R o-rwx "$install_dir"
@@ -36,14 +32,6 @@ ynh_exec_warn_less "HOME=$install_dir $install_dir/deps-debian.sh"
 # ynh_use_nodejs
 
 #=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --weight=1
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
-
-#=================================================
 # ADD A CONFIGURATION
 #=================================================
 ## Generate secrets and other config values
@@ -55,13 +43,16 @@ meili_master_key=$(ynh_string_random --length=50)
 # max file upload size
 MEDIA_UPLOAD_SIZE="${media_upload_size//[!0-9]/}000000"
 
+
+
 ynh_script_progression --message="Adding a configuration file..." --weight=1
 
-ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
+ynh_add_config --template=".env" --destination="$install_dir/.env"
 ynh_store_file_checksum --file="$install_dir/.env"
 
 chmod 400 "$install_dir/.env"
 chown $app:$app "$install_dir/.env"
+
 #=================================================
 # SPECIFIC SETUP
 #=================================================
@@ -86,12 +77,13 @@ cd $install_dir
 # Building  the release
 #=================================================
 # ynh_script_progression --message="Building Bonfire release... (this will take a long time)" --weight=1
+
 # ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just config-basic"
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just mix bonfire.deps.update"
 # ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just rel-build"
 
 #=================================================
-# CREATE ADMIN USER
+# CREATE ADMIN USER
 #=================================================
 # ynh_script_progression --message="Creating admin user account..." --weight=1
 
@@ -109,6 +101,8 @@ release_folder=$install_dir
 
 #ynh_script_progression --message="Starting Bonfire..." --weight=1
 #ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
+
+ynh_add_nginx_config
 
 mkdir -p "/var/log/$app"
 chown -R $app:$app "/var/log/$app"
