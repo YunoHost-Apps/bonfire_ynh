@@ -3,7 +3,7 @@ packaging_format = 2
 id = "bonfire"
 name = "Bonfire"
 
-version = "0.9.8-beta.26~ynh3"
+version = "0.9.10-beta.142~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -20,7 +20,7 @@ userdoc = "https://bonfirenetworks.org/docs/"
 code = "https://github.com/bonfire-networks/bonfire-app"
 
 [integration]
-yunohost = ">= 11.1.18"
+yunohost = ">= 11.2.30"
 multi_instance = false
 architectures = "all"
 ldap = false
@@ -92,8 +92,8 @@ ram.runtime = "500M"
 
     [resources.sources.main]
     # TODO: multiple architectures
-    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.62/bonfire-classic-amd64-debian-bullseye.tar.gz"
-    sha256 = "8137473f6db89101a0d841f0aad5a243853c611c9ccf80433e682b0217f87f73"
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.142/bonfire-classic-amd64-debian-bullseye.tar.gz"
+    sha256 = "19f7393f85b0736af5f3aac2227ed5fc9c7e501c2e97d680f1ce2cd86bf06c94"
 
     autoupdate.strategy = "latest_github_release"
 

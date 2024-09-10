@@ -1,8 +1,6 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
@@ -16,8 +14,6 @@ ynh_script_progression --message="Stoping Bonfire..." --weight=1
 
 # stop bonfire daemon
 "$release_folder/bin/bonfire stop"
-
-
 
 #=================================================
 # REMOVE SYSTEM CONFIGURATIONS SERVICE 
