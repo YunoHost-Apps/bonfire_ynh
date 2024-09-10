@@ -153,6 +153,5 @@ ram.runtime = "500M"
     # extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
     # extras.just.packages = ["just"]
 
-
     [resources.database]
     type = "postgresql"
