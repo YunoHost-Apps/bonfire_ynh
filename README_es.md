@@ -18,7 +18,7 @@ No se debe editar a mano.
 
 
 
-**Versión actual:** 0.9.8-beta.26~ynh3
+**Versión actual:** 0.9.10-beta.142~ynh1
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Documentaciones y recursos
