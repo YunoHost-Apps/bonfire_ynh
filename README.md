@@ -18,7 +18,7 @@ It shall NOT be edited by hand.
 
 Federated social networking server built on ActivityPub open protocol
 
-**Shipped version:** 0.9.8-beta.26~ynh3
+**Shipped version:** 0.9.8-beta.147~ynh3
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Documentation and resources
