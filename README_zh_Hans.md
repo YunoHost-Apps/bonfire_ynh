@@ -3,9 +3,9 @@
 请勿手动编辑。
 -->
 
-# YunoHost 的 Bonfire
+# YunoHost 上的 Bonfire
 
-[![集成程度](https://dash.yunohost.org/integration/bonfire.svg)](https://dash.yunohost.org/appci/app/bonfire) ![工作状态](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/bonfire.svg)](https://ci-apps.yunohost.org/ci/apps/bonfire/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
 
 [![使用 YunoHost 安装 Bonfire](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 
