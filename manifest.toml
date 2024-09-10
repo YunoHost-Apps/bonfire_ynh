@@ -92,14 +92,15 @@ ram.runtime = "500M"
 
         [resources.sources.main]
         # TODO: multiple architectures
-        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.61/bonfire-classic-amd64-debian-bullseye.tar.gz"
-        sha256 = "8bc36f1c10e63659d0a286d82b5fd38233f545e7100fb03e63db4b0de7b6fe8d"
+        # https://api.github.com/repos/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.75/bonfire-classic-amd64-debian-bullseye.tar.gz
+        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.75/bonfire-classic-amd64-debian-bullseye.tar.gz"
+        sha256 = "be366dab1162c73f5dfe9407de168a20414f2a35f02060721aad541fb40d00d3"
 
         autoupdate.strategy = "latest_github_release"
 
         [resources.sources.deps_install]
-        url = "https://github.com/bonfire-networks/bonfire-app/raw/a57ad00dd18bfe558fc398938f19c92b48c60ff6/deps-debian.sh"
-        sha256 = "56624dc90719e2182f8116e63d9784079ce47e19892410f37ce5aa3de2a22b57"
+        url = "https://github.com/bonfire-networks/bonfire-app/raw/v0.9.10-beta.62/deps-debian.sh"
+        sha256 = "11c84b345ff6daacd08e156390315186f00d4bef3a4c8e15a8055fca0a4a3dee"
         format = "script"
         rename = "deps-debian.sh"
         extract = false
