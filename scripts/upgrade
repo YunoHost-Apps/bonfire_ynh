@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
@@ -19,18 +13,11 @@ ynh_script_progression --message="Stopping a systemd service..."
 ynh_systemd_action --service_name=$app --action="stop" --log_path="systemd"
 
 #=================================================
-# "REBUILD" THE APP (DEPLOY NEW SOURCES, RERUN NPM BUILD...)
-#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression --message="Upgrading source files..." --weight=1
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..." --weight=1
-
-	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir"
-fi
+ynh_setup_source --dest_dir="$install_dir"
 
 chown -R $app:www-data "$install_dir"
 
@@ -38,11 +25,13 @@ chown -R $app:www-data "$install_dir"
 # Building  the release
 #=================================================
 ynh_script_progression --message="Building Bonfire release... (This will take a long time)" --weight=1
+
 export TERM=linux # why is that not defined ?
 export TERMINFO=/etc/terminfo
+
 ### DONT USE GLOBAL NPM INSTALL
-ynh_replace_string --match_string="npm install --global" --replace_string="npm install" --target_file="$install_dir/justfile"
-ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just rel-build"
+# ynh_replace_string --match_string="npm install --global" --replace_string="npm install" --target_file="$install_dir/justfile"
+# ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just rel-build"
 
 #=================================================
 # RECONFIGURE THE APP (UPDATE CONF, APPLY MIGRATIONS...)
