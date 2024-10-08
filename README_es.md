@@ -18,7 +18,7 @@ No se debe editar a mano.
 
 
 
-**Versión actual:** 0.9.8-beta.26~ynh3
+**Versión actual:** 0.9.10-151~ynh1
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Documentaciones y recursos
@@ -32,7 +32,7 @@ No se debe editar a mano.
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/bonfire_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/bonfire_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 
