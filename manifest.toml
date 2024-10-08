@@ -3,7 +3,7 @@ packaging_format = 2
 id = "bonfire"
 name = "Bonfire"
 
-version = "0.9.8-beta.26~ynh3"
+version = "0.9.10-151~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -91,9 +91,8 @@ ram.runtime = "500M"
     [resources.sources]
 
     [resources.sources.main]
-    # TODO: multiple architectures
-    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.62/bonfire-classic-amd64-debian-bullseye.tar.gz"
-    sha256 = "8137473f6db89101a0d841f0aad5a243853c611c9ccf80433e682b0217f87f73"
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.151/bonfire-classic-amd64-debian-bullseye.tar.gz"
+    sha256 = "83286282a69b4151d6c8bd85cb8f5c07cac02e351dfde085951209643f641183"
 
     autoupdate.strategy = "latest_github_release"
 
