@@ -96,13 +96,6 @@ ram.runtime = "500M"
 
     autoupdate.strategy = "latest_github_release"
 
-    [resources.sources.deps_install]
-    url = "https://github.com/bonfire-networks/bonfire-app/raw/v0.9.10-beta.62/deps-debian.sh"
-    sha256 = "11c84b345ff6daacd08e156390315186f00d4bef3a4c8e15a8055fca0a4a3dee"
-    format = "script"
-    rename = "deps-debian.sh"
-    extract = false
-
     [resources.ports]
     
     [resources.system_user]
@@ -115,7 +108,7 @@ ram.runtime = "500M"
 
 
     [resources.apt]
-    packages = "postgresql"
+    packages = "postgresql, git, tar, unzip curl wget file mailcap bash, ca-certificates, openssh-client, libgcrypt20-dev, libssl-dev, gnupg, tzdata, gettext, imagemagick, libvips-tools, poppler-utils, ffmpegthumbnailer, ffmpeg"
 
     ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
     
