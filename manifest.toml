@@ -2,14 +2,12 @@ packaging_format = 2
 
 id = "bonfire"
 name = "Bonfire"
+description.en = "Federated social networking server built on ActivityPub open protocol"
+description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
 version = "0.9.10-151~ynh1"
 
 maintainers = ["Lapineige"]
-
-[description]
-en = "Federated social networking server built on ActivityPub open protocol"
-fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
 [upstream]
 license = "AGPL-3.0-only"
@@ -20,7 +18,7 @@ userdoc = "https://bonfirenetworks.org/docs/"
 code = "https://github.com/bonfire-networks/bonfire-app"
 
 [integration]
-yunohost = ">= 11.1.18"
+yunohost = ">= 11.1.30"
 multi_instance = false
 architectures = "all"
 ldap = false
@@ -82,11 +80,6 @@ ram.runtime = "500M"
     default = "35MB"
 
 [resources]
-
-    #[resources.data_dir]
-    # This will create/remove the data dir as /home/yunohost.app/$app
-    # and store the corresponding setting $data_dir
-    #TODO
 
     [resources.sources]
 
