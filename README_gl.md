@@ -18,7 +18,7 @@ NON debe editarse manualmente.
 
 
 
-**Versión proporcionada:** 0.9.10-beta.148~ynh3
+**Versión proporcionada:** 0.9.10-151~ynh1
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Documentación e recursos

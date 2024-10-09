@@ -14,23 +14,15 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression --message="Setting up source files..." --weight=1
 
-# Download deps install script
-ynh_setup_source --source_id=deps_install --dest_dir="$install_dir"
-
-# Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir"
 
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
-chmod +x "$install_dir/deps-debian.sh"
-ls -la "$install_dir"
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
-
-ynh_exec_warn_less "HOME=$install_dir $install_dir/deps-debian.sh"
 
 # ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 # ynh_use_nodejs
@@ -62,6 +54,7 @@ ynh_store_file_checksum --file="$install_dir/.env"
 
 chmod 400 "$install_dir/.env"
 chown $app:$app "$install_dir/.env"
+
 #=================================================
 # SPECIFIC SETUP
 #=================================================

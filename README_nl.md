@@ -18,7 +18,7 @@ Hij mag NIET handmatig aangepast worden.
 
 
 
-**Geleverde versie:** 0.9.10-beta.148~ynh3
+**Geleverde versie:** 0.9.10-151~ynh1
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Documentatie en bronnen

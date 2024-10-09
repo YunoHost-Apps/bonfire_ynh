@@ -18,7 +18,7 @@ EZ editatu eskuz.
 
 
 
-**Paketatutako bertsioa:** 0.9.10-beta.148~ynh3
+**Paketatutako bertsioa:** 0.9.10-151~ynh1
 
 **Demoa:** <https://playground.bonfire.cafe/>
 ## Dokumentazioa eta baliabideak

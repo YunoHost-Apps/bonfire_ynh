@@ -2,14 +2,12 @@ packaging_format = 2
 
 id = "bonfire"
 name = "Bonfire"
+description.en = "Federated social networking server built on ActivityPub open protocol"
+description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "0.9.10-beta.148~ynh3"
+version = "0.9.10-151~ynh1"
 
 maintainers = ["Lapineige"]
-
-[description]
-en = "Federated social networking server built on ActivityPub open protocol"
-fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
 [upstream]
 license = "AGPL-3.0-only"
@@ -20,7 +18,7 @@ userdoc = "https://bonfirenetworks.org/docs/"
 code = "https://github.com/bonfire-networks/bonfire-app"
 
 [integration]
-yunohost = ">= 11.1.18"
+yunohost = ">= 11.1.30"
 multi_instance = false
 architectures = "all"
 ldap = false
@@ -83,18 +81,12 @@ ram.runtime = "500M"
 
 [resources]
 
-    #[resources.data_dir]
-    # This will create/remove the data dir as /home/yunohost.app/$app
-    # and store the corresponding setting $data_dir
-    #TODO
-
     [resources.sources]
 
         [resources.sources.main]
         # TODO: multiple architectures
-        # https://api.github.com/repos/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.75/bonfire-classic-amd64-debian-bullseye.tar.gz
-        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.148/bonfire-classic-amd64-debian-bullseye.tar.gz"
-        sha256 = "7773564342787fc4c44293a03812fb7839be62958dab55a81e3708afa1f33c50"
+        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.151/bonfire-classic-amd64-debian-bullseye.tar.gz"
+        sha256 = "83286282a69b4151d6c8bd85cb8f5c07cac02e351dfde085951209643f641183"
 
         autoupdate.strategy = "latest_github_release"
 
@@ -104,7 +96,7 @@ ram.runtime = "500M"
         format = "script"
         rename = "deps-debian.sh"
         extract = false
-
+        
     [resources.ports]
     
     [resources.system_user]
@@ -117,7 +109,7 @@ ram.runtime = "500M"
 
 
     [resources.apt]
-    packages = "postgresql"
+    packages = "postgresql, git, tar, unzip curl wget file mailcap bash, ca-certificates, openssh-client, libgcrypt20-dev, libssl-dev, gnupg, tzdata, gettext, imagemagick, libvips-tools, poppler-utils, ffmpegthumbnailer, ffmpeg"
 
     ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
     
