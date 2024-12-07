@@ -5,7 +5,9 @@
 
 # YunoHost 上的 Bonfire
 
-[![集成程度](https://dash.yunohost.org/integration/bonfire.svg)](https://ci-apps.yunohost.org/ci/apps/bonfire/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
+[![集成程度](https://apps.yunohost.org/badge/integration/bonfire)](https://ci-apps.yunohost.org/ci/apps/bonfire/)
+![工作状态](https://apps.yunohost.org/badge/state/bonfire)
+![维护状态](https://apps.yunohost.org/badge/maintained/bonfire)
 
 [![使用 YunoHost 安装 Bonfire](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 
@@ -18,7 +20,7 @@
 
 
 
-**分发版本：** 0.9.10-151~ynh1
+**分发版本：** 0.9.10-169~ynh1
 
 **演示：** <https://playground.bonfire.cafe/>
 ## 文档与资源

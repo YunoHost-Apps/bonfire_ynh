@@ -5,7 +5,9 @@ Il NE doit PAS être modifié à la main.
 
 # Bonfire pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/bonfire.svg)](https://ci-apps.yunohost.org/ci/apps/bonfire/) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
+[![Niveau d’intégration](https://apps.yunohost.org/badge/integration/bonfire)](https://ci-apps.yunohost.org/ci/apps/bonfire/)
+![Statut du fonctionnement](https://apps.yunohost.org/badge/state/bonfire)
+![Statut de maintenance](https://apps.yunohost.org/badge/maintained/bonfire)
 
 [![Installer Bonfire avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 
@@ -18,7 +20,7 @@ Il NE doit PAS être modifié à la main.
 
 Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub
 
-**Version incluse :** 0.9.10-151~ynh1
+**Version incluse :** 0.9.10-169~ynh1
 
 **Démo :** <https://playground.bonfire.cafe/>
 ## Documentations et ressources
