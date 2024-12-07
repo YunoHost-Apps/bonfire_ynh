@@ -5,7 +5,7 @@ name = "Bonfire"
 description.en = "Federated social networking server built on ActivityPub open protocol"
 description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "0.9.10-151~ynh1"
+version = "0.9.10-169~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -85,8 +85,8 @@ ram.runtime = "500M"
 
         [resources.sources.main]
         # TODO: multiple architectures
-        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.151/bonfire-classic-amd64-debian-bullseye.tar.gz"
-        sha256 = "83286282a69b4151d6c8bd85cb8f5c07cac02e351dfde085951209643f641183"
+        url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v0.9.10-beta.169/bonfire-classic-amd64-debian-bullseye.tar.gz"
+        sha256 = "d8097e1786da721e05741537169a56e1481b3d08df436af2a99335f935f9798c"
 
         autoupdate.strategy = "latest_github_release"
 
