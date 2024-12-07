@@ -5,7 +5,9 @@ EZ editatu eskuz.
 
 # Bonfire YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/bonfire.svg)](https://ci-apps.yunohost.org/ci/apps/bonfire/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
+[![Integrazio maila](https://apps.yunohost.org/badge/integration/bonfire)](https://ci-apps.yunohost.org/ci/apps/bonfire/)
+![Funtzionamendu egoera](https://apps.yunohost.org/badge/state/bonfire)
+![Mantentze egoera](https://apps.yunohost.org/badge/maintained/bonfire)
 
 [![Instalatu Bonfire YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 

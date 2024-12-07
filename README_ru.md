@@ -5,7 +5,9 @@
 
 # Bonfire для YunoHost
 
-[![Уровень интеграции](https://dash.yunohost.org/integration/bonfire.svg)](https://ci-apps.yunohost.org/ci/apps/bonfire/) ![Состояние работы](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![Состояние сопровождения](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
+[![Уровень интеграции](https://apps.yunohost.org/badge/integration/bonfire)](https://ci-apps.yunohost.org/ci/apps/bonfire/)
+![Состояние работы](https://apps.yunohost.org/badge/state/bonfire)
+![Состояние сопровождения](https://apps.yunohost.org/badge/maintained/bonfire)
 
 [![Установите Bonfire с YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 

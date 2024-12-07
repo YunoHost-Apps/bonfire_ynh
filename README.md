@@ -5,7 +5,9 @@ It shall NOT be edited by hand.
 
 # Bonfire for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/bonfire.svg)](https://ci-apps.yunohost.org/ci/apps/bonfire/) ![Working status](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
+[![Integration level](https://apps.yunohost.org/badge/integration/bonfire)](https://ci-apps.yunohost.org/ci/apps/bonfire/)
+![Working status](https://apps.yunohost.org/badge/state/bonfire)
+![Maintenance status](https://apps.yunohost.org/badge/maintained/bonfire)
 
 [![Install Bonfire with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 

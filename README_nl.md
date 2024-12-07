@@ -5,7 +5,9 @@ Hij mag NIET handmatig aangepast worden.
 
 # Bonfire voor Yunohost
 
-[![Integratieniveau](https://dash.yunohost.org/integration/bonfire.svg)](https://ci-apps.yunohost.org/ci/apps/bonfire/) ![Mate van functioneren](https://ci-apps.yunohost.org/ci/badges/bonfire.status.svg) ![Onderhoudsstatus](https://ci-apps.yunohost.org/ci/badges/bonfire.maintain.svg)
+[![Integratieniveau](https://apps.yunohost.org/badge/integration/bonfire)](https://ci-apps.yunohost.org/ci/apps/bonfire/)
+![Mate van functioneren](https://apps.yunohost.org/badge/state/bonfire)
+![Onderhoudsstatus](https://apps.yunohost.org/badge/maintained/bonfire)
 
 [![Bonfire met Yunohost installeren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=bonfire)
 
