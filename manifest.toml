@@ -93,7 +93,7 @@ ram.runtime = "500M"
         [resources.sources.deps_install]
         url = "https://github.com/bonfire-networks/bonfire-app/raw/v0.9.10-beta.147/deps-debian.sh"
         sha256 = "23aa558f14d7203a491dc721c9c05a35c7ada0321008d9f00b5a6766fe90c24f"
-        format = "script"
+        format = "whatever"
         rename = "deps-debian.sh"
         extract = false
         
