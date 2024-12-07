@@ -20,7 +20,7 @@ EZ editatu eskuz.
 
 
 
-**Paketatutako bertsioa:** 0.9.10-151~ynh1
+**Paketatutako bertsioa:** 0.9.10-169~ynh1
 
 **Demoa:** <https://playground.bonfire.cafe/>
 ## Dokumentazioa eta baliabideak

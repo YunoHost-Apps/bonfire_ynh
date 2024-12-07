@@ -20,7 +20,7 @@ Ini TIDAK boleh diedit dengan tangan.
 
 
 
-**Versi terkirim:** 0.9.10-151~ynh1
+**Versi terkirim:** 0.9.10-169~ynh1
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Dokumentasi dan sumber daya

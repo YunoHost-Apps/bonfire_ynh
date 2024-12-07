@@ -20,7 +20,7 @@ It shall NOT be edited by hand.
 
 Federated social networking server built on ActivityPub open protocol
 
-**Shipped version:** 0.9.10-151~ynh1
+**Shipped version:** 0.9.10-169~ynh1
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Documentation and resources

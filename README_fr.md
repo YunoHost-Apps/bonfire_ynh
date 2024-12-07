@@ -20,7 +20,7 @@ Il NE doit PAS être modifié à la main.
 
 Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub
 
-**Version incluse :** 0.9.10-151~ynh1
+**Version incluse :** 0.9.10-169~ynh1
 
 **Démo :** <https://playground.bonfire.cafe/>
 ## Documentations et ressources

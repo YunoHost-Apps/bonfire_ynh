@@ -20,7 +20,7 @@ NON debe editarse manualmente.
 
 
 
-**Versión proporcionada:** 0.9.10-151~ynh1
+**Versión proporcionada:** 0.9.10-169~ynh1
 
 **Demo:** <https://playground.bonfire.cafe/>
 ## Documentación e recursos
