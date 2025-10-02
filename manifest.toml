@@ -3,7 +3,7 @@ packaging_format = 2
 id = "bonfire"
 name = "Bonfire"
 
-version = "0.9.8-beta.26~ynh2"
+version = "1.0.0-rc.2.33~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -25,9 +25,9 @@ multi_instance = false
 architectures = "all"
 ldap = false
 sso = false
-disk = "2000M"
-ram.build = "1500M"
-ram.runtime = "500M"
+disk = "500M"
+ram.build = "50M"
+ram.runtime = "1000M"
 
 [install]
   [install.domain]
@@ -51,15 +51,7 @@ ram.runtime = "500M"
     type = "select"
     choices = ["fr", "en"]
     default = "fr"
-    
-  [install.admin]
-    type = "user"
 
-  [install.password]
-    help.en = "Use the help field to add an information for the admin about this question."
-    help.fr = "Utilisez le champ aide pour ajouter une information à l'intention de l'administrateur à propos de cette question."
-    type = "password"
-    
   [install.media_upload_size]
     ask.en = "Choose the maximum size of the media uploaded. Can be changed later."
     ask.fr = "Choisissez la taille maximale des médias mis en ligne. Peut-être modifié ultérieurement."
@@ -79,66 +71,64 @@ ram.runtime = "500M"
       ]
     default = "35MB"
 
+  [install.instance_name]
+    ask.en = "Instance name (can be changed later)"
+    ask.fr = "Nom de l'instance (peut être modifié ultérieurement)"
+    type = "string"
+    default = "Bonfire"
+    help.en = "The name of your Bonfire instance that will be displayed to users"
+    help.fr = "Le nom de votre instance Bonfire qui sera affiché aux utilisateurs"
+
+  [install.invite_only]
+    ask.en = "Require invitations to sign up?"
+    ask.fr = "Exiger des invitations pour s'inscrire ?"
+    type = "boolean"
+    default = true
+    help.en = "If enabled, users need an invite link to create an account. You can always invite users from your admin panel."
+    help.fr = "Si activé, les utilisateurs ont besoin d'un lien d'invitation pour créer un compte. Vous pouvez toujours inviter des utilisateurs depuis votre panneau d'administration."
+
+  [install.instance_description]
+    ask.en = "Instance description (optional)"
+    ask.fr = "Description de l'instance (optionnel)"
+    type = "string"
+    optional = true
+    help.en = "A short description of your Bonfire instance"
+    help.fr = "Une courte description de votre instance Bonfire"
+
 [resources]
 
-    #[resources.data_dir]
+    [resources.system_user]
+    allow_email = true
+
+    [resources.install_dir]
+
+    [resources.data_dir]
     # This will create/remove the data dir as /home/yunohost.app/$app
     # and store the corresponding setting $data_dir
-    #TODO
+
+    [resources.ports]
+    # Port will be automatically assigned by YunoHost
+
+    [resources.permissions]
+    main.url = "/"
 
     [resources.sources]
 
     [resources.sources.main]
-    url = "https://github.com/bonfire-networks/bonfire-app/archive/289ad2d8b57a2ce9a7ce609f000b1ac5d887e7a0.tar.gz"
-    sha256 = "5b79032647f9fd95465692d1de48839359dfa532a72c727f76bf03a1b68e8cdd"
-
-    [resources.ports]
-    
-    [resources.system_user]
-    allow_email = true
-    
-    [resources.install_dir]
-    
-    [resources.permissions]
-    main.url = "/"
-
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.0-rc.2.33/bonfire-social-amd64-debian-bullseye.tar.gz"
+    sha256 = "958334fdfa7cecebe363477fff8745f393e6f5c125c78f02e28aebee69529dbe"
+    autoupdate.strategy = "latest_github_release"
+    autoupdate.asset = "bonfire-social-amd64-debian-bullseye.tar.gz"
 
     [resources.apt]
-    packages = "erlang-dev erlang-parsetools erlang-os-mon erlang-tools erlang-xmerl postgresql npm node-postcss"
+    # Runtime dependencies only (pre-built release includes Erlang/Elixir)
+    packages = "postgresql postgresql-contrib postgresql-15-postgis-3 curl ca-certificates git imagemagick libvips-tools poppler-utils ffmpeg"
 
-    ##### (this part is optional and corresponds to the legacy ynh_install_extra_app_dependencies helper)
-    
-    ### Yarn dependency (correct version)
-    extras.yarn.repo = "deb https://dl.yarnpkg.com/debian/ stable main"
-    extras.yarn.key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
-    extras.yarn.packages = ["yarn"]
-
-
-    ### Elixir 13 dependency - instead of v15 for now
-    extras.elixir13.repo = "deb https://packages.erlang-solutions.com/debian bullseye contrib"
-    extras.elixir13.key = "https://packages.erlang-solutions.com/debian/erlang_solutions.asc"
-    extras.elixir13.packages = ["elixir"]
-    ### Elixir 15 dependency
-    # Bulleyes comes with v1.10 instead of v1.15 that is required
-    # ynh_install_extra_app_dependencies --repo="https://packages.erlang-solutions.com/debian bullseye contrib" --package="elixir-lang" --key='https://packages.erlang-solutions.com/debian/erlang_solutions.asc'
-    # v15 is not available in default repo. RabbitMQ repo should be used (https://elixir-lang.org/install.html). No debian simple syntax. TODO later, using the simple syntax for now
-    # erlang 26, for elixir v1.15
-    #extras.elixir15.repo = "deb https://ppa.launchpadcontent.net/rabbitmq/rabbitmq-erlang/ubuntu jammy main"
-    #extras.elixir15.key = "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb279943d2a549531e144b875f77f1eda57ebb1cc"
-    #extras.elixir15.packages = ["elixir"]
-    # exlang-dev -> https://github.com/elixir-lang/ex_doc/pull/1442/files # Debian default package is newer (enough), don't use this custom repo
-    ### Elixir 15 with mise
-    #extras.mise.repo = "deb https://mise.jdx.dev/deb stable main"
-    #extras.mise.key = "https://mise.jdx.dev/gpg-key.pub"
-    #extras.mise.packages = ["mise"]
-    
-    ### just dependency
-    # TODO : this is unsafe and should be dealt with in a better way.
-    # There is currently no proper way to install it simply on Debian 11 https://github.com/casey/just#packages
-    # only works for x86, we need to switch to the other option with makedeb package ?
-    extras.just.repo = "deb https://proget.makedeb.org prebuilt-mpr bullseye"
-    extras.just.key = "https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub"
-    extras.just.packages = ["just"]
+    [resources.sources.libssl]
+    extract = false
+    rename = "libssl1.1.deb"
+    amd64.url = "http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_amd64.deb"
+    amd64.sha256 = "aadf8b4b197335645b230c2839b4517aa444fd2e8f434e5438c48a18857988f7"
 
     [resources.database]
     type = "postgresql"

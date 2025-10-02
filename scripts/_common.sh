@@ -4,7 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version=18
+# No common variables needed for pre-built release installation
 
 #=================================================
 # PERSONAL HELPERS

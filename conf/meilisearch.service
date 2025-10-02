@@ -1,0 +1,19 @@
+[Unit]
+Description=Meilisearch search engine for Bonfire
+After=network.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+Environment="MEILI_DB_PATH=__DATA_DIR__/meilisearch"
+Environment="MEILI_HTTP_ADDR=127.0.0.1:7700"
+Environment="MEILI_MASTER_KEY=__MEILI_MASTER_KEY__"
+Environment="MEILI_NO_ANALYTICS=true"
+Environment="MEILI_ENV=production"
+ExecStart=__INSTALL_DIR__/meilisearch
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
