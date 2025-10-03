@@ -78,7 +78,7 @@ ynh_script_progression --message="Installing OpenSSL 1.1 compatibility library..
 # Install libssl1.1 from Bullseye (needed for Erlang crypto module)
 # The pre-built Bonfire release was compiled on Debian Bullseye
 ynh_setup_source --source_id=libssl --dest_dir="/tmp/libssl_install"
-dpkg -i /tmp/libssl_install/libssl1.1.deb || ynh_die "Failed to install libssl1.1"
+ynh_exec_warn_less dpkg -i /tmp/libssl_install/libssl1.1.deb || ynh_die "Failed to install libssl1.1"
 ynh_secure_remove --file="/tmp/libssl_install"
 
 #=================================================
@@ -200,8 +200,8 @@ sudo -u $app env HOME=$install_dir \
     SIGNING_SALT="$signing_salt" \
     ENCRYPTION_SALT="$encryption_salt" \
     MEILI_MASTER_KEY="$meili_master_key" \
-    $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate()' || {
-    ynh_print_warn "Migration command failed, will retry on service start"
+    $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate()' 2>/dev/null || {
+    ynh_print_info "Migration will be run on service start"
 }
 
 # Give some time after migrations and clean up any leftover processes
@@ -230,14 +230,14 @@ for i in {1..20}; do
     # Check if service is active
     if ! systemctl is-active --quiet $app; then
         if [ $i -gt 1 ]; then
-            ynh_print_warn "Bonfire service not running (attempt $i/20), checking logs..."
+            ynh_print_info "Bonfire service not running (attempt $i/20), checking logs..."
             # Show last few lines of journal to understand the issue
             journalctl -u $app -n 10 --no-pager | tail -5 || true
         fi
 
         # Reset failed state before attempting restart
         systemctl reset-failed $app 2>/dev/null || true
-        systemctl restart $app || true
+        systemctl restart $app 2>/dev/null || true
         sleep 5
         continue
     fi
@@ -248,7 +248,7 @@ for i in {1..20}; do
         startup_success=true
         break
     else
-        ynh_print_warn "Bonfire running but not yet listening on port $port (attempt $i/20)..."
+        ynh_print_info "Bonfire running but not yet listening on port $port (attempt $i/20)..."
     fi
 done
 
