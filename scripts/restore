@@ -11,18 +11,54 @@ source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Installing OpenSSL 1.1 compatibility library..." --weight=1
+
+# Install libssl1.1 from Bullseye (needed for Erlang crypto module)
+# The pre-built Bonfire release was compiled on Debian Bullseye
+ynh_setup_source --source_id=libssl --dest_dir="/tmp/libssl_install"
+ynh_exec_warn_less dpkg -i /tmp/libssl_install/libssl1.1.deb || ynh_die "Failed to install libssl1.1"
+ynh_secure_remove --file="/tmp/libssl_install"
+
+#=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
 ynh_script_progression --message="Restoring the app main directory..." --weight=1
 
 ynh_restore_file --origin_path="$install_dir"
 
+# Restore environment files permissions
+if [ -f "$install_dir/.env" ]; then
+    chmod 400 "$install_dir/.env"
+    chown $app:$app "$install_dir/.env"
+fi
+
+# Create Meilisearch env file with secrets (not backed up, recreate from settings)
+meili_master_key=$(ynh_app_setting_get --app=$app --key=meili_master_key)
+ynh_add_config --template="../conf/meilisearch.env" --destination="$install_dir/.meilisearch.env"
+chmod 400 "$install_dir/.meilisearch.env"
+chown $app:$app "$install_dir/.meilisearch.env"
+
 chown -R $app:www-data "$install_dir"
+
+#=================================================
+# RESTORE THE DATA DIR
+#=================================================
+ynh_script_progression --message="Restoring the data directory..." --weight=1
+
+ynh_restore_file --origin_path="$data_dir"
+
+chown -R $app:www-data "$data_dir"
 
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
 ynh_script_progression --message="Restoring the PostgreSQL database..." --weight=1
+
+# Enable PostGIS extension before restoring database (needed for spatial data)
+ynh_psql_execute_as_root --sql="CREATE EXTENSION IF NOT EXISTS citext;" --database="$db_name"
+ynh_psql_execute_as_root --sql="CREATE EXTENSION IF NOT EXISTS postgis;" --database="$db_name"
 
 ynh_psql_connect_as --user=$db_user --password=$db_pwd --database=$db_name < ./db.sql
 
@@ -36,27 +72,27 @@ ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
 
+ynh_restore_file --origin_path="/etc/systemd/system/meilisearch-$app.service"
+systemctl enable "meilisearch-$app.service" --quiet
+
 mkdir -p "/var/log/$app"
 chown -R $app:$app "/var/log/$app"
-ynh_restore_file --origin_path="/etc/logrotate.d/$app"
 
+# Restore logrotate configuration if it exists
+if [ -f "./etc/logrotate.d/$app" ]; then
+    ynh_restore_file --origin_path="/etc/logrotate.d/$app"
+fi
+
+yunohost service add "meilisearch-$app" --description="Meilisearch for Bonfire" --log="/var/log/$app/meilisearch.log"
 yunohost service add $app --description="Bonfire daemon" --log="/var/log/$app/$app.log"
 
 #=================================================
-# START SYSTEMD SERVICE
+# RELOAD NGINX AND START SERVICES
 #=================================================
-ynh_script_progression --message="Starting Bonfire daemon service..." --weight=1
+ynh_script_progression --message="Reloading NGINX web server and starting services..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"  --line_match="[info] Running Bonfire.Web.Endpoint"
-
-ynh_systemd_action --service_name=nginx --action=reload
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# RELOAD NGINX AND PHP-FPM OR THE APP SERVICE
-#=================================================
-ynh_script_progression --message="Reloading NGINX web server and $app's service..." --weight=1
+ynh_systemd_action --service_name="meilisearch-$app" --action="start" --log_path="/var/log/$app/meilisearch.log"
+ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"
 
 ynh_systemd_action --service_name=nginx --action=reload
 
