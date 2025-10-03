@@ -71,6 +71,10 @@ if [ -f "$install_dir/.env" ]; then
 	encryption_salt=$(grep "^ENCRYPTION_SALT=" "$install_dir/.env" | cut -d= -f2)
 fi
 
+# Initialize upload_limit_bytes from media_upload_size setting
+media_upload_size=$(ynh_app_setting_get --app=$app --key=media_upload_size)
+upload_limit_bytes="${media_upload_size//[!0-9]/}000000"
+
 ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
 ynh_store_file_checksum --file="$install_dir/.env"
 
@@ -87,6 +91,10 @@ ynh_add_systemd_config --service="meilisearch-$app" --template="meilisearch.serv
 
 # Create/update Bonfire service
 ynh_add_systemd_config
+
+# Register services with YunoHost
+yunohost service add "meilisearch-$app" --description="Meilisearch for Bonfire" --log="/var/log/$app/meilisearch.log"
+yunohost service add $app --description="Bonfire daemon" --log="/var/log/$app/$app.log"
 
 ynh_add_nginx_config
 

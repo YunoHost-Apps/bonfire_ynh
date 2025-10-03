@@ -10,12 +10,6 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE SCRIPT FAILURE
-#=================================================
-
-ynh_abort_if_errors
-
-#=================================================
 # ENABLE POSTGRESQL EXTENSIONS
 #=================================================
 ynh_script_progression --message="Enabling PostgreSQL extensions..." --weight=1
@@ -285,7 +279,4 @@ Note: The first user to sign up will automatically become an instance administra
 
 If you set your instance to 'invite only' during installation, you can still access the signup page directly."
 
-ynh_script_progression --message="Installation of $app completed" --last
-
-# Print the message to the admin
-echo "$message" >&2
+ynh_script_progression --message="$message" --last
