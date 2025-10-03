@@ -28,13 +28,13 @@ Bonfire aims to give users more control over their social interactions online, w
 
 **Shipped version:** 1.0.0-rc.2.33~ynh1
 
-**Demo:** <https://playground.bonfire.cafe/>
+**Demo:** <https://campground.bonfire.cafe/>
 
 ## Documentation and resources
 
 - Official app website: <https://bonfirenetworks.org/>
-- Official user documentation: <https://bonfirenetworks.org/docs/>
-- Official admin documentation: <https://bonfirenetworks.org/docs/>
+- Official user documentation: <https://docs.bonfirenetworks.org/>
+- Official admin documentation: <https://docs.bonfirenetworks.org/>
 - Upstream app code repository: <https://github.com/bonfire-networks/bonfire-app>
 - YunoHost Store: <https://apps.yunohost.org/app/bonfire>
 - Report a bug: <https://github.com/YunoHost-Apps/bonfire_ynh/issues>
