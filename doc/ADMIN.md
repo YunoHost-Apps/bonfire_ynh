@@ -74,14 +74,12 @@ sudo systemctl restart bonfire
 
 ### First Admin Account
 
-The first user to sign up on your Bonfire instance automatically becomes an administrator. Visit your instance at `https://your-domain.tld/` and create your account.
+The first user to sign up on your Bonfire instance automatically becomes an administrator. Visit your instance at `https://your-domain.tld/signup` and create your account. 
 
-**Note:** User signup requires working email for verification!
 
 ### Admin Panel
 
-Once logged in as an admin, you can access the admin panel at:
-- LiveDashboard for system metrics: `/admin/system/`
+Once logged in as an admin, you can access the admin panel at `https://your-domain.tld/settings/instance`
 
 ### Managing the Service
 

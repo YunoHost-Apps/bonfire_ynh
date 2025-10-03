@@ -14,9 +14,9 @@ fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert Acti
 [upstream]
 license = "AGPL-3.0-only"
 website = "https://bonfirenetworks.org/"
-demo = "https://playground.bonfire.cafe/"
-admindoc = "https://bonfirenetworks.org/docs/"
-userdoc = "https://bonfirenetworks.org/docs/"
+demo = "https://campground.bonfire.cafe/"
+admindoc = "https://docs.bonfirenetworks.org/
+userdoc = "https://docs.bonfirenetworks.org/"
 code = "https://github.com/bonfire-networks/bonfire-app"
 
 [integration]
