@@ -9,6 +9,7 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__
+# EnvironmentFile with restrictive permissions (set to 0400 in install script)
 EnvironmentFile=__INSTALL_DIR__/.env
 ExecStart=__INSTALL_DIR__/bin/bonfire start
 Restart=on-failure

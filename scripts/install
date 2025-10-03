@@ -121,6 +121,11 @@ ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
 chmod 400 "$install_dir/.env"
 chown $app:$app "$install_dir/.env"
 
+# Create Meilisearch env file with secrets
+ynh_add_config --template="../conf/meilisearch.env" --destination="$install_dir/.meilisearch.env"
+chmod 400 "$install_dir/.meilisearch.env"
+chown $app:$app "$install_dir/.meilisearch.env"
+
 #=================================================
 # SETUP PERMISSIONS
 #=================================================
@@ -268,15 +273,4 @@ ynh_add_nginx_config
 ynh_script_progression --message="Installation of $app completed" --weight=1
 
 # Display post-install instructions
-message="Bonfire has been successfully installed!
-
-IMPORTANT: You need to create your admin account.
-
-Please visit: https://$domain/
-And sign up with your desired username and email address.
-
-Note: The first user to sign up will automatically become an instance administrator.
-
-If you set your instance to 'invite only' during installation, you can still access the signup page directly."
-
-ynh_script_progression --message="$message" --last
+ynh_script_progression --message="Installation of $app completed. Visit https://$domain/ to create your admin account (first user becomes admin)" --last
