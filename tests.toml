@@ -5,7 +5,8 @@ test_format = 1.0
 [default]
 
     # Bonfire requires root installation (not subdirectory)
-    exclude = ["install.subdir"]
+    # Change URL is not supported for federated applications (breaks ActivityPub federation)
+    exclude = ["install.subdir", "change_url"]
 
     # -------------------------------------------------------------------------------
     # EVERYTHING PAST THIS POINT IS OPTIONAL AND MOST LIKELY UNNECESSARY FOR NEW APPS
