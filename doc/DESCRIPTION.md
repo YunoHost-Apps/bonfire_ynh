@@ -1,9 +1,1 @@
-Bonfire is a federated social networking platform that supports ActivityPub. It provides:
-
-- **Federated social networking** - Connect with users across the fediverse
-- **Customizable circles** - Organize your connections into circles with different levels of trust
-- **Advanced boundaries** - Fine-grained control over who can see and interact with your content
-- **Extensible architecture** - Built with a modular, extensible architecture
-- **Rich interactions** - Support for various post types, reactions, and discussions
-
-Bonfire aims to give users more control over their social interactions online, with a focus on consent, boundaries, and user agency.
+Bonfire is a federated social app built for people and communities who care about autonomy, meaningful connection, and healthy online spaces. It offers familiar features like feeds and profiles — but goes further with powerful tools for customization, moderation, and control, so you can shape your digital space to fit your needs. Bonfire is also a gateway into the broader fediverse — a network of independent, interconnected apps — while staying fully self-hostable and community-governed. 
