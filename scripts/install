@@ -27,8 +27,8 @@ ynh_setup_source --dest_dir="$install_dir" --full_replace=1
 
 # The tarball extracts to a "bonfire" subdirectory, move contents up one level
 if [ -d "$install_dir/bonfire" ]; then
-    mv "$install_dir/bonfire/"* "$install_dir/" 2>/dev/null || true
-    mv "$install_dir/bonfire/".* "$install_dir/" 2>/dev/null || true
+    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
+    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
     rmdir "$install_dir/bonfire"
 fi
 
@@ -209,9 +209,9 @@ sleep 5
 
 ynh_script_progression --message="Cleaning up any leftover Erlang processes..." --weight=1
 # Kill any leftover Erlang processes from previous attempts
-pkill -u $app -f beam.smp || true
-pkill -u $app epmd || true
-pkill -u $app erl_child_setup || true
+pkill -u $app -f beam.smp 2>/dev/null || true
+pkill -u $app epmd 2>/dev/null || true
+pkill -u $app erl_child_setup 2>/dev/null || true
 sleep 2
 
 ynh_script_progression --message="Starting Bonfire daemon service..." --weight=1
@@ -232,7 +232,7 @@ for i in {1..20}; do
         if [ $i -gt 1 ]; then
             ynh_print_warn "Bonfire service not running (attempt $i/20), checking logs..."
             # Show last few lines of journal to understand the issue
-            journalctl -u $app -n 10 --no-pager | tail -5 >&2 || true
+            journalctl -u $app -n 10 --no-pager | tail -5 || true
         fi
 
         # Reset failed state before attempting restart
@@ -255,7 +255,7 @@ done
 if [ "$startup_success" = false ]; then
     ynh_print_err "Bonfire service failed to bind to port $port after 60 seconds"
     ynh_print_err "Last 30 lines of journalctl:"
-    journalctl -u $app -n 30 --no-pager >&2 || true
+    journalctl -u $app -n 30 --no-pager || true
     ynh_print_warn "Installation continuing, but service may need manual intervention"
 fi
 

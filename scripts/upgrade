@@ -33,8 +33,8 @@ then
 	# The tarball extracts to a "bonfire" subdirectory, move contents up one level
 	if [ -d "$install_dir/bonfire" ]; then
 	    # Move all files from bonfire/ to parent, preserving .env
-	    mv "$install_dir/bonfire/"* "$install_dir/" 2>/dev/null || true
-	    mv "$install_dir/bonfire/".* "$install_dir/" 2>/dev/null || true
+	    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
+	    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
 	    rmdir "$install_dir/bonfire"
 	fi
 
@@ -49,7 +49,7 @@ then
 	fi
 
 	meili_version="v1.14.0"
-	curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
+	ynh_exec_warn_less curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
 	chmod +x "$install_dir/meilisearch"
 fi
 
