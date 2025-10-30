@@ -108,45 +108,6 @@ ynh_systemctl --service="meilisearch-$app" --action="start" --log_path="/var/log
 # Start Bonfire (migrations run automatically on startup)
 ynh_systemctl --service=$app --action="start"  --wait_until="Running Bonfire.Web.Endpoint" --timeout=300
 
-# Monitor service startup and wait for port to be listening
-ynh_script_progression "Waiting for Bonfire to start up and bind to port $port..."
-
-startup_success=false
-for i in {1..20}; do
-    sleep 5
-
-    # Check if service is active
-    if ! systemctl is-active --quiet $app; then
-        if [ $i -gt 1 ]; then
-            ynh_print_info "Bonfire service not running (attempt $i/20), checking logs..."
-            # Show last few lines of journal to understand the issue
-            journalctl -u $app -n 10 --no-pager | tail -5 || true
-        fi
-
-        # Reset failed state before attempting restart
-        systemctl reset-failed $app 2>/dev/null || true
-        systemctl restart $app 2>/dev/null || true
-        sleep 5
-        continue
-    fi
-
-    # Check if port is listening
-    if netstat -tulpn 2>/dev/null | grep -q ":$port "; then
-        ynh_print_info "Bonfire is successfully listening on port $port!"
-        startup_success=true
-        break
-    else
-        ynh_print_info "Bonfire running but not yet listening on port $port (attempt $i/20)..."
-    fi
-done
-
-if [ "$startup_success" = false ]; then
-    ynh_print_warn "Bonfire service failed to bind to port $port after 60 seconds"
-    ynh_print_warn "Last 30 lines of journalctl:"
-    journalctl -u $app -n 30 --no-pager || true
-    ynh_print_warn "Installation continuing, but service may need manual intervention"
-fi
-
 #=================================================
 # END OF SCRIPT
 #=================================================
