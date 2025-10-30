@@ -10,117 +10,267 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# DOWNLOAD, CHECK AND UNPACK SOURCE
+# ENABLE POSTGRESQL EXTENSIONS
 #=================================================
-ynh_script_progression --message="Setting up source files..." --weight=1
+ynh_script_progression --message="Enabling PostgreSQL extensions..." --weight=1
 
-ynh_setup_source --dest_dir="$install_dir"
-
-chmod -R o-rwx "$install_dir"
-chown -R $app:www-data "$install_dir"
+ynh_psql_execute_as_root --sql="CREATE EXTENSION IF NOT EXISTS citext;" --database="$db_name"
+ynh_psql_execute_as_root --sql="CREATE EXTENSION IF NOT EXISTS postgis;" --database="$db_name"
 
 #=================================================
-# INSTALL DEPENDENCIES
+# DOWNLOAD PRE-BUILT RELEASE
 #=================================================
-ynh_script_progression --message="Installing dependencies..."
+ynh_script_progression --message="Downloading Bonfire release (this may take a few minutes)..." --weight=10
 
-# ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
-# ynh_use_nodejs
+# Download and extract pre-built release
+ynh_setup_source --dest_dir="$install_dir" --full_replace=1
+
+# The tarball extracts to a "bonfire" subdirectory, move contents up one level
+if [ -d "$install_dir/bonfire" ]; then
+    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
+    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
+    rmdir "$install_dir/bonfire"
+fi
 
 #=================================================
-# NGINX CONFIGURATION
+# SETUP DIRECTORIES
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --weight=1
+ynh_script_progression --message="Setting up directories..." --weight=1
 
-# Create a dedicated NGINX config
-ynh_add_nginx_config
+mkdir -p "$data_dir/uploads"
+mkdir -p "/var/log/$app"
 
 #=================================================
-# ADD A CONFIGURATION
+# GENERATE SECRETS
 #=================================================
+ynh_script_progression --message="Generating secrets..." --weight=1
+
 ## Generate secrets and other config values
-secret_key_base=$(ynh_string_random --length=50)
-signing_salt=$(ynh_string_random --length=50)
-encryption_salt=$(ynh_string_random --length=50)
+secret_key_base=$(ynh_string_random --length=64)
+signing_salt=$(ynh_string_random --length=64)
+encryption_salt=$(ynh_string_random --length=64)
 # search
-meili_master_key=$(ynh_string_random --length=50)
-# max file upload size
-MEDIA_UPLOAD_SIZE="${media_upload_size//[!0-9]/}000000"
+meili_master_key=$(ynh_string_random --length=64)
+# max file upload size - convert from "35MB" to bytes "35000000"
+upload_limit_bytes="${media_upload_size//[!0-9]/}000000"
 
-ynh_script_progression --message="Adding a configuration file..." --weight=1
+# Set instance configuration from installation questions
+# These variables are automatically available from manifest.toml [install] section:
+# - $instance_name
+# - $invite_only (true/false)
+# - $instance_description (optional)
 
+# Save app settings for upgrade/backup/restore
+ynh_app_setting_set --app=$app --key=secret_key_base --value=$secret_key_base
+ynh_app_setting_set --app=$app --key=signing_salt --value=$signing_salt
+ynh_app_setting_set --app=$app --key=encryption_salt --value=$encryption_salt
+ynh_app_setting_set --app=$app --key=meili_master_key --value=$meili_master_key
+ynh_app_setting_set --app=$app --key=instance_name --value=$instance_name
+ynh_app_setting_set --app=$app --key=invite_only --value=$invite_only
+ynh_app_setting_set --app=$app --key=instance_description --value="$instance_description"
+ynh_app_setting_set --app=$app --key=media_upload_size --value=$media_upload_size
+
+#=================================================
+# INSTALL LIBSSL1.1 FOR OPENSSL COMPATIBILITY
+#=================================================
+ynh_script_progression --message="Installing OpenSSL 1.1 compatibility library..." --weight=1
+
+# Install libssl1.1 from Bullseye (needed for Erlang crypto module)
+# The pre-built Bonfire release was compiled on Debian Bullseye
+ynh_setup_source --source_id=libssl --dest_dir="/tmp/libssl_install"
+ynh_exec_warn_less dpkg -i /tmp/libssl_install/libssl1.1.deb || ynh_die "Failed to install libssl1.1"
+ynh_secure_remove --file="/tmp/libssl_install"
+
+#=================================================
+# INSTALL MEILISEARCH
+#=================================================
+ynh_script_progression --message="Installing Meilisearch..." --weight=2
+
+# Determine architecture
+arch=$(uname -m)
+if [ "$arch" = "x86_64" ]; then
+    meili_arch="amd64"
+elif [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
+    meili_arch="aarch64"
+else
+    ynh_die --message="Unsupported architecture: $arch"
+fi
+
+# Download and install Meilisearch
+meili_version="v1.14.0"
+ynh_exec_warn_less curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
+chmod +x "$install_dir/meilisearch"
+
+# Create meilisearch data directory
+mkdir -p "$data_dir/meilisearch"
+mkdir -p "$data_dir/meilisearch/dumps"
+chown -R $app:$app "$data_dir/meilisearch"
+chmod 750 "$data_dir/meilisearch"
+
+# Create log directory for both services
+mkdir -p "/var/log/$app"
+chown -R $app:$app "/var/log/$app"
+
+#=================================================
+# ADD CONFIGURATION
+#=================================================
+ynh_script_progression --message="Adding configuration..." --weight=1
+
+# Create .env file directly (no build step needed)
 ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
-ynh_store_file_checksum --file="$install_dir/.env"
-
 chmod 400 "$install_dir/.env"
 chown $app:$app "$install_dir/.env"
 
-#=================================================
-# SPECIFIC SETUP
-#=================================================
-
-# load .env into env
-export $(grep -v '^#' $install_dir/.env | xargs -d '\n')
-# source $install_dir/.env
-export WITH_DOCKER=no # or source .env ? # Using this for now
-export TERM=linux # why is that not defined ?
-export TERMINFO=/etc/terminfo
-export PATH="$PATH:$install_dir/.local/share/mise/shims" 
-
-ynh_script_progression --message="Preparing Bonfire release..." --weight=1
-cd $install_dir
-#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "mise plugin add erlang https://github.com/asdf-vm/asdf-erlang.git" # add erlang as source
-#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "mise install" # install Elixir
-# ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "$ynh_node_load_PATH mix local.hex --force" # install Hex in non-interractive way
-### DONT USE GLOBAL NPM INSTALL
-# ynh_replace_string --match_string="npm install --global" --replace_string="npm install" --target_file="$install_dir/justfile"
+# Create Meilisearch env file with secrets
+ynh_add_config --template="../conf/meilisearch.env" --destination="$install_dir/.meilisearch.env"
+chmod 400 "$install_dir/.meilisearch.env"
+chown $app:$app "$install_dir/.meilisearch.env"
 
 #=================================================
-# Building  the release
+# SETUP PERMISSIONS
 #=================================================
-# ynh_script_progression --message="Building Bonfire release... (this will take a long time)" --weight=1
-# ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just config-basic"
-#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just mix bonfire.deps.update"
-# ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "WITH_DOCKER=no $ynh_node_load_PATH just rel-build"
+chown -R $app:www-data "$install_dir"
+chown -R $app:www-data "$data_dir"
+chmod -R 750 "$install_dir"
+chmod +x "$install_dir/bin/bonfire"
 
 #=================================================
-# CREATE ADMIN USER
+# SETUP SYSTEMD
 #=================================================
-# ynh_script_progression --message="Creating admin user account..." --weight=1
-# ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc "$install_dir/bin/bonfire eval 'Bonfire.Me.make_account_and_user(\"$admin\", \"$(ynh_user_get_info --username=\"$admin\" --key=mail)\", \"$password\")'"
-
-#=================================================
-# START SYSTEMD SERVICE - Run the release
-#=================================================
-release_folder=$install_dir
-
-### Not running the migration, they are done on startup anyway
-#ynh_script_progression --message="Running database migrations..." --weight=1
-## Database created before, let's run the migrations
-#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire eval 'EctoSparkles.Migrator.migrate()'"
-
-#ynh_script_progression --message="Starting Bonfire..." --weight=1
-#ynh_exec_warn_less ynh_exec_as $app -s $SHELL -lc  "WITH_DOCKER=no just cmd $release_folder/bin/bonfire start"
-
-mkdir -p "/var/log/$app"
-chown -R $app:$app "/var/log/$app"
+ynh_script_progression --message="Configuring systemd services..." --weight=1
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate
 
-# Create a dedicated systemd config
+# Create Meilisearch systemd service
+ynh_add_systemd_config --service="meilisearch-$app" --template="meilisearch.service"
+
+# Install startup wrapper script
+ynh_add_config --template="bonfire-start.sh" --destination="$install_dir/bonfire-start.sh"
+chmod +x "$install_dir/bonfire-start.sh"
+chown $app:$app "$install_dir/bonfire-start.sh"
+
+# Create Bonfire systemd config
 ynh_add_systemd_config
 
+yunohost service add "meilisearch-$app" --description="Meilisearch for Bonfire" --log="/var/log/$app/meilisearch.log"
 yunohost service add $app --description="Bonfire daemon" --log="/var/log/$app/$app.log"
 
-ynh_script_progression --message="Starting Bonfire daemon service..." --weight=1
+#=================================================
+# SETUP FAIL2BAN
+#=================================================
+ynh_script_progression --message="Configuring Fail2Ban..." --weight=1
 
-# Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log" --line_match="[info] Running Bonfire.Web.Endpoint"
+# Configure Fail2Ban
+# Note: Bonfire logs format may vary - this is a basic pattern
+# TODO: Verify actual Bonfire auth failure log format and adjust regex accordingly
+ynh_add_fail2ban_config --logpath="/var/log/$app/$app.log" --failregex="^.*authentication.*failed.*<HOST>.*$"
+
+#=================================================
+# START SERVICES
+#=================================================
+ynh_script_progression --message="Starting Meilisearch service..." --weight=1
+ynh_systemd_action --service_name="meilisearch-$app" --action="start" --log_path="/var/log/$app/meilisearch.log"
+
+# Wait for Meilisearch to be ready
+ynh_script_progression --message="Waiting for Meilisearch to be ready..." --weight=1
+for i in {1..30}; do
+    if curl -s "http://localhost:7700/health" | grep -q "available"; then
+        ynh_print_info "Meilisearch is ready"
+        break
+    fi
+    sleep 1
+done
+
+#=================================================
+# RUN DATABASE MIGRATIONS
+#=================================================
+ynh_script_progression --message="Running database migrations..." --weight=3
+
+# Run migrations using the Bonfire release command with all required env vars
+cd "$install_dir"
+sudo -u $app env HOME=$install_dir \
+    MIX_ENV=prod \
+    DATABASE_URL="postgresql://$app:$db_pwd@localhost/$app" \
+    POSTGRES_USER="$app" \
+    POSTGRES_PASSWORD="$db_pwd" \
+    POSTGRES_HOST="localhost" \
+    POSTGRES_DB="$app" \
+    SECRET_KEY_BASE="$secret_key_base" \
+    SIGNING_SALT="$signing_salt" \
+    ENCRYPTION_SALT="$encryption_salt" \
+    MEILI_MASTER_KEY="$meili_master_key" \
+    $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate()' 2>/dev/null || {
+    ynh_print_info "Migration will be run on service start"
+}
+
+# Give some time after migrations and clean up any leftover processes
+sleep 5
+
+ynh_script_progression --message="Cleaning up any leftover Erlang processes..." --weight=1
+# Kill any leftover Erlang processes from previous attempts
+pkill -u $app -f beam.smp 2>/dev/null || true
+pkill -u $app epmd 2>/dev/null || true
+pkill -u $app erl_child_setup 2>/dev/null || true
+sleep 2
+
+ynh_script_progression --message="Starting Bonfire daemon service..." --weight=1
+# Reset any failed state from previous attempts
+systemctl reset-failed $app 2>/dev/null || true
+# Start the service with a longer timeout
+ynh_systemd_action --service_name=$app --action="start" --timeout=30 || true
+
+# Monitor service startup and wait for port to be listening
+ynh_script_progression --message="Waiting for Bonfire to start up and bind to port $port..." --weight=5
+
+startup_success=false
+for i in {1..20}; do
+    sleep 5
+
+    # Check if service is active
+    if ! systemctl is-active --quiet $app; then
+        if [ $i -gt 1 ]; then
+            ynh_print_info "Bonfire service not running (attempt $i/20), checking logs..."
+            # Show last few lines of journal to understand the issue
+            journalctl -u $app -n 10 --no-pager | tail -5 || true
+        fi
+
+        # Reset failed state before attempting restart
+        systemctl reset-failed $app 2>/dev/null || true
+        systemctl restart $app 2>/dev/null || true
+        sleep 5
+        continue
+    fi
+
+    # Check if port is listening
+    if netstat -tulpn 2>/dev/null | grep -q ":$port "; then
+        ynh_print_info "Bonfire is successfully listening on port $port!"
+        startup_success=true
+        break
+    else
+        ynh_print_info "Bonfire running but not yet listening on port $port (attempt $i/20)..."
+    fi
+done
+
+if [ "$startup_success" = false ]; then
+    ynh_print_err "Bonfire service failed to bind to port $port after 60 seconds"
+    ynh_print_err "Last 30 lines of journalctl:"
+    journalctl -u $app -n 30 --no-pager || true
+    ynh_print_warn "Installation continuing, but service may need manual intervention"
+fi
+
+#=================================================
+# SETUP NGINX CONFIGURATION
+#=================================================
+ynh_script_progression --message="Configuring NGINX web server..." --weight=1
+
+ynh_add_nginx_config
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
 ynh_script_progression --message="Installation of $app completed" --weight=1
-ynh_script_progression --message="Now you need to sign-up, the first account will automatically be admin." --last
+
+# Display post-install instructions
+ynh_script_progression --message="Installation of $app completed. Visit https://$domain/ to create your admin account (first user becomes admin)" --last
