@@ -115,7 +115,7 @@ ram.runtime = "1000M"
 
     [resources.sources.main]
     url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.0-rc.3.23/bonfire-social-amd64-debian-bullseye.tar.gz"
-    sha256 = "sha256:99d1c4a49e8f3d84fcf782aa0a1f227d66aefd1b4abba7f3bf92f9d3fcba83dd"
+    sha256 = "99d1c4a49e8f3d84fcf782aa0a1f227d66aefd1b4abba7f3bf92f9d3fcba83dd"
     # autoupdate.strategy = "latest_github_release"
     autoupdate.asset = "bonfire-social-amd64-debian-bullseye.tar.gz"
 
