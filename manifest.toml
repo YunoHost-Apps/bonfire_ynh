@@ -2,14 +2,12 @@ packaging_format = 2
 
 id = "bonfire"
 name = "Bonfire"
+description.en = "Federated social networking server built on ActivityPub open protocol"
+description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
 version = "1.0.0-rc~ynh1"
 
 maintainers = ["Lapineige"]
-
-[description]
-en = "Federated social networking server built on ActivityPub open protocol"
-fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
 [upstream]
 license = "AGPL-3.0-only"
@@ -20,7 +18,7 @@ userdoc = "https://docs.bonfirenetworks.org/"
 code = "https://github.com/bonfire-networks/bonfire-app"
 
 [integration]
-yunohost = ">= 11.1.18"
+yunohost = ">= 11.1.30"
 multi_instance = false
 architectures = "all"
 ldap = false
@@ -50,7 +48,7 @@ ram.runtime = "1000M"
     ask.fr = "Choisissez la langue de l'application"
     type = "select"
     choices = ["fr", "en"]
-    default = "fr"
+    default = "en"
 
   [install.media_upload_size]
     ask.en = "Choose the maximum size of the media uploaded. Can be changed later."
