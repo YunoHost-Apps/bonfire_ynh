@@ -104,6 +104,7 @@ chmod +x "$install_dir/meilisearch"
 # Create meilisearch data directory
 mkdir -p "$data_dir/meilisearch"
 mkdir -p "$data_dir/meilisearch/dumps"
+echo "1.14.0" > "$data_dir/meilisearch/VERSION"
 chown -R $app:$app "$data_dir/meilisearch"
 chmod 750 "$data_dir/meilisearch"
 
