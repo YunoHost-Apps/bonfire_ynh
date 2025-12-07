@@ -103,9 +103,9 @@ chmod +x "$install_dir/meilisearch"
 
 # Create meilisearch data directory
 mkdir -p "$data_dir/meilisearch"
-mkdir -p "$data_dir/meilisearch/dumps"
-chown -R $app:$app "$data_dir/meilisearch"
-chmod 750 "$data_dir/meilisearch"
+mkdir -p "$data_dir/meilisearch_dumps"
+chown -R $app:$app "$data_dir/meilisearch" "$data_dir/meilisearch_dumps"
+chmod 750 "$data_dir/meilisearch" "$data_dir/meilisearch_dumps"
 
 # Create log directory for both services
 mkdir -p "/var/log/$app"
