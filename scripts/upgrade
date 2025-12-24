@@ -51,6 +51,7 @@ fi
 # Ensure directories exist
 mkdir -p "$data_dir/uploads"
 mkdir -p "$data_dir/meilisearch"
+echo $meili_version > "$data_dir/meilisearch/VERSION"
 chown -R $app:www-data "$install_dir"
 chown -R $app:www-data "$data_dir"
 
