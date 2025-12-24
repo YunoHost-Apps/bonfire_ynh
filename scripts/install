@@ -161,6 +161,7 @@ ynh_config_add_fail2ban --logpath="/var/log/$app/$app.log" --failregex="^.*authe
 # START SERVICES
 #=================================================
 ynh_script_progression "Starting Meilisearch service..."
+
 ynh_systemctl --service="meilisearch-$app" --action="start" --log_path="/var/log/$app/meilisearch.log"
 
 # Wait for Meilisearch to be ready

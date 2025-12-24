@@ -18,12 +18,14 @@ userdoc = "https://docs.bonfirenetworks.org/"
 code = "https://github.com/bonfire-networks/bonfire-app"
 
 [integration]
-yunohost = ">= 11.2.18"
+yunohost = ">= 12.1.17"
 helpers_version = "2.1"
 multi_instance = false
 architectures = "all"
+
 ldap = false
 sso = false
+
 disk = "500M"
 ram.build = "50M"
 ram.runtime = "1000M"
@@ -106,7 +108,6 @@ ram.runtime = "1000M"
     group = "www-data:r-x"
 
     [resources.ports]
-    # Port will be automatically assigned by YunoHost
 
     [resources.permissions]
     main.url = "/"

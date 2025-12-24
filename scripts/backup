@@ -23,6 +23,7 @@ ynh_backup "$data_dir"
 ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 ynh_backup "/etc/systemd/system/$app.service"
+ynh_backup "/etc/systemd/system/meilisearch-$app.service"
 
 ynh_backup "/etc/logrotate.d/$app"
 
@@ -31,13 +32,6 @@ ynh_backup "/etc/logrotate.d/$app"
 #=================================================
 
 ynh_backup "/var/log/$app/"
-
-#=================================================
-# BACKUP SYSTEMD
-#=================================================
-
-ynh_backup "/etc/systemd/system/$app.service"
-ynh_backup "/etc/systemd/system/meilisearch-$app.service"
 
 #=================================================
 # BACKUP THE POSTGRESQL DATABASE
