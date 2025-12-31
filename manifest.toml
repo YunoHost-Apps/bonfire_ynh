@@ -121,7 +121,7 @@ ram.runtime = "1000M"
 
     [resources.apt]
     # Runtime dependencies only (pre-built release includes Erlang/Elixir)
-    packages = "postgresql postgresql-contrib postgresql-15-postgis-3 curl ca-certificates git imagemagick libvips-tools poppler-utils ffmpeg"
+    packages = "postgresql, postgresql-contrib, postgresql-15-postgis-3, curl, ca-certificates, git, imagemagick, libvips-tools, poppler-utils, ffmpeg"
 
     [resources.sources.libssl]
     extract = false
