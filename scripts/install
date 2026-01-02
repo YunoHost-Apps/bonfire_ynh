@@ -17,7 +17,7 @@ ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
 ynh_script_progression "Downloading Bonfire release (this may take a few minutes)..."
 
 # Download and extract pre-built release
-ynh_setup_source --dest_dir="$install_dir" --full_replace
+ynh_setup_source --dest_dir="$install_dir"
 
 # The tarball extracts to a "bonfire" subdirectory, move contents up one level
 if [ -d "$install_dir/bonfire" ]; then
