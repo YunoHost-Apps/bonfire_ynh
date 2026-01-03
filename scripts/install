@@ -19,13 +19,6 @@ ynh_script_progression "Downloading Bonfire release (this may take a few minutes
 # Download and extract pre-built release
 ynh_setup_source --dest_dir="$install_dir"
 
-# The tarball extracts to a "bonfire" subdirectory, move contents up one level
-if [ -d "$install_dir/bonfire" ]; then
-    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
-    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
-    rmdir "$install_dir/bonfire"
-fi
-
 #=================================================
 # SETUP DIRECTORIES
 #=================================================
@@ -79,16 +72,6 @@ ynh_safe_rm "/tmp/libssl_install"
 # INSTALL MEILISEARCH
 #=================================================
 ynh_script_progression "Installing Meilisearch..."
-
-# Determine architecture
-arch=$(uname -m)
-if [ "$arch" = "x86_64" ]; then
-    meili_arch="amd64"
-elif [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
-    meili_arch="aarch64"
-else
-    ynh_die "Unsupported architecture: $arch"
-fi
 
 # Download and install Meilisearch
 meili_version="v1.14.0"

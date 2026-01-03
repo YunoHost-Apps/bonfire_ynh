@@ -27,26 +27,9 @@ ynh_script_progression "Upgrading source files..."
 ynh_script_progression "Downloading new Bonfire release..."
 
 # Download and extract new pre-built release
-ynh_setup_source --dest_dir="$install_dir" --full_replace --keep=".env"
+ynh_setup_source --dest_dir="$install_dir" --full_replace
 
-# The tarball extracts to a "bonfire" subdirectory, move contents up one level
-if [ -d "$install_dir/bonfire" ]; then
-    # Move all files from bonfire/ to parent, preserving .env
-    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
-    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
-    rmdir "$install_dir/bonfire"
-fi
-
-# Update Meilisearch if needed
-arch=$(uname -m)
-if [ "$arch" = "x86_64" ]; then
-    meili_arch="amd64"
-elif [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
-    meili_arch="aarch64"
-else
-    ynh_die "Unsupported architecture: $arch"
-fi
-	meili_version="v1.14.0"
+meili_version="v1.14.0"
 ynh_hide_warnings curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
 chmod +x "$install_dir/meilisearch"
 
@@ -62,19 +45,11 @@ chown -R $app:www-data "$data_dir"
 #=================================================
 ynh_script_progression "Updating configuration..."
 
-# Extract existing secrets from current .env file
-if [ -f "$install_dir/.env" ]; then
-	secret_key_base=$(grep "^SECRET_KEY_BASE=" "$install_dir/.env" | cut -d= -f2)
-	signing_salt=$(grep "^SIGNING_SALT=" "$install_dir/.env" | cut -d= -f2)
-	encryption_salt=$(grep "^ENCRYPTION_SALT=" "$install_dir/.env" | cut -d= -f2)
-fi
-
 # Initialize upload_limit_bytes from media_upload_size setting
 media_upload_size=$(ynh_app_setting_get --key=media_upload_size)
 upload_limit_bytes="${media_upload_size//[!0-9]/}000000"
 
 ynh_config_add --template=".env" --destination="$install_dir/.env"
-ynh_store_file_checksum "$install_dir/.env"
 
 # Create Meilisearch env file with secrets
 ynh_config_add --template="meilisearch.env" --destination="$install_dir/.meilisearch.env"
