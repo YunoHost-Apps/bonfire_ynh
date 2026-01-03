@@ -27,7 +27,7 @@ ynh_script_progression "Upgrading source files..."
 ynh_script_progression "Downloading new Bonfire release..."
 
 # Download and extract new pre-built release
-ynh_setup_source --dest_dir="$install_dir" #--full_replace
+ynh_setup_source --dest_dir="$install_dir" --full_replace
 
 # Download and install Meilisearch
 meili_version="v1.28.1"
@@ -83,7 +83,7 @@ ynh_script_progression "Starting systemd services..."
 ynh_systemctl --service="meilisearch-$app" --action="start" --log_path="/var/log/$app/meilisearch.log"
 
 # Start Bonfire (migrations run automatically on startup)
-ynh_systemctl --service=$app --action="start" --log_path="/var/log/$app/$app.log" --wait_until="Running Bonfire.Web.Endpoint" --timeout=300
+ynh_systemctl --service=$app --action="start" --log_path="/var/log/$app/$app.log" #--wait_until="Running Bonfire.Web.Endpoint" --timeout=300
 
 #=================================================
 # END OF SCRIPT
