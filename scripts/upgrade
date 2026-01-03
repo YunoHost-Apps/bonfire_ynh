@@ -29,8 +29,9 @@ ynh_script_progression "Downloading new Bonfire release..."
 # Download and extract new pre-built release
 ynh_setup_source --dest_dir="$install_dir" --full_replace
 
-meili_version="v1.14.0"
-ynh_hide_warnings curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
+# Download and install Meilisearch
+meili_version="v1.28.1"
+ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
 # Ensure directories exist

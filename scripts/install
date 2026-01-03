@@ -74,8 +74,8 @@ ynh_safe_rm "/tmp/libssl_install"
 ynh_script_progression "Installing Meilisearch..."
 
 # Download and install Meilisearch
-meili_version="v1.14.0"
-ynh_hide_warnings curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
+meili_version="v1.28.1"
+ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
 # Create meilisearch data directory
