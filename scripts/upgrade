@@ -82,6 +82,7 @@ ynh_exec_as_app HOME=$install_dir \
     SIGNING_SALT="$signing_salt" \
     ENCRYPTION_SALT="$encryption_salt" \
     MEILI_MASTER_KEY="$meili_master_key" \
+    DB_MIGRATE_INDEXES_CONCURRENTLY=false \
     $install_dir/bin/bonfire rpc 'Bonfire.Common.Repo.migrate' 2>/dev/null || {
     ynh_print_info "Migration will be run on service start"
 }
