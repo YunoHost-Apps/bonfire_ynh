@@ -65,17 +65,6 @@ ynh_app_setting_set --key=instance_description --value="$instance_description"
 ynh_app_setting_set --key=media_upload_size --value=$media_upload_size
 
 #=================================================
-# INSTALL LIBSSL1.1 FOR OPENSSL COMPATIBILITY
-#=================================================
-ynh_script_progression "Installing OpenSSL 1.1 compatibility library..."
-
-# Install libssl1.1 from Bullseye (needed for Erlang crypto module)
-# The pre-built Bonfire release was compiled on Debian Bullseye
-ynh_setup_source --source_id=libssl --dest_dir="/tmp/libssl_install"
-ynh_hide_warnings dpkg -i /tmp/libssl_install/libssl1.1.deb || ynh_die "Failed to install libssl1.1"
-ynh_safe_rm "/tmp/libssl_install"
-
-#=================================================
 # INSTALL MEILISEARCH
 #=================================================
 ynh_script_progression "Installing Meilisearch..."

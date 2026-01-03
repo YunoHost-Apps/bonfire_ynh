@@ -3,17 +3,6 @@
 source /usr/share/yunohost/helpers
 
 #=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression "Installing OpenSSL 1.1 compatibility library..."
-
-# Install libssl1.1 from Bullseye (needed for Erlang crypto module)
-# The pre-built Bonfire release was compiled on Debian Bullseye
-ynh_setup_source --source_id=libssl --dest_dir="/tmp/libssl_install"
-ynh_hide_warnings dpkg -i /tmp/libssl_install/libssl1.1.deb || ynh_die "Failed to install libssl1.1"
-ynh_safe_rm "/tmp/libssl_install"
-
-#=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
 ynh_script_progression "Restoring the app main directory..."
