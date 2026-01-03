@@ -15,9 +15,9 @@ ynh_systemctl --service="meilisearch-$app" --action="stop" --log_path="/var/log/
 #=================================================
 ynh_script_progression "Enabling PostgreSQL extensions..."
 
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;"
 
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;"
 
 #=================================================
 # UPDATE BONFIRE RELEASE
@@ -27,7 +27,7 @@ ynh_script_progression "Upgrading source files..."
 ynh_script_progression "Downloading new Bonfire release..."
 
 # Download and extract new pre-built release
-ynh_setup_source --dest_dir="$install_dir" --full_replace --keep=".env"
+ynh_setup_source --dest_dir="$install_dir" --full_replace
 
 # The tarball extracts to a "bonfire" subdirectory, move contents up one level
 if [ -d "$install_dir/bonfire" ]; then
@@ -37,17 +37,9 @@ if [ -d "$install_dir/bonfire" ]; then
     rmdir "$install_dir/bonfire"
 fi
 
-# Update Meilisearch if needed
-arch=$(uname -m)
-if [ "$arch" = "x86_64" ]; then
-    meili_arch="amd64"
-elif [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
-    meili_arch="aarch64"
-else
-    ynh_die "Unsupported architecture: $arch"
-fi
-	meili_version="v1.14.0"
-ynh_hide_warnings curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
+# Download and install Meilisearch
+meili_version="v1.28.1"
+ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
 # Ensure directories exist
@@ -62,13 +54,6 @@ chown -R $app:www-data "$data_dir"
 #=================================================
 ynh_script_progression "Updating configuration..."
 
-# Extract existing secrets from current .env file
-if [ -f "$install_dir/.env" ]; then
-	secret_key_base=$(grep "^SECRET_KEY_BASE=" "$install_dir/.env" | cut -d= -f2)
-	signing_salt=$(grep "^SIGNING_SALT=" "$install_dir/.env" | cut -d= -f2)
-	encryption_salt=$(grep "^ENCRYPTION_SALT=" "$install_dir/.env" | cut -d= -f2)
-fi
-
 # Initialize upload_limit_bytes from media_upload_size setting
 media_upload_size=$(ynh_app_setting_get --key=media_upload_size)
 upload_limit_bytes="${media_upload_size//[!0-9]/}000000"
@@ -78,6 +63,38 @@ ynh_store_file_checksum "$install_dir/.env"
 
 # Create Meilisearch env file with secrets
 ynh_config_add --template="meilisearch.env" --destination="$install_dir/.meilisearch.env"
+
+#=================================================
+# RUN DATABASE MIGRATIONS
+#=================================================
+ynh_script_progression "Running database migrations..."
+
+# Run migrations using the Bonfire release command with all required env vars
+cd "$install_dir"
+ynh_exec_as_app HOME=$install_dir \
+    MIX_ENV=prod \
+    DATABASE_URL="postgresql://$db_user:$db_pwd@localhost/$db_name" \
+    POSTGRES_USER="$db_user" \
+    POSTGRES_PASSWORD="$db_pwd" \
+    POSTGRES_HOST="localhost" \
+    POSTGRES_DB="$db_name" \
+    SECRET_KEY_BASE="$secret_key_base" \
+    SIGNING_SALT="$signing_salt" \
+    ENCRYPTION_SALT="$encryption_salt" \
+    MEILI_MASTER_KEY="$meili_master_key" \
+    $install_dir/bin/bonfire rpc 'Bonfire.Common.Repo.migrate' 2>/dev/null || {
+    ynh_print_info "Migration will be run on service start"
+}
+
+# Give some time after migrations and clean up any leftover processes
+sleep 5
+
+ynh_script_progression "Cleaning up any leftover Erlang processes..."
+# Kill any leftover Erlang processes from previous attempts
+pkill -u $app -f beam.smp 2>/dev/null || true
+pkill -u $app epmd 2>/dev/null || true
+pkill -u $app erl_child_setup 2>/dev/null || true
+sleep 2
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS

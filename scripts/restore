@@ -36,9 +36,8 @@ chown -R $app:www-data "$data_dir"
 ynh_script_progression "Restoring the PostgreSQL database..."
 
 # Enable PostGIS extension before restoring database (needed for spatial data)
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext;"
-
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;"
 
 ynh_psql_db_shell < ./db.sql
 

@@ -7,9 +7,9 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Enabling PostgreSQL extensions..."
 
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;"
 
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;"
 
 #=================================================
 # DOWNLOAD PRE-BUILT RELEASE
@@ -69,19 +69,9 @@ ynh_app_setting_set --key=media_upload_size --value=$media_upload_size
 #=================================================
 ynh_script_progression "Installing Meilisearch..."
 
-# Determine architecture
-arch=$(uname -m)
-if [ "$arch" = "x86_64" ]; then
-    meili_arch="amd64"
-elif [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
-    meili_arch="aarch64"
-else
-    ynh_die "Unsupported architecture: $arch"
-fi
-
 # Download and install Meilisearch
-meili_version="v1.14.0"
-ynh_hide_warnings curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
+meili_version="v1.28.1"
+ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
 # Create meilisearch data directory
@@ -172,16 +162,16 @@ ynh_script_progression "Running database migrations..."
 cd "$install_dir"
 ynh_exec_as_app HOME=$install_dir \
     MIX_ENV=prod \
-    DATABASE_URL="postgresql://$app:$db_pwd@localhost/$app" \
-    POSTGRES_USER="$app" \
+    DATABASE_URL="postgresql://$db_user:$db_pwd@localhost/$db_name" \
+    POSTGRES_USER="$db_user" \
     POSTGRES_PASSWORD="$db_pwd" \
     POSTGRES_HOST="localhost" \
-    POSTGRES_DB="$app" \
+    POSTGRES_DB="$db_name" \
     SECRET_KEY_BASE="$secret_key_base" \
     SIGNING_SALT="$signing_salt" \
     ENCRYPTION_SALT="$encryption_salt" \
     MEILI_MASTER_KEY="$meili_master_key" \
-    $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate()' 2>/dev/null || {
+    $install_dir/bin/bonfire rpc 'Bonfire.Common.Repo.migrate' 2>/dev/null || {
     ynh_print_info "Migration will be run on service start"
 }
 
@@ -250,8 +240,6 @@ ynh_config_add_nginx
 #=================================================
 # END OF SCRIPT
 #=================================================
-
-ynh_script_progression "Installation of $app completed"
 
 # Display post-install instructions
 ynh_script_progression "Installation of $app completed. Visit https://$domain/ to create your admin account (first user becomes admin)"

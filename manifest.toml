@@ -119,6 +119,20 @@ ram.runtime = "1000M"
     sha256 = "ca356117b7d3825f9f643293d89ac621289c0f5c486e9f9cf41408584791c3df"
     autoupdate.strategy = "latest_github_release"
 
+    [resources.sources.meili]
+    amd64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.28.1/meilisearch-linux-amd64"
+    amd64.sha256 = "a0d7fb8f2518d421d750230fc8683263b87372d51916358281149c43fab3398f"
+    arm64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.28.1/meilisearch-linux-aarch64"
+    arm64.sha256 = "1a261f38c51e6ee44805b9cacd80f480e24ed860a9cb5fc53fe6ba34a33fe43b"
+    rename = "meilisearch"
+    in_subdir = false
+    extract = false
+
+    autoupdate.strategy = "latest_github_release"
+    autoupdate.upstream = "https://github.com/meilisearch/meilisearch"
+    autoupdate.asset.amd64 = "^meilisearch-linux-amd64$"
+    autoupdate.asset.arm64 = "^meilisearch-linux-aarch64$"
+
     [resources.apt]
     # Runtime dependencies only (pre-built release includes Erlang/Elixir)
     packages = "postgresql, postgresql-contrib, postgresql-postgis, curl, ca-certificates, git, imagemagick, libvips-tools, poppler-utils, ffmpeg"
