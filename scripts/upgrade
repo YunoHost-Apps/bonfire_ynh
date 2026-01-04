@@ -29,14 +29,6 @@ ynh_script_progression "Downloading new Bonfire release..."
 # Download and extract new pre-built release
 ynh_setup_source --dest_dir="$install_dir" --full_replace
 
-# The tarball extracts to a "bonfire" subdirectory, move contents up one level
-if [ -d "$install_dir/bonfire" ]; then
-    # Move all files from bonfire/ to parent, preserving .env
-    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
-    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
-    rmdir "$install_dir/bonfire"
-fi
-
 # Download and install Meilisearch
 meili_version="v1.28.1"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
@@ -59,7 +51,6 @@ media_upload_size=$(ynh_app_setting_get --key=media_upload_size)
 upload_limit_bytes="${media_upload_size//[!0-9]/}000000"
 
 ynh_config_add --template=".env" --destination="$install_dir/.env"
-ynh_store_file_checksum "$install_dir/.env"
 
 # Create Meilisearch env file with secrets
 ynh_config_add --template="meilisearch.env" --destination="$install_dir/.meilisearch.env"
@@ -92,7 +83,7 @@ ynh_script_progression "Starting systemd services..."
 ynh_systemctl --service="meilisearch-$app" --action="start" --log_path="/var/log/$app/meilisearch.log"
 
 # Start Bonfire (migrations run automatically on startup)
-ynh_systemctl --service=$app --action="start"  --wait_until="Running Bonfire.Web.Endpoint" --timeout=300
+ynh_systemctl --service=$app --action="start" --log_path="/var/log/$app/$app.log" #--wait_until="Running Bonfire.Web.Endpoint" --timeout=300
 
 #=================================================
 # END OF SCRIPT

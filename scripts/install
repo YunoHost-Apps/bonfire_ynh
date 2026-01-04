@@ -19,13 +19,6 @@ ynh_script_progression "Downloading Bonfire release (this may take a few minutes
 # Download and extract pre-built release
 ynh_setup_source --dest_dir="$install_dir"
 
-# The tarball extracts to a "bonfire" subdirectory, move contents up one level
-if [ -d "$install_dir/bonfire" ]; then
-    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
-    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
-    rmdir "$install_dir/bonfire"
-fi
-
 #=================================================
 # SETUP DIRECTORIES
 #=================================================
@@ -190,7 +183,7 @@ ynh_script_progression "Starting Bonfire daemon service..."
 # Reset any failed state from previous attempts
 systemctl reset-failed $app 2>/dev/null || true
 # Start the service with a longer timeout
-ynh_systemctl --service=$app --action="start" --timeout=30 || true
+ynh_systemctl --service=$app --action="start" --log_path="/var/log/$app/$app.log" --timeout=30 || true
 
 # Monitor service startup and wait for port to be listening
 ynh_script_progression "Waiting for Bonfire to start up and bind to port $port..."
