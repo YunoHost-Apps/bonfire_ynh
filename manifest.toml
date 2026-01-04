@@ -5,7 +5,7 @@ name = "Bonfire"
 description.en = "Federated social networking server built on ActivityPub open protocol"
 description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "1.0.0-rc~ynh1"
+version = "1.0.0-rc36~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -18,11 +18,14 @@ userdoc = "https://docs.bonfirenetworks.org/"
 code = "https://github.com/bonfire-networks/bonfire-app"
 
 [integration]
-yunohost = ">= 11.1.30"
+yunohost = ">= 12.1.17"
+helpers_version = "2.1"
 multi_instance = false
 architectures = "all"
+
 ldap = false
 sso = false
+
 disk = "500M"
 ram.build = "50M"
 ram.runtime = "1000M"
@@ -99,13 +102,12 @@ ram.runtime = "1000M"
     allow_email = true
 
     [resources.install_dir]
+    group = "www-data:r-x"
 
     [resources.data_dir]
-    # This will create/remove the data dir as /home/yunohost.app/$app
-    # and store the corresponding setting $data_dir
+    group = "www-data:r-x"
 
     [resources.ports]
-    # Port will be automatically assigned by YunoHost
 
     [resources.permissions]
     main.url = "/"
@@ -113,14 +115,29 @@ ram.runtime = "1000M"
     [resources.sources]
 
     [resources.sources.main]
-    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.0-rc.2.33/bonfire-social-amd64-debian-bullseye.tar.gz"
-    sha256 = "958334fdfa7cecebe363477fff8745f393e6f5c125c78f02e28aebee69529dbe"
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.0-rc.3.6/bonfire-social-amd64-debian-bullseye.tar.gz"
+    sha256 = "cf0641940e81c6c9f90b8b0ae68198d901a3c952b766c76a5fb18aae9c8eddee"
+    in_subdir = true
+    
     autoupdate.strategy = "latest_github_release"
-    autoupdate.asset = "bonfire-social-amd64-debian-bullseye.tar.gz"
+
+    [resources.sources.meili]
+    amd64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.28.1/meilisearch-linux-amd64"
+    amd64.sha256 = "a0d7fb8f2518d421d750230fc8683263b87372d51916358281149c43fab3398f"
+    arm64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.28.1/meilisearch-linux-aarch64"
+    arm64.sha256 = "1a261f38c51e6ee44805b9cacd80f480e24ed860a9cb5fc53fe6ba34a33fe43b"
+    rename = "meilisearch"
+    in_subdir = false
+    extract = false
+
+    autoupdate.strategy = "latest_github_release"
+    autoupdate.upstream = "https://github.com/meilisearch/meilisearch"
+    autoupdate.asset.amd64 = "^meilisearch-linux-amd64$"
+    autoupdate.asset.arm64 = "^meilisearch-linux-aarch64$"
 
     [resources.apt]
     # Runtime dependencies only (pre-built release includes Erlang/Elixir)
-    packages = "postgresql postgresql-contrib postgresql-15-postgis-3 curl ca-certificates git imagemagick libvips-tools poppler-utils ffmpeg"
+    packages = "postgresql, postgresql-contrib, postgresql-postgis, curl, ca-certificates, git, imagemagick, libvips-tools, poppler-utils, ffmpeg"
 
     [resources.sources.libssl]
     extract = false

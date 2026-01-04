@@ -1,118 +1,92 @@
 #!/bin/bash
 
-source _common.sh
 source /usr/share/yunohost/helpers
-
-upgrade_type=$(ynh_check_app_version_changed)
 
 #=================================================
 # STOP SYSTEMD SERVICES
 #=================================================
-ynh_script_progression --message="Stopping systemd services..."
+ynh_script_progression "Stopping systemd services..."
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="systemd"
-ynh_systemd_action --service_name="meilisearch-$app" --action="stop" --log_path="systemd"
+ynh_systemctl --service=$app --action="stop" --log_path="systemd"
+ynh_systemctl --service="meilisearch-$app" --action="stop" --log_path="/var/log/$app/meilisearch.log"
+
+#=================================================
+# ENABLE POSTGRESQL EXTENSIONS
+#=================================================
+ynh_script_progression "Enabling PostgreSQL extensions..."
+
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext;"
+
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
 
 #=================================================
 # UPDATE BONFIRE RELEASE
 #=================================================
-ynh_script_progression --message="Upgrading source files..." --weight=1
+ynh_script_progression "Upgrading source files..."
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Downloading new Bonfire release..." --weight=10
+ynh_script_progression "Downloading new Bonfire release..."
 
-	# Download and extract new pre-built release
-	ynh_setup_source --dest_dir="$install_dir" --full_replace=1 --keep=".env"
+# Download and extract new pre-built release
+ynh_setup_source --dest_dir="$install_dir" --full_replace
 
-	# The tarball extracts to a "bonfire" subdirectory, move contents up one level
-	if [ -d "$install_dir/bonfire" ]; then
-	    # Move all files from bonfire/ to parent, preserving .env
-	    mv "$install_dir/bonfire/"* "$install_dir/" >/dev/null 2>&1 || true
-	    mv "$install_dir/bonfire/".* "$install_dir/" >/dev/null 2>&1 || true
-	    rmdir "$install_dir/bonfire"
-	fi
-
-	# Update Meilisearch if needed
-	arch=$(uname -m)
-	if [ "$arch" = "x86_64" ]; then
-	    meili_arch="amd64"
-	elif [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
-	    meili_arch="aarch64"
-	else
-	    ynh_die --message="Unsupported architecture: $arch"
-	fi
-
-	meili_version="v1.14.0"
-	ynh_exec_warn_less curl -L "https://github.com/meilisearch/meilisearch/releases/download/$meili_version/meilisearch-linux-$meili_arch" -o "$install_dir/meilisearch"
-	chmod +x "$install_dir/meilisearch"
-fi
+# Download and install Meilisearch
+meili_version="v1.28.1"
+ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
+chmod +x "$install_dir/meilisearch"
 
 # Ensure directories exist
 mkdir -p "$data_dir/uploads"
 mkdir -p "$data_dir/meilisearch"
+echo $meili_version > "$data_dir/meilisearch/VERSION"
 chown -R $app:www-data "$install_dir"
 chown -R $app:www-data "$data_dir"
 
 #=================================================
 # UPDATE A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Updating a configuration file..."
-
-# Extract existing secrets from current .env file
-if [ -f "$install_dir/.env" ]; then
-	secret_key_base=$(grep "^SECRET_KEY_BASE=" "$install_dir/.env" | cut -d= -f2)
-	signing_salt=$(grep "^SIGNING_SALT=" "$install_dir/.env" | cut -d= -f2)
-	encryption_salt=$(grep "^ENCRYPTION_SALT=" "$install_dir/.env" | cut -d= -f2)
-fi
+ynh_script_progression "Updating configuration..."
 
 # Initialize upload_limit_bytes from media_upload_size setting
-media_upload_size=$(ynh_app_setting_get --app=$app --key=media_upload_size)
+media_upload_size=$(ynh_app_setting_get --key=media_upload_size)
 upload_limit_bytes="${media_upload_size//[!0-9]/}000000"
 
-ynh_add_config --template="../conf/.env" --destination="$install_dir/.env"
-ynh_store_file_checksum --file="$install_dir/.env"
-
-chmod 400 "$install_dir/.env"
-chown $app:$app "$install_dir/.env"
+ynh_config_add --template=".env" --destination="$install_dir/.env"
 
 # Create Meilisearch env file with secrets
-ynh_add_config --template="../conf/meilisearch.env" --destination="$install_dir/.meilisearch.env"
-chmod 400 "$install_dir/.meilisearch.env"
-chown $app:$app "$install_dir/.meilisearch.env"
+ynh_config_add --template="meilisearch.env" --destination="$install_dir/.meilisearch.env"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
+ynh_script_progression "Upgrading system configurations related to $app..."
 
 # Create Meilisearch service (if not exists)
-ynh_add_systemd_config --service="meilisearch-$app" --template="meilisearch.service"
+ynh_config_add_systemd --service="meilisearch-$app" --template="meilisearch.service"
 
 # Create/update Bonfire service
-ynh_add_systemd_config
+ynh_config_add_systemd
 
 # Register services with YunoHost
 yunohost service add "meilisearch-$app" --description="Meilisearch for Bonfire" --log="/var/log/$app/meilisearch.log"
 yunohost service add $app --description="Bonfire daemon" --log="/var/log/$app/$app.log"
 
-ynh_add_nginx_config
+ynh_config_add_nginx
 
-ynh_use_logrotate --non-append
+ynh_config_add_logrotate
 
 #=================================================
 # START SYSTEMD SERVICES
 #=================================================
-ynh_script_progression --message="Starting systemd services..." --weight=1
+ynh_script_progression "Starting systemd services..."
 
 # Start Meilisearch first
-ynh_systemd_action --service_name="meilisearch-$app" --action="start" --log_path="/var/log/$app/meilisearch.log"
+ynh_systemctl --service="meilisearch-$app" --action="start" --log_path="/var/log/$app/meilisearch.log"
 
 # Start Bonfire (migrations run automatically on startup)
-ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log" --line_match="Running Bonfire.Web.Endpoint" --timeout=300
+ynh_systemctl --service=$app --action="start" --log_path="/var/log/$app/$app.log" #--wait_until="Running Bonfire.Web.Endpoint" --timeout=300
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --last
+ynh_script_progression "Upgrade of $app completed"
