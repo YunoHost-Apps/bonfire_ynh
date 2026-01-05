@@ -119,7 +119,7 @@ ram.runtime = "1000M"
     sha256 = "cf0641940e81c6c9f90b8b0ae68198d901a3c952b766c76a5fb18aae9c8eddee"
     in_subdir = true
     
-    autoupdate.strategy = "latest_github_release"
+    #autoupdate.strategy = "latest_github_release"
     #autoupdate.asset = "bonfire-social-amd64-debian-bookworm.tar.gz"
 
     [resources.sources.meili]
