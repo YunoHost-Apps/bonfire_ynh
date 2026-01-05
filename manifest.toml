@@ -120,6 +120,7 @@ ram.runtime = "1000M"
     in_subdir = true
     
     autoupdate.strategy = "latest_github_release"
+    autoupdate.asset = "bonfire-social-amd64-debian-bookworm.tar.gz"
 
     [resources.sources.meili]
     amd64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.28.1/meilisearch-linux-amd64"
