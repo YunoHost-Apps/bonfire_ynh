@@ -166,6 +166,7 @@ ynh_exec_as_app HOME=$install_dir \
     ENCRYPTION_SALT="$encryption_salt" \
     MEILI_MASTER_KEY="$meili_master_key" \
     DB_MIGRATE_INDEXES_CONCURRENTLY=false \
+    $install_dir/bin/bonfire mix ecto.create
     $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate' 2>/dev/null || {
     ynh_print_info "Migration will be run on service start"
 }
