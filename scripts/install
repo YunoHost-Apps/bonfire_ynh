@@ -153,11 +153,12 @@ ynh_script_progression "Running database migrations..."
 
 # Run migrations using the Bonfire release command with all required env vars
 cd "$install_dir"
-ynh_exec_as_app HOME=$install_dir \
+    ynh_exec_as_app HOME=$install_dir \
     MIX_ENV=prod \
     FLAVOUR=social \
-    DATABASE_URL="postgresql://$app:$db_pwd@localhost/$app" \
-    POSTGRES_USER="$app" \
+    WITH_DOCKER=no \
+    DATABASE_URL="postgresql://$db_user:$db_pwd@localhost/$db_name" \
+    POSTGRES_USER="$db_user" \
     POSTGRES_PASSWORD="$db_pwd" \
     POSTGRES_HOST="localhost" \
     POSTGRES_DB="$db_name" \
@@ -165,8 +166,6 @@ ynh_exec_as_app HOME=$install_dir \
     SIGNING_SALT="$signing_salt" \
     ENCRYPTION_SALT="$encryption_salt" \
     MEILI_MASTER_KEY="$meili_master_key" \
-    DB_MIGRATE_INDEXES_CONCURRENTLY=false \
-    $install_dir/bin/bonfire mix ecto.create
     $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate' 2>/dev/null || {
     ynh_print_info "Migration will be run on service start"
 }
