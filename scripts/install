@@ -166,7 +166,7 @@ cd "$install_dir"
     SIGNING_SALT="$signing_salt" \
     ENCRYPTION_SALT="$encryption_salt" \
     MEILI_MASTER_KEY="$meili_master_key" \
-    just mix ecto.create
+    mix ecto.create
     $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate' 2>/dev/null || {
     ynh_print_info "Migration will be run on service start"
 }
