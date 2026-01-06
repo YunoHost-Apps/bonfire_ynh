@@ -155,8 +155,9 @@ ynh_script_progression "Running database migrations..."
 cd "$install_dir"
 ynh_exec_as_app HOME=$install_dir \
     MIX_ENV=prod \
-    DATABASE_URL="postgresql://$db_user:$db_pwd@localhost/$db_name" \
-    POSTGRES_USER="$db_user" \
+    FLAVOUR=social \
+    DATABASE_URL="postgresql://$app:$db_pwd@localhost/$app" \
+    POSTGRES_USER="$app" \
     POSTGRES_PASSWORD="$db_pwd" \
     POSTGRES_HOST="localhost" \
     POSTGRES_DB="$db_name" \
