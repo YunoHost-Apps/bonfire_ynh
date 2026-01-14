@@ -74,7 +74,7 @@ ynh_safe_rm "/tmp/libssl_install"
 ynh_script_progression "Installing Meilisearch..."
 
 # Download and install Meilisearch
-meili_version="v1.28.1"
+meili_version="1.28.1"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
@@ -166,6 +166,7 @@ ynh_script_progression "Running database migrations..."
 cd "$install_dir"
 ynh_exec_as_app HOME=$install_dir \
     MIX_ENV=prod \
+    FLAVOUR=social \
     DATABASE_URL="postgresql://$app:$db_pwd@localhost/$app" \
     POSTGRES_USER="$app" \
     POSTGRES_PASSWORD="$db_pwd" \
