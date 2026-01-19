@@ -74,7 +74,8 @@ ynh_safe_rm "/tmp/libssl_install"
 ynh_script_progression "Installing Meilisearch..."
 
 # Download and install Meilisearch
-meili_version="1.28.1"
+meili_version="$(ynh_read_manifest -m /var/cache/yunohost/repo/default.json -k apps.meilisearch.manifest.version)"
+meili_version="${meili_version/~ynh*/}"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
