@@ -115,8 +115,8 @@ ram.runtime = "1000M"
     [resources.sources]
 
     [resources.sources.main]
-    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.1-beta.11/bonfire-social-amd64-debian-bookworm.tar.gz"
-    sha256 = "85a1e2feb5971e14f194026c04a7f70037576777dd4df6b7850eb2e2e3b42361"
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.1/bonfire-social-amd64-debian-bookworm.tar.gz"
+    sha256 = "dd1e4587a0f1271e67a4174e2c1a9a5d45a92410e00ffffa2be1109b014ee111"
     in_subdir = true
     
     #autoupdate.strategy = "latest_github_release"
