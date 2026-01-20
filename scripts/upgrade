@@ -30,7 +30,8 @@ ynh_script_progression "Downloading new Bonfire release..."
 ynh_setup_source --dest_dir="$install_dir" --full_replace
 
 # Download and install Meilisearch
-meili_version="1.28.1"
+meili_version="$(jq -r '.apps.meilisearch.manifest.version' /var/cache/yunohost/repo/default.json)"
+meili_version="${meili_version/~ynh*/}"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
