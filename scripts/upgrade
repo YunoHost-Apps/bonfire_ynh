@@ -11,20 +11,9 @@ ynh_systemctl --service=$app --action="stop" --log_path="systemd"
 ynh_systemctl --service="meilisearch-$app" --action="stop" --log_path="/var/log/$app/meilisearch.log"
 
 #=================================================
-# ENABLE POSTGRESQL EXTENSIONS
-#=================================================
-ynh_script_progression "Enabling PostgreSQL extensions..."
-
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext;"
-
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
-
-#=================================================
 # UPDATE BONFIRE RELEASE
 #=================================================
 ynh_script_progression "Upgrading source files..."
-
-ynh_script_progression "Downloading new Bonfire release..."
 
 # Download and extract new pre-built release
 ynh_setup_source --dest_dir="$install_dir" --full_replace
