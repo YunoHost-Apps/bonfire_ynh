@@ -247,6 +247,3 @@ ynh_config_add_nginx
 #=================================================
 
 ynh_script_progression "Installation of $app completed"
-
-# Display post-install instructions
-ynh_script_progression "Installation of $app completed. Visit https://$domain/ to create your admin account (first user becomes admin)"
