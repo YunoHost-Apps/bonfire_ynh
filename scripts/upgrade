@@ -25,8 +25,8 @@ ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
 # Ensure directories exist
-mkdir -p "$data_dir/uploads"
-mkdir -p "$data_dir/meilisearch"
+#mkdir -p "$data_dir/uploads"
+#mkdir -p "$data_dir/meilisearch"
 echo $meili_version > "$data_dir/meilisearch/VERSION"
 chown -R $app:www-data "$install_dir"
 chown -R $app:www-data "$data_dir"
