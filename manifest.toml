@@ -105,7 +105,7 @@ ram.runtime = "1000M"
     group = "www-data:r-x"
 
     [resources.data_dir]
-    subdirs = ["uploads", "meilisearch/dumps"]
+    subdirs = ["uploads", "meilisearch", "meilisearch/dumps"]
     group = "www-data:r-x"
 
     [resources.ports]
