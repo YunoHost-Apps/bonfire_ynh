@@ -109,6 +109,7 @@ ram.runtime = "1000M"
     group = "www-data:r-x"
 
     [resources.ports]
+    meilisearch.default=7700
 
     [resources.permissions]
     main.url = "/"
