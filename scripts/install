@@ -144,7 +144,7 @@ ynh_systemctl --service="meilisearch-$app" --action="start" --log_path="/var/log
 # Wait for Meilisearch to be ready
 ynh_script_progression "Waiting for Meilisearch to be ready..."
 for i in {1..30}; do
-    if curl -s "http://localhost:7700/health" | grep -q "available"; then
+    if curl -s "http://localhost:__PORT_MEILISEARCH__/health" | grep -q "available"; then
         ynh_print_info "Meilisearch is ready"
         break
     fi
