@@ -9,7 +9,7 @@ Group=__APP__
 WorkingDirectory=__INSTALL_DIR__
 # Environment variables loaded from file with restrictive permissions
 EnvironmentFile=__INSTALL_DIR__/.meilisearch.env
-ExecStart=__INSTALL_DIR__/meilisearch  --experimental-dumpless-upgrade
+ExecStart=__INSTALL_DIR__/meilisearch
 Restart=on-failure
 RestartSec=5
 
