@@ -1,5 +1,5 @@
 [Unit]
-Description=Meilisearch search engine for Bonfire
+Description=Meilisearch: search engine for Bonfire
 After=network.target
 
 [Service]
