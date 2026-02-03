@@ -74,8 +74,7 @@ ynh_safe_rm "/tmp/libssl_install"
 ynh_script_progression "Installing Meilisearch..."
 
 # Download and install Meilisearch
-meili_version="$(curl -s https://api.github.com/repos/meilisearch/meilisearch/releases/latest | jq -r '.tag_name')"
-meili_version="${meili_version/~ynh*/}"
+meili_version="$(curl -s https://api.github.com/repos/meilisearch/meilisearch/releases/latest | jq -r '.tag_name' | sed 's/^v//')"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
