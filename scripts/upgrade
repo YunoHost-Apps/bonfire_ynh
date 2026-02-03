@@ -30,8 +30,10 @@ ynh_script_progression "Downloading new Bonfire release..."
 ynh_setup_source --dest_dir="$install_dir" --full_replace
 
 # Download and install Meilisearch
-meili_version="$(curl -s https://api.github.com/repos/meilisearch/meilisearch/releases/latest | jq -r '.tag_name' | sed 's/^v//')"
-
+meili_version="$(cat "$YNH_APP_BASEDIR/manifest.toml" | toml_to_json | 
+jq -r '.resources.sources.meili.amd64.url
+       | capture("/v(?<version>[0-9.]+)/")
+       | .version')"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
