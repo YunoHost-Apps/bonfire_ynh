@@ -28,8 +28,10 @@ ynh_script_progression "Upgrading source files..."
 ynh_setup_source --dest_dir="$install_dir" --full_replace
 
 # Download and install Meilisearch
-meili_version="$(jq -r '.apps.meilisearch.manifest.version' /var/cache/yunohost/repo/default.json)"
-meili_version="${meili_version/~ynh*/}"
+meili_version="$(cat "$YNH_APP_BASEDIR/manifest.toml" | toml_to_json | 
+jq -r '.resources.sources.meili.amd64.url
+       | capture("/v(?<version>[0-9.]+)/")
+       | .version')"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
