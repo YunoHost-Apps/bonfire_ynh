@@ -20,14 +20,6 @@ ynh_script_progression "Downloading Bonfire release (this may take a few minutes
 ynh_setup_source --dest_dir="$install_dir"
 
 #=================================================
-# SETUP DIRECTORIES
-#=================================================
-ynh_script_progression "Setting up directories..."
-
-mkdir -p "$data_dir/uploads"
-mkdir -p "/var/log/$app"
-
-#=================================================
 # GENERATE SECRETS
 #=================================================
 ynh_script_progression "Generating secrets..."
@@ -74,15 +66,18 @@ ynh_safe_rm "/tmp/libssl_install"
 ynh_script_progression "Installing Meilisearch..."
 
 # Download and install Meilisearch
-meili_version="1.28.1"
+meili_version="$(cat "$YNH_APP_BASEDIR/manifest.toml" | toml_to_json | 
+jq -r '.resources.sources.meili.amd64.url
+       | capture("/v(?<version>[0-9.]+)/")
+       | .version')"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
 # Create meilisearch data directory
-mkdir -p "$data_dir/meilisearch"
-mkdir -p "$data_dir/meilisearch/dumps"
+#mkdir -p "$data_dir/meilisearch"
+#mkdir -p "$data_dir/meilisearch/dumps"
 echo $meili_version > "$data_dir/meilisearch/VERSION"
-chown -R $app:$app "$data_dir/meilisearch"
+#chown -R $app:$app "$data_dir/meilisearch"
 chmod 750 "$data_dir/meilisearch"
 
 # Create log directory for both services
@@ -103,6 +98,7 @@ ynh_config_add --template="meilisearch.env" --destination="$install_dir/.meilise
 #=================================================
 # SETUP PERMISSIONS
 #=================================================
+
 chown -R $app:www-data "$install_dir"
 chown -R $app:www-data "$data_dir"
 chmod -R 750 "$install_dir"
@@ -247,6 +243,3 @@ ynh_config_add_nginx
 #=================================================
 
 ynh_script_progression "Installation of $app completed"
-
-# Display post-install instructions
-ynh_script_progression "Installation of $app completed. Visit https://$domain/ to create your admin account (first user becomes admin)"

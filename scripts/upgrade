@@ -11,32 +11,24 @@ ynh_systemctl --service=$app --action="stop" --log_path="systemd"
 ynh_systemctl --service="meilisearch-$app" --action="stop" --log_path="/var/log/$app/meilisearch.log"
 
 #=================================================
-# ENABLE POSTGRESQL EXTENSIONS
-#=================================================
-ynh_script_progression "Enabling PostgreSQL extensions..."
-
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext;"
-
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
-
-#=================================================
 # UPDATE BONFIRE RELEASE
 #=================================================
 ynh_script_progression "Upgrading source files..."
-
-ynh_script_progression "Downloading new Bonfire release..."
 
 # Download and extract new pre-built release
 ynh_setup_source --dest_dir="$install_dir" --full_replace
 
 # Download and install Meilisearch
-meili_version="1.28.1"
+meili_version="$(cat "$YNH_APP_BASEDIR/manifest.toml" | toml_to_json | 
+jq -r '.resources.sources.meili.amd64.url
+       | capture("/v(?<version>[0-9.]+)/")
+       | .version')"
 ynh_setup_source --dest_dir="$install_dir" --source_id="meili"
 chmod +x "$install_dir/meilisearch"
 
 # Ensure directories exist
-mkdir -p "$data_dir/uploads"
-mkdir -p "$data_dir/meilisearch"
+#mkdir -p "$data_dir/uploads"
+#mkdir -p "$data_dir/meilisearch"
 echo $meili_version > "$data_dir/meilisearch/VERSION"
 chown -R $app:www-data "$install_dir"
 chown -R $app:www-data "$data_dir"

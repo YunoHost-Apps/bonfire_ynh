@@ -1,5 +1,5 @@
 [Unit]
-Description=Bonfire social networking server
+Description=Bonfire: social networking server
 After=network.target postgresql.service meilisearch-__APP__.service
 StartLimitBurst=10
 StartLimitIntervalSec=60
