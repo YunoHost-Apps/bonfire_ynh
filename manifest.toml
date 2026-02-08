@@ -5,7 +5,7 @@ name = "Bonfire"
 description.en = "Federated social networking server built on ActivityPub open protocol"
 description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "1.0.0-rc36~ynh10"
+version = "1.0.0-rc36~ynh5"
 
 maintainers = ["Lapineige"]
 
