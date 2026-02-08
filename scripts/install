@@ -7,9 +7,9 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Enabling PostgreSQL extensions..."
 
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;"
 
-ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis;"
+ynh_psql_db_shell <<< "CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;"
 
 #=================================================
 # DOWNLOAD PRE-BUILT RELEASE
@@ -48,17 +48,6 @@ ynh_app_setting_set --key=instance_name --value=$instance_name
 ynh_app_setting_set --key=invite_only --value=$invite_only
 ynh_app_setting_set --key=instance_description --value="$instance_description"
 ynh_app_setting_set --key=media_upload_size --value=$media_upload_size
-
-#=================================================
-# INSTALL LIBSSL1.1 FOR OPENSSL COMPATIBILITY
-#=================================================
-ynh_script_progression "Installing OpenSSL 1.1 compatibility library..."
-
-# Install libssl1.1 from Bullseye (needed for Erlang crypto module)
-# The pre-built Bonfire release was compiled on Debian Bullseye
-ynh_setup_source --source_id=libssl --dest_dir="/tmp/libssl_install"
-ynh_hide_warnings dpkg -i /tmp/libssl_install/libssl1.1.deb || ynh_die "Failed to install libssl1.1"
-ynh_safe_rm "/tmp/libssl_install"
 
 #=================================================
 # INSTALL MEILISEARCH
@@ -160,24 +149,25 @@ ynh_script_progression "Running database migrations..."
 
 # Run migrations using the Bonfire release command with all required env vars
 cd "$install_dir"
-ynh_exec_as_app HOME=$install_dir \
+    ynh_exec_as_app HOME=$install_dir \
     MIX_ENV=prod \
     FLAVOUR=social \
-    DATABASE_URL="postgresql://$app:$db_pwd@localhost/$app" \
-    POSTGRES_USER="$app" \
+    WITH_DOCKER=no \
+    DATABASE_URL="postgresql://$db_user:$db_pwd@localhost/$db_name" \
+    POSTGRES_USER="$db_user" \
     POSTGRES_PASSWORD="$db_pwd" \
     POSTGRES_HOST="localhost" \
-    POSTGRES_DB="$app" \
+    POSTGRES_DB="$db_name" \
     SECRET_KEY_BASE="$secret_key_base" \
     SIGNING_SALT="$signing_salt" \
     ENCRYPTION_SALT="$encryption_salt" \
     MEILI_MASTER_KEY="$meili_master_key" \
-    $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate()' 2>/dev/null || {
+    $install_dir/bin/bonfire eval 'Bonfire.Common.Repo.migrate' 2>/dev/null || {
     ynh_print_info "Migration will be run on service start"
 }
 
 # Give some time after migrations and clean up any leftover processes
-sleep 5
+sleep 30
 
 ynh_script_progression "Cleaning up any leftover Erlang processes..."
 # Kill any leftover Erlang processes from previous attempts
@@ -242,4 +232,5 @@ ynh_config_add_nginx
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression "Installation of $app completed"
+# Display post-install instructions
+ynh_script_progression "Installation of $app completed. Visit https://$domain/ to create your admin account (first user becomes admin)"

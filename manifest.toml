@@ -5,7 +5,7 @@ name = "Bonfire"
 description.en = "Federated social networking server built on ActivityPub open protocol"
 description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "1.0.0-rc36~ynh5"
+version = "1.0.1~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -117,8 +117,8 @@ ram.runtime = "1000M"
     [resources.sources]
 
     [resources.sources.main]
-    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.0-rc.3.6/bonfire-social-amd64-debian-bullseye.tar.gz"
-    sha256 = "cf0641940e81c6c9f90b8b0ae68198d901a3c952b766c76a5fb18aae9c8eddee"
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.1/bonfire-social-amd64-debian-bookworm.tar.gz"
+    sha256 = "dd1e4587a0f1271e67a4174e2c1a9a5d45a92410e00ffffa2be1109b014ee111"
     in_subdir = true
     
     #autoupdate.strategy = "latest_github_release"
@@ -141,12 +141,6 @@ ram.runtime = "1000M"
     [resources.apt]
     # Runtime dependencies only (pre-built release includes Erlang/Elixir)
     packages = "postgresql, postgresql-contrib, postgresql-postgis, curl, ca-certificates, git, imagemagick, libvips-tools, poppler-utils, ffmpeg"
-
-    [resources.sources.libssl]
-    extract = false
-    rename = "libssl1.1.deb"
-    amd64.url = "http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_amd64.deb"
-    amd64.sha256 = "aadf8b4b197335645b230c2839b4517aa444fd2e8f434e5438c48a18857988f7"
 
     [resources.database]
     type = "postgresql"
