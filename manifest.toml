@@ -5,7 +5,7 @@ name = "Bonfire"
 description.en = "Federated social networking server built on ActivityPub open protocol"
 description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "1.0.0-rc36~ynh5"
+version = "1.0.2~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -117,18 +117,18 @@ ram.runtime = "1000M"
     [resources.sources]
 
     [resources.sources.main]
-    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.0-rc.3.6/bonfire-social-amd64-debian-bullseye.tar.gz"
-    sha256 = "cf0641940e81c6c9f90b8b0ae68198d901a3c952b766c76a5fb18aae9c8eddee"
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.2/bonfire-social-amd64-debian-bookworm.tar.gz"
+    sha256 = "e7fd48c35516f510f0a0df4dfec3cb0fbf671504c68ab8fbf9311376fd4e9fe3"
     in_subdir = true
     
     #autoupdate.strategy = "latest_github_release"
     #autoupdate.asset = "bonfire-social-amd64-debian-bookworm.tar.gz"
 
     [resources.sources.meili]
-    amd64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.35.0/meilisearch-linux-amd64"
-    amd64.sha256 = "01201cecf22184dea0f66ad14570dda4b5a8a55ce498dcf7178fbe858ac0a1cc"
-    arm64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.35.0/meilisearch-linux-aarch64"
-    arm64.sha256 = "8dcfdd7902d2d37003d38b21bb0ec6a92a99a2a450c012a0233074fb1562b754"
+    amd64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.39.0/meilisearch-linux-amd64"
+    amd64.sha256 = "463e6c2d3c0b2313d9664936b24b1de0955967ba0959d5f2bb59e7c3954d3e72"
+    arm64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.39.0/meilisearch-linux-aarch64"
+    arm64.sha256 = "eac2a52674ea17d3b85a1a33eef92a6508ff339024680252821710f37c16def8"
     rename = "meilisearch"
     in_subdir = false
     extract = false
@@ -141,12 +141,6 @@ ram.runtime = "1000M"
     [resources.apt]
     # Runtime dependencies only (pre-built release includes Erlang/Elixir)
     packages = "postgresql, postgresql-contrib, postgresql-postgis, curl, ca-certificates, git, imagemagick, libvips-tools, poppler-utils, ffmpeg"
-
-    [resources.sources.libssl]
-    extract = false
-    rename = "libssl1.1.deb"
-    amd64.url = "http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_amd64.deb"
-    amd64.sha256 = "aadf8b4b197335645b230c2839b4517aa444fd2e8f434e5438c48a18857988f7"
 
     [resources.database]
     type = "postgresql"
