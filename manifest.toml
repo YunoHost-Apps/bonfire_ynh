@@ -5,7 +5,7 @@ name = "Bonfire"
 description.en = "Federated social networking server built on ActivityPub open protocol"
 description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "1.0.2-rc6~ynh2"
+version = "1.0.2~ynh1"
 
 maintainers = ["Lapineige"]
 
@@ -117,8 +117,8 @@ ram.runtime = "1000M"
     [resources.sources]
 
     [resources.sources.main]
-    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.2-rc.6/bonfire-social-amd64-debian-bookworm.tar.gz"
-    sha256 = "02eb2f8d3d022c5e62a6e6bf531c3c5f890cf6c31abb6528d32743b12bfefb48"
+    url = "https://github.com/bonfire-networks/bonfire-app/releases/download/v1.0.2/bonfire-social-amd64-debian-bookworm.tar.gz"
+    sha256 = "e7fd48c35516f510f0a0df4dfec3cb0fbf671504c68ab8fbf9311376fd4e9fe3"
     in_subdir = true
     
     #autoupdate.strategy = "latest_github_release"
