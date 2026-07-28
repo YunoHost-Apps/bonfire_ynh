@@ -5,7 +5,7 @@ name = "Bonfire"
 description.en = "Federated social networking server built on ActivityPub open protocol"
 description.fr = "Serveur de réseautage social fédéré basé sur le protocole ouvert ActivityPub"
 
-version = "1.0.2~ynh12"
+version = "1.0.2~ynh14"
 
 maintainers = ["Lapineige"]
 
@@ -125,10 +125,10 @@ ram.runtime = "1000M"
     #autoupdate.asset = "bonfire-social-amd64-debian-bookworm.tar.gz"
 
     [resources.sources.meili]
-    amd64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.48.3/meilisearch-linux-amd64"
-    amd64.sha256 = "6ffec647103b4d764cd16e71d92a0ce09992ba00d3f58f0ca1ec7e4626bc87f2"
-    arm64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.48.3/meilisearch-linux-aarch64"
-    arm64.sha256 = "b0bc2b9c1c2e7403acd5778f3a9f140516a88ed1dcd7151d7bc6b24b82afbb5a"
+    amd64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.51.0/meilisearch-linux-amd64"
+    amd64.sha256 = "73f4f8809a80c5293a594de100b6121cb60879f9869875bdbc732c03771de560"
+    arm64.url = "https://github.com/meilisearch/meilisearch/releases/download/v1.51.0/meilisearch-linux-aarch64"
+    arm64.sha256 = "6da2eadedb3380df6a8beaf54a039375a4711e02c3e9ebeaf131f735c8f6bd4b"
     rename = "meilisearch"
     in_subdir = false
     extract = false
