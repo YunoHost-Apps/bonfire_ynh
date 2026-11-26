@@ -80,6 +80,22 @@ ram.runtime = "1000M"
     help.en = "The name of your Bonfire instance that will be displayed to users"
     help.fr = "Le nom de votre instance Bonfire qui sera affiché aux utilisateurs"
 
+  [install.flavour]
+    ask.en = "Installation flavour"
+    ask.fr = "Flavour d'installation"
+    type = "select"
+    choices = [
+      "social",
+      "community",
+      "open_science",
+      "coordination",
+      "cooperation",
+      "ember",
+      ]
+    default = "social"
+    help.en = "Flavours are predefined bundles of extensions and settings tailored for different types of communities and use cases."
+    help.fr = "Les «flavours» sont des ensembles prédéfinis d’extensions et de paramètres, conçus pour différents types de communautés et de cas d’usage."
+
   [install.invite_only]
     ask.en = "Require invitations to sign up?"
     ask.fr = "Exiger des invitations pour s'inscrire ?"

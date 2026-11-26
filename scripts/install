@@ -36,6 +36,7 @@ upload_limit_bytes="${media_upload_size//[!0-9]/}000000"
 # Set instance configuration from installation questions
 # These variables are automatically available from manifest.toml [install] section:
 # - $instance_name
+# - $flavour
 # - $invite_only (true/false)
 # - $instance_description (optional)
 
@@ -45,6 +46,7 @@ ynh_app_setting_set --key=signing_salt --value=$signing_salt
 ynh_app_setting_set --key=encryption_salt --value=$encryption_salt
 ynh_app_setting_set --key=meili_master_key --value=$meili_master_key
 ynh_app_setting_set --key=instance_name --value=$instance_name
+ynh_app_setting_set --key=flavour --value=$flavour
 ynh_app_setting_set --key=invite_only --value=$invite_only
 ynh_app_setting_set --key=instance_description --value="$instance_description"
 ynh_app_setting_set --key=media_upload_size --value=$media_upload_size
